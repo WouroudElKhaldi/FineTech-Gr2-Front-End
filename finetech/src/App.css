@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 :root{
     --color-back-page : #171B24 ;
     --color-back-card : #212936 ;
@@ -8,3 +10,18 @@
     --color-back-Hover : #444654 ; 
     --color-font-gray : #BABABA ; 
 }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Outfit", sans-serif;
+    font-weight: 200;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-back-page);
+    color: var(--color-white);
+    font-size: 1rem;
+  }
