@@ -1,0 +1,25 @@
+.container {
+    background: linear-gradient(110deg, #212936 55%, #171B24 55%);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loginHeroSectionContainer {
+    height: 50%;
+    width: 50%;
+    display: flex;
+}
+
+.loginHeroSection {
+    height: 100vh;
+    width: 100%;
+    display: inherit;
+    align-items: center;
+    margin-left: 15%;
+}
+
+.loginHeroSectionImage {
+    height: 70%;
+    width: 70%;
+}
