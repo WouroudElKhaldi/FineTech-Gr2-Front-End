@@ -1,13 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Goal from "./Pages/Goal";
-import Login from "./Pages/Login";
-import Notification from "./Pages/Notification";
-import Profile from "./Pages/Profile";
-import Report from "./Pages/Report";
-import Transaction from "./Pages/Transaction";
-import Users from "./Pages/Users";
-import SidebarComp from "./Components/SidebarComp";
+import Goal from "./Pages/Goal/Goal";
+import Login from "./Pages/Login/Login";
+import Notification from "./Pages/Notification/Notification";
+import Profile from "./Pages/Profile/Profile";
+import Report from "./Pages/Report/Report";
+import Transaction from "./Pages/Transaction/Transaction";
+import Users from "./Pages/Users/Users";
+import SidebarComp from "./Components/SidebarComp/SidebarComp";
+import NotFound from "./Pages/NotFound/NotFound";
 
 function App() {
   return (
