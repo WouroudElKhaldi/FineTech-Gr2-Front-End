@@ -1,11 +1,15 @@
 import React from "react";
-import Routes from "./Routes/Routes"
+
+import "./App.css";
+import AppRoutes from "./Routes/AppRoutes";
+// import Login from './Pages/Login/Login.js'
+// import Sidebar from './Layouts/Sidebar/Sidebar.js';
 
 export default function App() {
   return (
-    <div>
-      <Routes/>
-      
+    <div className="App">
+      <AppRoutes />
+    
     </div>
-  )
+  );
 }

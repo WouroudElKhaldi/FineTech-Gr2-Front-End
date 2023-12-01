@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function Profile() {
   return (
-    <div>
-      profilee
+    <div style={{ backgroundColor: "blue" }}>
+      profileeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
     </div>
-  )
+  );
 }
