@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Report() {
+export default function NotFound() {
   return (
     <div>
-      Reportt
+      Not found
     </div>
   )
 }
