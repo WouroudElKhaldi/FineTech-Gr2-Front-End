@@ -5,7 +5,7 @@ import InfoCard from "../../Components/InfoCard/InfoCard";
 import TableComponent from "../../Components/Table/Table";
 import UserChart from "../../Components/UserChart/UserChart";
 import { Typography } from "@mui/material";
-import { Button } from '../../Components/Button/Button';
+import UserModal from '../../Components/AddUserForm/AddUserModal';
 
 const UserPage = () => {
   const data = [
@@ -173,7 +173,7 @@ const UserPage = () => {
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [wid, setWid] = useState(screenWidth < 500 ? "100%" : "80%");
-
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     const handleResize = () => {
       const newWid = window.innerWidth;
@@ -185,6 +185,8 @@ const UserPage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -223,8 +225,10 @@ const UserPage = () => {
             <UserChart/>
           </Grid>
       </Grid>
-      <Button text={'Add User'} color={'blue'} size={'big'} />
-      <TableComponent data={data} wid={wid}/>
+      <span>
+      <UserModal/>
+      </span>
+      <TableComponent data={data} wid={wid} isEdit={true}/>
     </Box>
   );
 };
