@@ -1,0 +1,59 @@
+.Button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px ;
+    font-family: 'Outfit';
+    font-weight: bolder;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: 1.125rem ;
+    margin-left: 1rem;
+}
+
+.blue{
+    background-color: var(--color-blue-normal);
+    color: white; 
+    border: none;
+}
+
+.gray{
+    background-color: var(--color-back-Hover);
+    color: white;
+    border: none;
+}
+
+.gray:hover{
+    color: var(--color-back-Hover);
+    border: solid 2px var(--color-back-Hover);
+    background-color: transparent ;
+    box-shadow: 5px 5px 4px 0px var(--color-shadow);
+}
+
+.smallButton {
+    width: 10rem ;
+    height : 3rem ;
+}
+
+.RxEnvelopeClosed{
+    margin-right: 2px ;
+}
+
+.Button.blue:hover{
+    color: var(--color-blue-normal);
+    border: solid 2px var(--color-blue-normal);
+    background-color:transparent ;
+    box-shadow: 5px 5px 4px 0px var(--color-shadow);
+}
+
+.bigButton {
+    width : 12rem ;
+    height: 4rem ;   
+}
+
+@media screen and (max-width : 400px) {
+    .bigButton{
+        width: 8rem;
+        height: 2.5rem;
+    }
+}

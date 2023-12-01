@@ -1,0 +1,13 @@
+.Container{
+    width: 25rem;
+    height: 100%;
+    background-color: var(--color-back-card);
+    padding: 2rem;
+    border-radius: 20px;
+}
+
+.H2{
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--color-font-gray);
+}   
