@@ -1,19 +1,66 @@
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { DataGrid , GridToolbar} from '@mui/x-data-grid';
+import Grid from '@mui/material/Unstable_Grid2';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import styles from './Table.module.css'
 
-const TableComponent = ({ data , wid}) => {
+const TableComponent = ({ data , wid , isEdit}) => {
   const [userData, setUserData] = useState(data);
-  const [columns, setColumns] = useState([]); // Provide a default empty array
+  const [columns, setColumns] = useState([]);
   const [error, setError] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const buton = isEdit === true ? true : false ;
 
-  useEffect(() => {
+  useEffect(() => { 
     try {
       setUserData(data);
 
       if (userData.length > 0) {
         const visibleFields = Object.keys(userData[0]);
-        setColumns(visibleFields.map((field) => ({ field, headerName: field , editable: true , flex : 1})));
+          if(buton === false){
+            setColumns(visibleFields.map((field) => ({ field, headerName: field , editable: true , flex : 1})));
+          }else {
+          const updatedColumns = [
+            ...visibleFields.map((field) => ({ field, headerName: field, editable: true, flex: 1 })),
+            {
+              field: 'Edit',
+              headerName: 'Edit',
+              renderCell: (params) => (
+                <Grid container md={12}>
+                  <button
+                    onClick={() => {
+                      setSelectedRowId(params.id);
+                      setIsEditModalOpen(true);
+                      console.log(selectedRowId , isDeleteModalOpen)
+                    }}
+                    className={styles.btn}
+                    ><EditIcon/></button>
+                  </Grid>
+              ),
+            },
+            {
+              field: 'Delete',
+              headerName: 'Delete',
+              renderCell: (params) => (
+                <Grid container md={12}>
+                  <button
+                    onClick={() => {
+                      setSelectedRowId(params.id);
+                      setIsDeleteModalOpen(true)
+                      console.log(selectedRowId )
+                    }}
+                    className={styles.btn}
+                    ><DeleteIcon/></button>
+                  </Grid>
+              ),
+            }
+          ];
+          setColumns(updatedColumns)
+          }
       } else {
         setColumns([]);
       }
