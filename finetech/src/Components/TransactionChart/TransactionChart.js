@@ -6,10 +6,17 @@ Chart.register(Tooltip, ArcElement, Legend);
 const TransactionChart = () => {
   const data = {
     labels: ["Income", "Outcome"],
-    datasets: [60, 40],
-    backgroundColor: ["#2d99ef", "#facd4b"],
-    hoverOffset: 10,
+    datasets : [{
+       
+        data: [60, 40], 
+        backgroundColor: ['#2D99EF', '#17456E' ],
+        hoverOffset: 10,
+    }]
   };
+
+
+
+
   return (
     <div className={style.container}>
       <h2 className={style.titleChart}>Transactions</h2>

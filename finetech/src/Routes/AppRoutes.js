@@ -68,7 +68,7 @@ function AppRoutes() {
 
         
 
-        <Route exact path="/login" element={<Login />}></Route>
+        <Route exact path="/" element={<Login />}></Route>
         <Route path="/notFound" element={<NotFound />}></Route>
       </Routes>
     </>
