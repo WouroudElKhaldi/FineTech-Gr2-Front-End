@@ -1,14 +1,15 @@
-import './App.css'
-import Login from './Pages/Login/Login.js'
-import Sidebar from './Layouts/Sidebar/Sidebar.js';
-import EditCompanyForm from './Components/EditCompany/EditCompanyForm.js';
+import React from "react";
 
-function App() {
+import "./App.css";
+import AppRoutes from "./Routes/AppRoutes";
+// import Login from './Pages/Login/Login.js'
+// import Sidebar from './Layouts/Sidebar/Sidebar.js';
+
+export default function App() {
   return (
     <div className="App">
-      <EditCompanyForm />
+      <AppRoutes />
+    
     </div>
   );
 }
-
-export default App;
