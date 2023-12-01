@@ -1,10 +1,10 @@
-import styles from './Users.module.css'
+import React from 'react'
 
-const UserPage = () => {
-    return (
-        <div className={styles.Container}>
-            
-        </div>
-    )
+export default function Users() {
+  return (
+    <div>
+      userss
+    </div>
+  )
 }
-export default UserPage ;
+
