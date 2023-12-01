@@ -66,7 +66,7 @@ const SidebarComp = () => {
         }
     ]
 
-    const userType = 'manager'
+    const userType = 'accountant'
     const userOptions = userType === 'manager' ? manager : userType === 'admin' ? admin : accountant
 
     return (

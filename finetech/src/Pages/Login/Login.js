@@ -42,7 +42,7 @@ const Login = () => {
                             </select>
                         </div>
                     </div>
-                    <button className={style.formButton}>Login</button>
+                    <button className={style.formButton} type='submit'>Login</button>
                 </form>
             </section>
         </div>

@@ -1,0 +1,88 @@
+.modalOverlay {
+    width: 40vw;
+    height: 70vh;
+    margin: 0 auto;
+    margin-top: 12rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editForm {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5rem;
+}
+
+.editFormHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+    height: 15%;
+}
+
+.editFormTitle {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.closeIcon {
+    font-size: 3rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.editFormInputs {
+    height: 50%;
+    width: 100%;
+    display: inherit;
+    flex-direction: inherit;
+    align-items: inherit;
+    gap: 3.8rem;
+}
+
+.inputGroup {
+    position: relative;
+    display: flex;
+    gap: 2rem;
+    width: 60%;
+}
+
+.labelStyle {
+    position: absolute;
+    top: -0.8rem;
+    left: 6%;
+    height: 1rem;
+    padding: 0.4rem;
+    background-color: #171B24;
+    color: #fff;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.inputStyle {
+    height: 3rem;
+    width: 100%;
+    background-color: #212936;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 300;
+    border: 1px solid #fff;
+    border-radius: 0.5rem;
+    padding-left: 1.5rem;
+    padding-top: 0.5rem;
+}
+
+.formSubmit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8rem;
+    width: 100%;
+    height: auto;
+    margin-top: 5rem;
+}
