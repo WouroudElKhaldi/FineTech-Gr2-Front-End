@@ -193,7 +193,7 @@ const UserPage = () => {
         <Typography
         variant="h3"
         component="h3"
-        sx={{ textAlign: "left", mt: 3, mb: 3, ml: 2 , fontWeight: 'bold'}}
+        sx={{ textAlign: "left", mt: 8, mb: 8, ml: 2 , fontWeight: 'bold'}}
       >
         Manage Users
       </Typography>
@@ -207,6 +207,9 @@ const UserPage = () => {
             flexWrap: 'wrap'
           }}
           }>
+          <Grid container md={5} xs={20}>
+            <UserChart/>
+          </Grid>
           <Grid md={6} container spacing={2} >
               <Grid xs={6} md={6} >
                 <InfoCard title={'Total'} number={'23'} />
@@ -220,9 +223,6 @@ const UserPage = () => {
               <Grid xs={6} md={6}>
                 <InfoCard title={'Accountants'} number={'23'}/>
               </Grid>
-          </Grid>
-          <Grid container md={6} xs={20}>
-            <UserChart/>
           </Grid>
       </Grid>
       <span>

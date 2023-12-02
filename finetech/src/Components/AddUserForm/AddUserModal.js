@@ -14,11 +14,13 @@ const UserModal = () => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 800,
+        width: '30rem',
         bgcolor: '#212936',
         border: '2px solid #171B24',
         boxShadow: 24,
         p: 4,
+        display: 'flex',
+        justifyContent: 'center'
       };
 
       const spanStyle ={

@@ -70,11 +70,11 @@ const TableComponent = ({ data , wid , isEdit}) => {
       setError(true);
       console.error(error);
     }
-  }, [userData, data]); // Include 'data' in the dependencies array
+  }, [userData, data]); 
 
   return (
     <>
-    <Box sx={{height: 707 , mt: '3rem', ml: '1rem'}}>
+    <Box sx={{height: 707 , mt: '3rem', mb: '3rem'}}>
       <DataGrid 
       columns={columns} 
       rows={userData}
@@ -119,6 +119,7 @@ const TableComponent = ({ data , wid , isEdit}) => {
           }, '& .MuiDataGrid-columnHeaders , & .MuiDataGrid-toolbarContainer , & .MuiDataGrid-footerContainer':{
             height: '90px !important',
             maxHeight: '90px !important' , 
+            fontSize: '1.2rem'
           }, '& .MuiDataGrid-columnHeaderTitleContainer':{
             color: '#2D99EF !important'
           }}
