@@ -4,9 +4,9 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { Box } from "@mui/material";
 import React from "react";
 import { Typography } from "@mui/material";
-import { Button } from "../../Components/Button/Button";
 import InfoCard from "../../Components/InfoCard/InfoCard";
 import TableComponent from "../../Components/Table/Table";
+import AddTransModal from "../../Components/AddTransForm/AddTransModal"
 export default function Transaction() {
 
 
@@ -216,7 +216,10 @@ export default function Transaction() {
         </Grid>
       </Grid>
 
-      <Button text={"Add Transaction +"} color={"blue"} size={"big"} />
+     
+      <span>
+        <AddTransModal />
+      </span>
       <TableComponent data={data} wid={wid} />
     </Box>
   );
