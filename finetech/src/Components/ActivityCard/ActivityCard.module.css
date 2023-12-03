@@ -1,7 +1,27 @@
-.cardComp{
-    background-color:var( --color-back-card) ;
-    width: 80%;
-    margin: 2rem auto;
-    border: 1px solid var( --color-blue-normal );
-    border-radius: 10px;
+.cardComp {
+  background-color: var(--color-back-card);
+  width: 80%;
+  padding: 1rem;
+  margin: 1rem auto;
+  border: 1px solid var(--color-blue-normal);
+  border-radius: 10px;
+  height: 5rem;
+  font-size: 20px;
+  font-family: "Outfit", sans-serif;
+}
+.insCard {
+  display: flex;
+  padding-left: 1rem;
+  align-items: flex-end;
+  height: 3rem;
+  width: 95%;
+  margin: 0 auto;
+  border-left: 3px solid var(--color-blue-normal);
+}
+.paginationn {
+  width: 40%;
+  display: flex;
+  justify-content: right;
+  height: 3rem;
+  background-color: var(--color-back-card);
 }

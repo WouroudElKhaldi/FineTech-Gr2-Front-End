@@ -1,9 +1,13 @@
+import * as React from "react";
 
-import * as React from 'react';
-import MainTab from './MainTab';
+import Style from "./ActivityCard.module.css";
 
-
-export default  function ActivityCard() {
-  <MainTab />
+export default function ActivityCard({ cont }) {
+  return (
+    <>
+      <div className={Style.cardComp}>
+        <div className={Style.insCard}>{cont}</div>
+      </div>
+    </>
+  );
 }
-
