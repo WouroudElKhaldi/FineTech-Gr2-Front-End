@@ -173,7 +173,6 @@ const UserPage = () => {
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [wid, setWid] = useState(screenWidth < 500 ? "100%" : "80%");
-  const [open, setOpen] = useState(false);
   useEffect(() => {
     const handleResize = () => {
       const newWid = window.innerWidth;
@@ -228,7 +227,7 @@ const UserPage = () => {
       <span>
       <UserModal/>
       </span>
-      <TableComponent data={data} wid={wid} isEdit={true}/>
+      <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'users'}/>
     </Box>
   );
 };

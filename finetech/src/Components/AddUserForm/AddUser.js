@@ -1,3 +1,4 @@
+import React from 'react';
 import { FormControl } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -15,12 +16,14 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputFileUpload from './Upload Button';  
-// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import styles from './AddUser.module.css'
 
-const AddUser = () => {
+const AddUser = ({handleClose}) => {
+    const formRef = React.createRef(null);
     const [role , setRole] = useState('')
     const [showPassword, setShowPassword] = useState(false);
     const handleChange = (event) => {
@@ -33,6 +36,19 @@ const AddUser = () => {
         event.preventDefault();
     };
 
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        // handleClose();
+      };
+
+      const handleFromClear = () => {
+        const form = formRef.current;
+        const inputFields = form.querySelectorAll(".MuiTextField-root input");
+        inputFields.forEach((input) => {
+          input.value = "";
+        });
+        setRole("");
+      };
 
     const divStyle ={
         display : 'flex',
@@ -48,6 +64,7 @@ const AddUser = () => {
 
     return(
         <Box
+            ref={formRef}
             component="form"
             sx={{
                 '& .MuiFormControl-root': {
@@ -66,9 +83,11 @@ const AddUser = () => {
                     border: 'white'
                 } , '& .MuiBox-root css-3b5rqz':{
                     margin: '2rem !important'
+                }, '& .MuiSvgIcon-root' :{
+                    color: 'white'
                 }
             }}
-            noValidate
+            
             autoComplete="off"
         >
                 <div style={divStyle}>
@@ -79,7 +98,13 @@ const AddUser = () => {
                     >
                         Add User
                     </Typography>
-                    <span style={spanStyle}>
+                    <span 
+                        style={spanStyle} 
+                        className={styles.Exit}
+                     onClick={() => {
+                        handleClose();
+                        handleFromClear();
+                      }}>
                     <CloseIcon/>
                     </span>
                 </div>
@@ -169,15 +194,17 @@ const AddUser = () => {
                     label="Password"
                 />
                 </FormControl>
-                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker']}>
                         <DateTimePicker label="Date" />
                     </DemoContainer>
-                </LocalizationProvider> */}
+                </LocalizationProvider>
                 <InputFileUpload/>
                     <div style={divStyle}>
-                        <Button text={'Add'} color={'blue'} size={'small'}/>
-                        <Button text={'Cancel'} color={'gray'} size={'small'}/>
+                        <Button text={'Add'} color={'blue'} size={'small'} type={'submit'}/>
+                        <span  onClick={handleFromClear}>
+                            <Button text={'Cancel'} color={'gray'} size={'small'}/>
+                        </span>
                     </div>
                 </Stack>
         </Box>

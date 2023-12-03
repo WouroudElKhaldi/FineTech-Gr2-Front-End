@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Button } from "../Button/Button"
-import AddUser from "./AddUser";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import EditUser from './EditUser';
+import EditIcon from '@mui/icons-material/Edit';
+import styles from './EditUser.module.css' 
 
-const UserModal = () => {
+const UserEditModal = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -31,8 +33,8 @@ const UserModal = () => {
 
     return(
         <>
-        <span onClick={handleOpen} style={spanStyle}>
-        <Button text={'Add User'} color={'blue'} size={'big'} />
+        <span className={styles.Edit} onClick={handleOpen} style={spanStyle}>
+        <EditIcon/>
         </span>
         <Modal 
             open={open}
@@ -41,10 +43,10 @@ const UserModal = () => {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <AddUser handleClose={handleClose}/>
+                <EditUser handleClose={handleClose}/>
             </Box>
         </Modal>
         </>
     )
 }
-export default UserModal
+export default UserEditModal
