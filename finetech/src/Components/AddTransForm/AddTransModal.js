@@ -32,7 +32,7 @@ const TransModal = () => {
   return (
     <>
       <span onClick={handleOpen} style={spanStyle}>
-        <Button text={"Add Transaction +"} color={"blue"} size={"big"} />
+        <Button text={"Add Transaction"} color={"blue"} size={"big"} />
       </span>
       <Modal
         open={open}

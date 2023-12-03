@@ -65,6 +65,7 @@ const AddUser = ({handleClose}) => {
     return(
         <Box
             ref={formRef}
+            onSubmit={handleFormSubmit}
             component="form"
             sx={{
                 '& .MuiFormControl-root': {

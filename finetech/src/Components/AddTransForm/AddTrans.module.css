@@ -1,9 +1,3 @@
-
-.iconee {
-    position: absolute;
-    font-size: 3rem;
-    font-weight: 700;
+.Exit:hover{
     cursor: pointer;
-    top :1rem;
-    right:3rem;
 }

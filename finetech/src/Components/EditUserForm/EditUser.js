@@ -66,6 +66,7 @@ const EditUser = ({handleClose}) => {
         <Box
             ref={formRef}
             component="form"
+            onSubmit={handleFormSubmit}
             sx={{
                 '& .MuiFormControl-root': {
                      mt: 2 , 

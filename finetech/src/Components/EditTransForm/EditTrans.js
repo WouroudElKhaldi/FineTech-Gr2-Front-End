@@ -5,8 +5,8 @@ import { Typography } from "@mui/material";
 import { Button } from "../Button/Button";
 import Stack from "@mui/material/Stack";
 import MenuItem from "@mui/material/MenuItem";
-import { IoClose } from "react-icons/io5";
-import style from "./AddTrans.module.css";
+import CloseIcon from '@mui/icons-material/Close';
+import styles from "../AddTransForm/AddTrans.module.css";
 ////////////////////////////////////////
 //create calender picker using mui
 const dateNow = new Date(); // Creating a new date object with the current date and time
@@ -21,10 +21,14 @@ const date =
     ? `0${dateNow.getUTCDate()}`
     : dateNow.getUTCDate();
 
-const materialDateInput = `${year}-${month}-${date}`; // combining to format for defaultValue or value attribute of material <TextField>
-
-///////////////////////////////////////
-const data = [
+    const materialDateInput = `${year}-${month}-${date}`; // combining to format for defaultValue or value attribute of material <TextField>
+    
+    ///////////////////////////////////////
+    const data = [
+  {
+    value: "",
+    label: "None",
+  },
   {
     value: "Water",
     label: "Water",
@@ -46,17 +50,13 @@ const data = [
     label: "debts",
   },
 
-  {
-    value: "None",
-    label: "None",
-  },
 ];
 
 /////////////////////////////////////////////
 
 const EditTrans = ({ handleClose }) => {
   const formRef = React.createRef(null); // it referance the DOM
-  const [category, setCategory] = React.useState("None");
+  const [category, setCategory] = React.useState("");
   const handleChange = (event) => {
     setCategory(event.target.value);
   };
@@ -72,20 +72,34 @@ const EditTrans = ({ handleClose }) => {
     inputFields.forEach((input) => {
       input.value = "";
     });
-    setCategory("None");
+    setCategory("");
   };
 
+const divStyle ={
+    display : 'flex',
+    justifyContent: 'space-between' ,
+    width : '25rem',
+    marginTop : '1.5rem'
+}
+
+const spanStyle ={
+  display : 'flex', 
+  alignItems: 'center',
+}
   return (
     <>
       <Box
         ref={formRef}
         component="form"
+        onSubmit={handleFormSubmit}
         sx={{
-          "& .MuiTextField-root": {
-            m: 1,
-            width: "28ch",
-            margin: "1rem auto",
-          },
+          '& .MuiFormControl-root': {
+            mt: 2 , 
+            mb: 2, 
+            ml:0 , 
+            mr: 0 ,
+            width: '25rem'
+           },
           "& .MuiInputBase-input": {
             color: "white",
           },
@@ -96,10 +110,10 @@ const EditTrans = ({ handleClose }) => {
             border: "white",
           },
         }}
-        noValidate
+
         autoComplete="off"
       >
-        <form onSubmit={handleFormSubmit}>
+        <div style={divStyle}>
           <Typography
             variant="h4"
             component="h4"
@@ -107,20 +121,24 @@ const EditTrans = ({ handleClose }) => {
               textAlign: "left",
               mt: 3,
               mb: 3,
-              ml: 2,
+              ml: '8px',
+              width: 'fit-content' ,
               fontWeight: "bold",
             }}
-          >
-            Add Transactions
+            >
+            Edit Transactions
           </Typography>
           <span
+            style={spanStyle} 
+            className={styles.Exit}   
             onClick={() => {
               handleClose();
               handleFromClear();
             }}
-          >
-            <IoClose className={style.iconee} />
+            >
+            <CloseIcon/>
           </span>
+          </div>
 
           <Stack spacing={2}>
             <TextField
@@ -189,16 +207,15 @@ const EditTrans = ({ handleClose }) => {
               label="Description"
               placeholder="Description"
             />
-            <Stack direction="row" spacing={2}>
-              <span style={{ marginTop: "1rem" }}>
-                <Button text={"Submit"} color={"blue"} size={"small"} />
-              </span>
-              <span style={{ marginTop: "1rem" }} onClick={handleFromClear}>
-                <Button text={"Cancel"} color={"Gray"} size={"small"} />
-              </span>
-            </Stack>
+              <div style={divStyle}>
+                <span>
+                  <Button text={"Submit"} color={"blue"} size={"small"} />
+                </span>
+                <span onClick={handleFromClear}>
+                  <Button text={"Cancel"} color={"Gray"} size={"small"} />
+                </span>
+              </div>
           </Stack>
-        </form>
       </Box>
     </>
   );

@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import React from "react";
 import { Typography } from "@mui/material";
 import InfoCard from "../../Components/InfoCard/InfoCard";
-import TableTransComponent from "../../Components/TableTrans/Table";
+import TableComponent from '../../Components/Table/Table.js'
 import AddTransModal from "../../Components/AddTransForm/AddTransModal";
 export default function Transaction() {
 
@@ -219,7 +219,7 @@ export default function Transaction() {
       <span>
         <AddTransModal />
       </span>
-      <TableTransComponent data={data} wid={wid} />
+      <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'transaction'}/>
     </Box>
   );
 }

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Button } from "../Button/Button"
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import EditUser from './EditUser';

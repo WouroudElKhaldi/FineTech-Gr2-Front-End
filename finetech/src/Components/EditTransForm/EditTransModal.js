@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Button } from "../Button/Button";
 import EditTrans from "./EditTrans";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
+import EditIcon from '@mui/icons-material/Edit';
+import styles from './EditTrans.module.css'
 
-const TransModal = () => {
+const EditTransModal = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -31,8 +32,8 @@ const TransModal = () => {
 
   return (
     <>
-      <span onClick={handleOpen} style={spanStyle}>
-        <Button text={"Add Transaction +"} color={"blue"} size={"big"} />
+      <span className={styles.Edit} onClick={handleOpen} style={spanStyle}>
+        <EditIcon/>
       </span>
       <Modal
         open={open}
@@ -47,4 +48,4 @@ const TransModal = () => {
     </>
   );
 };
-export default TransModal;
+export default EditTransModal;
