@@ -123,7 +123,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
 
   return (
     <>
-    <Box sx={{height: 707 , mt: '3rem', mb: '3rem'}}>
+    <Box sx={{height: 707 , mt: '3rem', mb: '3rem' , fontFamily: 'outfit'}}>
       <DataGrid 
       columns={columns} 
       rows={userData}
