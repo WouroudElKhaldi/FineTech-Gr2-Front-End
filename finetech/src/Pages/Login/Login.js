@@ -25,15 +25,15 @@ const Login = () => {
                     <div className={style.formInputs}>
                         <div className={style.inputGroup}>
                             <label for='email' className={style.labelStyle} >E-mail</label>
-                            <input name='email' type='email' className={style.inputStyle} required />
+                            <input name='email' type='email' id='email' className={style.inputStyle} required />
                         </div>
                         <div className={style.inputGroup}>
                             <label for='password' className={style.labelStyle} >Password</label>
-                            <input name='password' type='password' className={style.inputStyle} required />
+                            <input name='password' type='password' id='password' className={style.inputStyle} required />
                         </div>
                         <div className={style.inputGroup}>
                             <label for='role' className={style.labelStyle} >Role</label>
-                            <select name='role' className={style.inputStyleSelect} required>
+                            <select name='role' id='role' className={style.inputStyleSelect} required>
                                 {
                                     roles.map((role, i) => (
                                         <option key={i} value={role.value}>{role.label}</option>
