@@ -43,19 +43,19 @@ const EditCompanyForm = () => {
                             <section className={style.editFormInputs}>
                                 <div className={style.inputGroup}>
                                     <label for='name' className={style.labelStyle} >Name</label>
-                                    <input name='name' type='text' className={style.inputStyle} />
+                                    <input name='name' type='text' id='name' className={style.inputStyle} />
                                 </div>
                                 <div className={style.inputGroup}>
                                     <label for='capital' className={style.labelStyle} >Capital</label>
-                                    <input name='capital' type='text' className={style.inputStyle} />
+                                    <input name='capital' type='text' id='capital' className={style.inputStyle} />
                                 </div>
                                 <div className={style.inputGroup}>
                                     <label for='editedCapital' className={style.labelStyle} >Edited Capital</label>
-                                    <input name='editedCapital' type='text' className={style.inputStyle} />
+                                    <input name='editedCapital' type='text' id='editedCapital' className={style.inputStyle} />
                                 </div>
                                 <div className={style.inputGroup}>
                                     <label for='address' className={style.labelStyle} >Address</label>
-                                    <input name='address' type='text' className={style.inputStyle} />
+                                    <input name='address' type='text' id='address' className={style.inputStyle} />
                                 </div>
                             </section>
                             <section className={style.formSubmit}>

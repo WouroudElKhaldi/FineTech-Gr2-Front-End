@@ -1,18 +1,14 @@
 import React from "react";
+import SideLayout from '../Layouts/Sidebar/Sidebar.js'
 
-import SidebarComp from "../Components/SidebarComp/SidebarComp";
 function LayoutWithSidebar({ children }) {
   return (
     <>
       <div
-        style={{minHeight: "8vh",
-  margin: "4%",
-  display: "grid",
-  gridTemplateColumns: "15% 85%",
-  columngap: "1%"
+        style={{
         }}
       >
-        <SidebarComp />
+        <SideLayout/>
         {children  }
       </div>
     </>
