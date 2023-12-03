@@ -6,6 +6,8 @@ import TableComponent from "../../Components/Table/Table";
 import UserChart from "../../Components/UserChart/UserChart";
 import { Typography } from "@mui/material";
 import UserModal from '../../Components/AddUserForm/AddUserModal';
+import NotificationSmallCard from '../../Components/Notification/NotificationSmall';
+import NotificationModal from '../../Components/Notification/NotificationModal';
 
 const UserPage = () => {
   const data = [
@@ -192,10 +194,11 @@ const UserPage = () => {
         <Typography
         variant="h3"
         component="h3"
-        sx={{ textAlign: "left", mt: 8, mb: 8, ml: 2 , fontWeight: 'bold'}}
+        sx={{ textAlign: "left", mt: 8, mb: 8, ml: 2 , fontWeight: 'bold' , fontFamily: 'outfit'}}
       >
         Manage Users
       </Typography>
+      <NotificationModal/>
       <Grid container md={12} sx={
             {'& .MuiGrid2-root':{
               display: 'flex' ,
