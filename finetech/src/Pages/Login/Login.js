@@ -1,13 +1,41 @@
 import React from 'react'
 import style from './Login.module.css'
 import loginLogo from '../../Assets/LoginHeroSection.svg'
+import { Button } from '../../Components/Button/Button'
+import { 
+    Stack, 
+    TextField , 
+    FormControl  , 
+    Select, 
+    MenuItem ,
+    InputLabel, 
+    OutlinedInput , 
+    InputAdornment,
+    Box, 
+    Typography
+} from '@mui/material'
+import IconButton from '@mui/material/IconButton';
+import {Visibility , VisibilityOff} from '@mui/icons-material';
 
 const Login = () => {
+    const formRef = React.createRef(null);
+    const [role , setRole] = React.useState('')
+    const [showPassword, setShowPassword] = React.useState(false);
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-    const roles = ['Manager', 'Admin', 'Accountant'].map(
-        item => ({ label: item, value: item })
-    )
-    
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+    const handleChange = (event) => {
+        setRole(event.target.value);
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        // handleClose();
+      };
+
     return (
         <>
         <div  className={style.container}>
@@ -17,33 +45,100 @@ const Login = () => {
                 </div>
             </section>
             <section className={style.loginFormSection}>
-                <form className={style.loginForm}>
-                    <div className={style.formIntroduction}>
-                        <h1 className={style.loginFormTitle}>Login to your Account</h1>
-                        <h2 className={style.registerLinkText}>Don't have an account? <a href='' className={style.registerLink}>Sign Up</a></h2>
-                    </div>
-                    <div className={style.formInputs}>
-                        <div className={style.inputGroup}>
-                            <label for='email' className={style.labelStyle} >E-mail</label>
-                            <input name='email' type='email' id='email' className={style.inputStyle} required />
-                        </div>
-                        <div className={style.inputGroup}>
-                            <label for='password' className={style.labelStyle} >Password</label>
-                            <input name='password' type='password' id='password' className={style.inputStyle} required />
-                        </div>
-                        <div className={style.inputGroup}>
-                            <label for='role' className={style.labelStyle} >Role</label>
-                            <select name='role' id='role' className={style.inputStyleSelect} required>
-                                {
-                                    roles.map((role, i) => (
-                                        <option key={i} value={role.value}>{role.label}</option>
-                                    ))
+                <Box 
+                ref={formRef}
+                onSubmit = {handleSubmit}
+                component="form"
+                sx={{
+                    '& .MuiFormControl-root': {
+                         mt: 2 , 
+                         mb: 2, 
+                         ml:0 , 
+                         mr: 0 ,
+                         width: '25rem'
+                        },
+                    '& .MuiInputBase-root':{
+                        color : 'white', 
+                    },'& .MuiFormLabel-root ':{
+                        color: 'white'
+                    } ,
+                    '& .MuiOutlinedInput-root':{
+                        border: 'white'
+                    } , '& .MuiBox-root css-3b5rqz':{
+                        margin: '2rem !important'
+                    }, '& .MuiSvgIcon-root' :{
+                        color: 'white'
+                    }
+                }}
+                
+                autoComplete="off"
+                >
+                    <Typography
+                        variant="h3"
+                        component="h3"
+                        sx={{ textAlign: "left", mt: 3, mb: 3, ml: '8px', width: 'fit-content' , fontWeight: 'bold'}}
+                    >
+                    Login to your account
+                    </Typography>
+                    <Stack
+                        sx={{
+                            rowGap: '2rem',
+                        }}
+                    >
+                        <TextField
+                            required
+                            id="outlined-required"
+                            label="Email"
+                            placeholder='Email'                
+                        />
+                        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+                        <InputLabel htmlFor="outlined-adornment-password">Password*</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-password"
+                            type={showPassword ? 'text' : 'password'}
+                            endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                                style={{color: 'white'}}
+                                >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                            }
+                            label="Password"
+                        />
+                        </FormControl> 
+                        <FormControl required 
+                            sx={{ m: 1 , 
+                            '& .MuiSvgIcon-root':{
+                                color: 'white',
+                                '& .MuiList-root':{
+                                    bgcolor: 'transparent'
                                 }
-                            </select>
-                        </div>
-                    </div>
-                    <button className={style.formButton} type='submit'>Login</button>
-                </form>
+                            }}}>
+                            <InputLabel id="demo-simple-select-required-label">Role</InputLabel>
+                            <Select
+                            labelId="demo-simple-select-required-label"
+                            id="demo-simple-select-required"
+                            value={role}
+                            label="Role *"
+                            onChange={handleChange}
+                            >
+                                <MenuItem disabled>
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={'Admin'}>Admin</MenuItem>
+                                <MenuItem value={'Manager'}>Manager</MenuItem>
+                                <MenuItem value={'Acountant'}>Acountant</MenuItem>
+                            </Select>
+                        </FormControl>                       
+                        <Button text={'login'} color={'blue'} size={'small'}/>
+                    </Stack>                    
+                </Box>
             </section>
         </div>
         </>

@@ -91,6 +91,10 @@ const AddUser = ({handleClose , type}) => {
                     margin: '2rem !important'
                 }, '& .MuiSvgIcon-root' :{
                     color: 'white'
+                }, '& .MuiButton-containedPrimary':{
+                    bgcolor: '#2D99EF',
+                    mt: '1rem',
+                    mb: '1rem'
                 }
             }}
             
@@ -156,7 +160,7 @@ const AddUser = ({handleClose , type}) => {
                     label="Role *"
                     onChange={handleChange}
                     >
-                        <MenuItem value="">
+                        <MenuItem disabled>
                             <em>None</em>
                         </MenuItem>
                         <MenuItem value={'Admin'}>Admin</MenuItem>
@@ -219,7 +223,7 @@ const AddUser = ({handleClose , type}) => {
                 </LocalizationProvider>
                 <InputFileUpload/>
                     <div style={divStyle}>
-                        <Button text={type === 'add' ? 'add' : 'edit'} color={'blue'} size={'small'} type={'submit'}/>
+                        <Button text={type === 'add' ? 'Add' : 'Edit'} color={'blue'} size={'small'} type={'submit'}/>
                         <span  onClick={handleFromClear}>
                             <Button text={'Clear'} color={'gray'} size={'small'}/>
                         </span>

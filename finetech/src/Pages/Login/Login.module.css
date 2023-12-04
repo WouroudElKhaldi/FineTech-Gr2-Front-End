@@ -1,6 +1,6 @@
 @media screen and (min-width: 770px) {
     .container {
-        background: linear-gradient(110deg, #212936 55%, #171B24 55%);
+        background: linear-gradient(110deg, #171B24 50%, #212936 50%);
         display: flex;
         justify-content: space-between;
         align-items: center;

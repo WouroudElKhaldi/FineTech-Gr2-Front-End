@@ -4,7 +4,7 @@ import AddUser from "./AddUser";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
-
+import styles from './AddUser.module.css'
 const UserModal = ({type}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -36,7 +36,9 @@ const UserModal = ({type}) => {
         {type === 'add' ? (
             <Button text={'Add User'} color={'blue'} size={'big'} />
             ) : type === 'edit'? (
-            <EditIcon/>
+            <span className={styles.Exit}>
+                <EditIcon/>
+            </span>
         ): ''}
         </span>
         <Modal 

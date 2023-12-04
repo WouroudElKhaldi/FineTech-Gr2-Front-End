@@ -190,15 +190,14 @@ const UserPage = () => {
 
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 , ml: 2 }}>
         <Typography
         variant="h3"
         component="h3"
-        sx={{ textAlign: "left", mt: 8, mb: 8, ml: 2 , fontWeight: 'bold' , fontFamily: 'outfit'}}
+        sx={{ textAlign: "left", mt: 8, mb: 8 , fontWeight: 'bold' , fontFamily: 'outfit'}}
       >
         Manage Users
       </Typography>
-      <NotificationModal/>
       <Grid container md={12} sx={
             {'& .MuiGrid2-root':{
               display: 'flex' ,
@@ -209,25 +208,40 @@ const UserPage = () => {
             flexWrap: 'wrap'
           }}
           }>
-          <Grid md={6} container spacing={2} >
-              <Grid xs={6} md={6} >
+          <Grid md={4} container spacing={2} >
+              <Grid xs={6} md={12} sx={{
+                padding: 0
+              }}>
                 <InfoCard title={'Total'} number={'23'} />
               </Grid>
-              <Grid xs={6} md={6}>
+              <Grid xs={6} md={12} sx={{
+                padding: 0
+              }}>
                 <InfoCard title={'Admins'} number={'23'} />
               </Grid>
-              <Grid xs={6} md={6}>
+              <Grid xs={6} md={12} sx={{
+                padding: 0
+              }}>
                 <InfoCard title={'Managers'} number={'23'}/>
               </Grid>
-              <Grid xs={6} md={6}>
+              <Grid xs={6} md={12} sx={{
+                padding: 0
+              }}>
                 <InfoCard title={'Accountants'} number={'23'}/>
               </Grid>
           </Grid>
-          <Grid container md={5} xs={20}>
+          <Grid container md={6} xs={20} sx={{
+            display: 'flex',
+            justifyContent : "center"
+          }}>
             <UserChart/>
           </Grid>
       </Grid>
-      <span>
+      <span style={{
+        display: 'flex',
+        justifyContent: 'end',
+        width : '95%'
+      }}>
       <UserModal type='add'/>
       </span>
       <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'users'}/>

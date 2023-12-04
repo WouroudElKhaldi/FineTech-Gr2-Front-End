@@ -20,16 +20,19 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
       if (userData.length > 0) {
         const visibleFields = Object.keys(userData[0]);
           if(buton === false){
-            setColumns(visibleFields.map((field) => ({ field, headerName: field , editable: true , flex : 1})));
+            setColumns(visibleFields.map((field) => ({ field, headerName: field , flex : 1})));
           }else {
             if (ForWhat === 'users' ){
               const updatedColumns = [
-                ...visibleFields.map((field) => ({ field, headerName: field, editable: true, flex: 1 })),
+                ...visibleFields.map((field) => ({ field, headerName: field, flex: 1 })),
                 {
                   field: 'Edit',
                   headerName: 'Edit',
                   renderCell: (params) => (
-                    <Grid container md={12}>
+                    <Grid container md={12} sx={{
+                      display: 'flex',
+                      justifyContent: "center"
+                    }}>
                       <span>
                         <UserModal type='edit'/>
                       </span>
@@ -40,7 +43,10 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                   field: 'Delete',
                   headerName: 'Delete',
                   renderCell: (params) => (
-                    <Grid container md={12}>
+                    <Grid container md={12} sx={{
+                      display: 'flex',
+                      justifyContent: "center"
+                    }}>
                       <span>
                         <DeleteModal/>
                       </span>
@@ -57,7 +63,10 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     field: 'Edit',
                     headerName: 'Edit',
                     renderCell: (params) => (
-                      <Grid container md={12}>
+                      <Grid container md={12} sx={{
+                        display: 'flex',
+                        justifyContent: "center"
+                      }}>
                         <span>
                           <TransModal type = 'edit'/>
                         </span>
@@ -68,7 +77,10 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     field: 'Delete',
                     headerName: 'Delete',
                     renderCell: (params) => (
-                      <Grid container md={12}>
+                      <Grid container md={12} sx={{
+                        display: 'flex',
+                        justifyContent: "center"
+                      }}>
                         <span>
                           <DeleteTransModal/>
                         </span>
@@ -84,11 +96,12 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     field: 'Edit',
                     headerName: 'Edit',
                     renderCell: (params) => (
-                      <Grid container md={12}>
+                      <Grid container md={12} sx={{
+                        display: 'flex',
+                        justifyContent: "center"
+                      }}>
                         <span>
-                          {
-                            <EditGoalModal/>
-                          }
+                          <GoalModal type='edit' />
                         </span>
                         </Grid>
                     ),
@@ -97,11 +110,12 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     field: 'Delete',
                     headerName: 'Delete',
                     renderCell: (params) => (
-                      <Grid container md={12}>
+                      <Grid container md={12} sx={{
+                        display: 'flex',
+                        justifyContent: "center"
+                      }}>
                         <span>
-                          {
-                            <DeleteGoalModal/>
-                          }
+                          <DeleteGoalModal/>
                         </span>
                         </Grid>
                     ),
@@ -145,7 +159,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
       sx={
         {
           marginBottom: '4rem' ,
-          width: wid,
+          width: '95%',
           bgcolor: '#212936', 
           border : 0, 
           '& .MuiToolbar-root , .MuiInputBase-input , .MuiDataGrid-columnHeaderTitleContainer , .MuiDataGrid-cell':{
