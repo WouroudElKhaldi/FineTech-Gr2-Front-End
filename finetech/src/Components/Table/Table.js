@@ -4,8 +4,6 @@ import { DataGrid , GridToolbar} from '@mui/x-data-grid';
 import Grid from '@mui/material/Unstable_Grid2';
 import DeleteModal from '../DeleteUserForm/DeleteModal';  
 import DeleteTransModal from '../EditTransForm/DeleteTransModal';
-import UserModal from '../AddUserForm/AddUserModal';
-import TransModal from '../AddTransForm/AddTransModal';
 
 const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
   const [userData, setUserData] = useState(data);
@@ -86,7 +84,9 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     renderCell: (params) => (
                       <Grid container md={12}>
                         <span>
-                          <GoalModal type='edit' />
+                          {
+                            // <EditGoalModal/>
+                          }
                         </span>
                         </Grid>
                     ),
@@ -97,7 +97,9 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     renderCell: (params) => (
                       <Grid container md={12}>
                         <span>
-                          <DeleteGoalModal/>
+                          {
+                            // <DeleteGoalModal/>
+                          }
                         </span>
                         </Grid>
                     ),
