@@ -1,6 +1,7 @@
 import React from 'react'
 import style from './Report.module.css'
 import { Button } from '../../Components/Button/Button'
+import LineChart from '../../Components/ReportTransChart/LineChart'
 
 export default function Report() {
 
@@ -48,6 +49,9 @@ export default function Report() {
             </div>
           ))
         }
+      </section>
+      <section className={style.reportContainerStatisticsLineChart}>
+        <LineChart />
       </section>
     </section>
   )
