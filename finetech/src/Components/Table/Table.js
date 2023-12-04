@@ -6,6 +6,8 @@ import UserEditModal from '../EditUserForm/EditUserModal';
 import DeleteModal from '../EditUserForm/DeleteModal';  
 import EditTransModal from '../EditTransForm/EditTransModal';
 import DeleteTransModal from '../EditTransForm/DeleteTransModal';
+import EditGoalModal from '../EditGoal/EditGoalModal';
+import DeleteGoalModal from '../EditGoal/DeleteGoalModal'
 
 const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
   const [userData, setUserData] = useState(data);
@@ -87,7 +89,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                       <Grid container md={12}>
                         <span>
                           {
-                            // <EditGoalModal/>
+                            <EditGoalModal/>
                           }
                         </span>
                         </Grid>
@@ -100,7 +102,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                       <Grid container md={12}>
                         <span>
                           {
-                            // <DeleteGoalModal/>
+                            <DeleteGoalModal/>
                           }
                         </span>
                         </Grid>
