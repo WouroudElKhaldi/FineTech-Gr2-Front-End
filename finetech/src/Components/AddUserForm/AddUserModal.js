@@ -3,8 +3,9 @@ import { Button } from "../Button/Button"
 import AddUser from "./AddUser";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import EditIcon from '@mui/icons-material/Edit';
 
-const UserModal = () => {
+const UserModal = ({type}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -32,7 +33,11 @@ const UserModal = () => {
     return(
         <>
         <span onClick={handleOpen} style={spanStyle}>
-        <Button text={'Add User'} color={'blue'} size={'big'} />
+        {type === 'add' ? (
+            <Button text={'Add User'} color={'blue'} size={'big'} />
+            ) : type === 'edit'? (
+            <EditIcon/>
+        ): ''}
         </span>
         <Modal 
             open={open}
@@ -41,7 +46,7 @@ const UserModal = () => {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <AddUser handleClose={handleClose}/>
+                <AddUser handleClose={handleClose} type={type}/>
             </Box>
         </Modal>
         </>

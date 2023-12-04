@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
-import styles from './EditUser.module.css'
+import styles from './DeleteUser.module.css'
 
 const spanStyle ={
     width : 'fit-content',

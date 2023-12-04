@@ -209,9 +209,6 @@ const UserPage = () => {
             flexWrap: 'wrap'
           }}
           }>
-          <Grid container md={5} xs={20}>
-            <UserChart/>
-          </Grid>
           <Grid md={6} container spacing={2} >
               <Grid xs={6} md={6} >
                 <InfoCard title={'Total'} number={'23'} />
@@ -226,9 +223,12 @@ const UserPage = () => {
                 <InfoCard title={'Accountants'} number={'23'}/>
               </Grid>
           </Grid>
+          <Grid container md={5} xs={20}>
+            <UserChart/>
+          </Grid>
       </Grid>
       <span>
-      <UserModal/>
+      <UserModal type='add'/>
       </span>
       <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'users'}/>
     </Box>

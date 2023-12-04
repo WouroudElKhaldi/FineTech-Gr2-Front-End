@@ -22,7 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import styles from './AddUser.module.css'
 
-const AddUser = ({handleClose}) => {
+const AddUser = ({handleClose , type}) => {
     const formRef = React.createRef(null);
     const [role , setRole] = useState('')
     const [showPassword, setShowPassword] = useState(false);
@@ -36,10 +36,15 @@ const AddUser = ({handleClose}) => {
         event.preventDefault();
     };
 
-    const handleFormSubmit = (e) => {
+    const handleAddUser = (e) => {
         e.preventDefault();
         // handleClose();
       };
+
+    const handleEditUser = (e) => {
+        e.preventDefault();
+        // handleClose();
+    };
 
       const handleFromClear = () => {
         const form = formRef.current;
@@ -65,7 +70,7 @@ const AddUser = ({handleClose}) => {
     return(
         <Box
             ref={formRef}
-            onSubmit={handleFormSubmit}
+            onSubmit = { type === 'add' ? handleAddUser : handleEditUser }
             component="form"
             sx={{
                 '& .MuiFormControl-root': {
@@ -92,13 +97,25 @@ const AddUser = ({handleClose}) => {
             autoComplete="off"
         >
                 <div style={divStyle}>
+                    {
+                        type === 'add' ? (
+                            <Typography
+                            variant="h4"
+                            component="h4"
+                            sx={{ textAlign: "left", mt: 3, mb: 3, ml: '8px', width: 'fit-content' , fontWeight: 'bold'}}
+                        >
+                        Add User
+                        </Typography>
+                        ) : (
                     <Typography
                         variant="h4"
                         component="h4"
                         sx={{ textAlign: "left", mt: 3, mb: 3, ml: '8px', width: 'fit-content' , fontWeight: 'bold'}}
                     >
-                        Add User
+                    Edit User
                     </Typography>
+                        )
+                    }
                     <span 
                         style={spanStyle} 
                         className={styles.Exit}
@@ -202,9 +219,9 @@ const AddUser = ({handleClose}) => {
                 </LocalizationProvider>
                 <InputFileUpload/>
                     <div style={divStyle}>
-                        <Button text={'Add'} color={'blue'} size={'small'} type={'submit'}/>
+                        <Button text={type === 'add' ? 'add' : 'edit'} color={'blue'} size={'small'} type={'submit'}/>
                         <span  onClick={handleFromClear}>
-                            <Button text={'Cancel'} color={'gray'} size={'small'}/>
+                            <Button text={'Clear'} color={'gray'} size={'small'}/>
                         </span>
                     </div>
                 </Stack>

@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { DataGrid , GridToolbar} from '@mui/x-data-grid';
 import Grid from '@mui/material/Unstable_Grid2';
-import UserEditModal from '../EditUserForm/EditUserModal';
-import DeleteModal from '../EditUserForm/DeleteModal';  
-import EditTransModal from '../EditTransForm/EditTransModal';
+import DeleteModal from '../DeleteUserForm/DeleteModal';  
 import DeleteTransModal from '../EditTransForm/DeleteTransModal';
+import UserModal from '../AddUserForm/AddUserModal';
+import TransModal from '../AddTransForm/AddTransModal';
 
 const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
   const [userData, setUserData] = useState(data);
@@ -31,7 +31,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                   renderCell: (params) => (
                     <Grid container md={12}>
                       <span>
-                        <UserEditModal/>
+                        <UserModal type='edit'/>
                       </span>
                       </Grid>
                   ),
@@ -59,7 +59,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     renderCell: (params) => (
                       <Grid container md={12}>
                         <span>
-                          <EditTransModal/>
+                          <TransModal type = 'edit'/>
                         </span>
                         </Grid>
                     ),
@@ -86,9 +86,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     renderCell: (params) => (
                       <Grid container md={12}>
                         <span>
-                          {
-                            // <EditGoalModal/>
-                          }
+                          <GoalModal type='edit' />
                         </span>
                         </Grid>
                     ),
@@ -99,9 +97,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                     renderCell: (params) => (
                       <Grid container md={12}>
                         <span>
-                          {
-                            // <DeleteGoalModal/>
-                          }
+                          <DeleteGoalModal/>
                         </span>
                         </Grid>
                     ),
