@@ -1,0 +1,19 @@
+.lineChartContainer {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-back-card);
+    padding: 4rem 6rem;
+    border-radius: 1.5rem;
+    gap: 2.5rem;
+}
+
+.linearChartTitle {
+    font-size: 2rem;
+    font-weight: 400;
+    align-self: flex-start;
+    margin-left: 0.5rem;
+}

@@ -1,9 +1,13 @@
 import React from 'react'
 import style from './Report.module.css'
 import { Button } from '../../Components/Button/Button'
+import Grid2 from '@mui/material/Unstable_Grid2'
+import { Box } from '@mui/material'
+import InfoCard from '../../Components/InfoCard/InfoCard'
 import LineChart from '../../Components/ReportTransChart/LineChart'
+import PieChart from '../../Components/ReportTransChart/PieChart'
 
-export default function Report() {
+const Report = () => {
 
   const reportData = [
     {
@@ -38,21 +42,36 @@ export default function Report() {
         </div>
         <Button size='small' color='blue' type='submit' text='generate' />
       </form>
-      <section className={style.reportContainerStatistics}>
-        {
-          reportData.map((item, i) => (
-            <div className={style.reportContainerStatisticsItem} key={i}>
-              <div className={style.reportContainerStatisticsItemContent}>
-                <h2 className={style.reportContainerStatisticsItemTitle}>{item.title} :</h2>
-                <p className={style.reportContainerStatisticsItemNumber}>$ {item.number}</p>
-              </div>
-            </div>
-          ))
-        }
-      </section>
-      <section className={style.reportContainerStatisticsLineChart}>
-        <LineChart />
-      </section>
+      <Box sx={{ flexGrow: 1, ml: 2 }}>
+        <Grid2 container md={12} sx={
+          {
+            '& .MuiGrid2-root': {
+              display: 'flex',
+              alignContent: 'space-between',
+            },
+            '& .MuiGrid2-container': {
+              mb: '2rem',
+              flexWrap: 'wrap'
+            }
+          }
+        }>
+          {
+            reportData.map((item, i) => (
+              <Grid2 md={4} container spacing={2} >
+                <Grid2 xs={6} md={12} sx={{
+                  padding: 0
+                }}>
+                  <InfoCard title={item.title} number={item.number} key={i} />
+                </Grid2>
+              </Grid2>
+            ))
+          }
+        </Grid2>
+      </Box>
+
+      <LineChart />
     </section>
   )
 }
+
+export default Report

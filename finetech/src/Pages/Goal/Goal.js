@@ -6,7 +6,7 @@ import { Typography } from "@mui/material";
 import Styles from './Goal.module.css';
 
 import TableComponent from '../../Components/Table/Table.js'
-import AddGalModal from "../../Components/AddGoal/AddGoalModal";
+import AddGalModal from "../../Components/GoalForm/AddGoalModal";
 import GoalChart from "../../Components/GoalChart/GoalChart";
 export default function Goal() {
 

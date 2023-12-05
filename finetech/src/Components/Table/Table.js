@@ -6,8 +6,8 @@ import UserModal from '../AddUserForm/AddUserModal';
 import DeleteModal from '../DeleteUserForm/DeleteModal';  
 import TransModal from '../AddTransForm/AddTransModal.js'
 import DeleteTransModal from '../DeleteTransForm/DeleteTransModal';
-import AddGalModal from '../AddGoal/AddGoalModal';
-import DeleteGoalModal from '../EditGoal/DeleteGoalModal'
+import AddGalModal from '../GoalForm/AddGoalModal';
+import DeleteGoalModal from '../GoalForm/DeleteGoalModal';
 
 const TableComponent = ({ data, wid, isEdit, ForWhat }) => {
   const [userData, setUserData] = useState(data);
