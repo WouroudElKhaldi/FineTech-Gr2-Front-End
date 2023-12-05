@@ -1,0 +1,51 @@
+.Nav {
+    background-color: var(--color-back-page);
+    height: 10vh;
+    width: 100vw;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 10px;
+  }
+
+  .navContent {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 2.5rem;
+    gap: 1rem;
+  }
+
+  .icons {
+    width: 25%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .userCard {
+    display: flex;
+    align-items:center;
+    color: white;
+    width: 55%;
+    border: 1px white solid ;
+    border-radius: 25px;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0.3rem;
+  }
+
+  .userCard p, .userCard span {
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+  
+  .userCard img {
+    width: 40px; /* Adjust the size of the user image as needed */
+    border-radius: 50%; /* Assuming the user image is a circle */
+    margin-right: 8px;
+  }
+  .userName{
+    color: rgb(49, 124, 189);
+  }
