@@ -1,62 +1,89 @@
 import React, { useLayoutEffect } from 'react'
 import { Line } from 'react-chartjs-2'
+import { Chart, LineElement, CategoryScale, LinearScale, PointElement } from 'chart.js'
+import style from './LineChart.module.css'
 
+Chart.register(LineElement, CategoryScale, LinearScale, PointElement)
 
-const contents = { count: 3, min: 0, max: 100 }
-const labels = Array.from({ length: 3 }, (_, i) => `Label ${i + 1}`)
+const LineChart = () => {
 
-const data = {
-    labels: labels,
-    datasets: [
-        {
+    const data = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
             label: 'Income',
-            data: Array.from({ length: 3 }, () => Math.random() * 200 - 100),
+            data: [1, 2, 3, 4, 5, 6],
+            backgroundColor: '#17456E',
             borderColor: '#17456E',
-            backgroundColor: '#17456E'
+            pointBorderColor: 'transparent',
+            pointBorderWidth: 2,
+            tension: 0.5
         },
         {
             label: 'Outcome',
-            data: Array.from({ length: 3 }, () => Math.random() * 200 - 100),
+            data: [3,5,4,1,6,4],
+            backgroundColor: '#2D99EF',
             borderColor: '#2D99EF',
-            backgroundColor: '#2D99EF'
+            pointBorderColor: 'transparent',
+            pointBorderWidth: 2,
+            tension: 0.5,
         },
         {
             label: 'Goal',
-            data: Array.from({ length: 3 }, () => Math.random() * 200 - 100),
-            borderColor: '#FACD4B',
-            backgroundColor: '#FACD4B'
-        }
-    ]
-}
+            data: [0, 0, 0, 0, 0, 3.5],
+            backgroundColor: 'yellow',
+            borderColor: '#FFD700',
+            pointBorderColor: '#FFD700',
+            pointBorderWidth: 1,
+            tension: 0.5
+        }]
+    }
 
-const config = {
-    type: 'line',
-    data: data,
-    options: {
-        responsive: true,
+    const options = {
         plugins: {
             legend: {
-                position: 'top'
-            },
-            title: {
                 display: true,
-                text: 'Historical Transactions'
+                position: 'bottom',
             }
         },
+        maintainAspectRatio: false,
+        aspectRatio: 2,
+        width: '80%',
+        height: '60%',
         scales: {
             x: {
-                type: 'from'
+                grid: {
+                    display: false,
+                },
+                title: {
+                    display: true,
+                    text: 'Month'
+                },
+                ticks: {
+                    padding: 10
+                },
             },
             y: {
-                type: 'to'
+                min: 1,
+                max: 6,
+                ticks: {
+                    stepSize: 1,
+                    callback: (value) => value + 'K',
+                    color: '#fff',
+                    padding: 10
+                },
+                title: {
+                    display: true,
+                    text: 'Value'
+                }
             }
         }
     }
-}
 
-const LineChart = () => {
     return (
-        <Line data={data} options={config.options} />
+        <section className={style.lineChartContainer}>
+            <h2 className={style.linearChartTitle}>Historical Transactions</h2>
+            <Line data={data} options={options} />
+        </section>
     )
 }
 
