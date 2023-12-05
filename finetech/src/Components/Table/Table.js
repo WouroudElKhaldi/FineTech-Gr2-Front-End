@@ -5,7 +5,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import UserModal from '../AddUserForm/AddUserModal';
 import DeleteModal from '../DeleteUserForm/DeleteModal';  
 import TransModal from '../AddTransForm/AddTransModal.js'
-import DeleteTransModal from '../EditTransForm/DeleteTransModal';
+import DeleteTransModal from '../DeleteTransForm/DeleteTransModal';
 import AddGalModal from '../AddGoal/AddGoalModal';
 import DeleteGoalModal from '../EditGoal/DeleteGoalModal'
 
