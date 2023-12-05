@@ -1,26 +1,13 @@
-// import React from 'react'
-// import AddGalModal from '../../Components/AddGoal/AddGoalModal'
-// import TableComponent from '../../Components/Table/Table'
-// const Goal = () => {
-//   return (
-//     <div>
-//    <AddGalModal/>
-//    <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'goal'}/>
-//     </div>
-//   )
-// }
-
-// export default Goal
-
-import {useState, useEffect } from "react";
-import TransactionChart from "../../Components/TransactionChart/TransactionChart";
+import { useState, useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Box } from "@mui/material";
 import React from "react";
 import { Typography } from "@mui/material";
-import InfoCard from "../../Components/InfoCard/InfoCard";
+import Styles from './Goal.module.css';
+
 import TableComponent from '../../Components/Table/Table.js'
 import AddGalModal from "../../Components/AddGoal/AddGoalModal";
+import GoalChart from "../../Components/GoalChart/GoalChart";
 export default function Transaction() {
 
 
@@ -212,17 +199,21 @@ export default function Transaction() {
       >
         Manage Goals
       </Typography>
-      {/* <Grid container md={8} mb={"20px"}>
-        <Grid container md={6} xs={6} mb={"30px"}>
-          <TransactionChart />
+      <Grid container md={15} className={Styles.bgerContainerig}>
+        <Grid container md={6} xs={6} mb={"40px"}>
+          <GoalChart />
         </Grid>
-        </Grid> */}
+      </Grid>
 
-
-      <span>
+      <span
+      style={{
+        display: "flex",
+        justifyContent: "flex-end",
+        width: "95%",
+      }}>
         <AddGalModal />
       </span>
-      <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'goal'}/>
+      <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'goal'} />
     </Box>
   );
 }
