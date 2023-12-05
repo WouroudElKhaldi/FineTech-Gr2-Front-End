@@ -5,11 +5,11 @@ import Grid from '@mui/material/Unstable_Grid2';
 import UserModal from '../AddUserForm/AddUserModal';
 import DeleteModal from '../DeleteUserForm/DeleteModal';  
 import TransModal from '../AddTransForm/AddTransModal.js'
-import DeleteTransModal from '../EditTransForm/DeleteTransModal';
+import DeleteTransModal from '../DeleteTransForm/DeleteTransModal';
 import AddGalModal from '../AddGoal/AddGoalModal';
 import DeleteGoalModal from '../EditGoal/DeleteGoalModal'
 
-const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
+const TableComponent = ({ data, wid, isEdit, ForWhat }) => {
   const [userData, setUserData] = useState(data);
   const [columns, setColumns] = useState([]);
   const [error, setError] = useState(false);
@@ -27,7 +27,7 @@ useEffect(() => {
     };
 }, []);
 
-  useEffect(() => { 
+  useEffect(() => {
     try {
       setUserData(data);
 
@@ -147,7 +147,7 @@ useEffect(() => {
       setError(true);
       console.error(error);
     }
-  }, [userData, data]); 
+  }, [userData, data]);
 
   return (
     <>
@@ -205,7 +205,7 @@ useEffect(() => {
         }/>
     </Box>
     </>
-  );  
+  );
 };
 
 export default TableComponent;

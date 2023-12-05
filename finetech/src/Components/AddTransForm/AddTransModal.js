@@ -3,8 +3,9 @@ import { Button } from "../Button/Button";
 import AddTrans from "./AddTrans";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-
-const TransModal = () => {
+import EditIcon from "@mui/icons-material/Edit";
+import styles from "./AddTrans.module.css";
+const TransModal = ({ type }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -19,9 +20,9 @@ const TransModal = () => {
     border: "2px solid #171B24",
     boxShadow: 24,
     p: 4,
-  display:"flex",
-  justifyContent:"center",
-  alignItem:"center"
+    display: "flex",
+    justifyContent: "center",
+    alignItem: "center",
   };
 
   const spanStyle = {
@@ -32,7 +33,15 @@ const TransModal = () => {
   return (
     <>
       <span onClick={handleOpen} style={spanStyle}>
-        <Button text={"Add Transaction"} color={"blue"} size={"big"} />
+        {type === "add" ? (
+          <Button text={"Add Transaction"} color={"blue"} size={"big"} />
+        ) : type === "edit" ? (
+          <span className={styles.Exit}>
+            <EditIcon />
+          </span>
+        ) : (
+          ""
+        )}{" "}
       </span>
       <Modal
         open={open}
@@ -41,7 +50,7 @@ const TransModal = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddTrans handleClose={handleClose} />
+          <AddTrans handleClose={handleClose} type={type} />
         </Box>
       </Modal>
     </>
