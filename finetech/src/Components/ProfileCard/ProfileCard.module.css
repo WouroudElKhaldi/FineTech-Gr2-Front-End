@@ -1,0 +1,9 @@
+.Box {
+    position: relative;
+}
+
+.Avatar{
+    position: absolute;
+    bottom: 5rem;
+    left: 40%;
+}
