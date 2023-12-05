@@ -6,8 +6,6 @@ import TableComponent from "../../Components/Table/Table";
 import UserChart from "../../Components/UserChart/UserChart";
 import { Typography } from "@mui/material";
 import UserModal from '../../Components/AddUserForm/AddUserModal';
-import NotificationSmallCard from '../../Components/Notification/NotificationSmall';
-import NotificationModal from '../../Components/Notification/NotificationModal';
 
 const UserPage = () => {
   const data = [
@@ -248,7 +246,7 @@ const UserPage = () => {
       }}>
       <UserModal type='add'/>
       </span>
-      <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'users'}/>
+      <TableComponent data={data} wid={wid} isEdit={false} ForWhat={'users'}/>
     </Box>
   );
 };

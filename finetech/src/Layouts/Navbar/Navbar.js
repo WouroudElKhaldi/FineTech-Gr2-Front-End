@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import style from './Navbar.module.css'
-import sun from '../../Assets/Sun.svg'
 import user from '../../Assets/User.png'
-import alarm from '../../Assets/Alarm.png'
+import NotificationModal from '../../Components/Notification/NotificationModal'
 
 const Navbar = () => {
 
@@ -10,8 +9,7 @@ const Navbar = () => {
     <nav className={style.Nav}>
       <div className={style.navContent}>
         <div className={style.icons}>
-          <img src={sun} />
-          <img src={alarm} />
+          <NotificationModal/>
         </div>
         <div className={style.userCard}>
         <p>

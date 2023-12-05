@@ -131,7 +131,10 @@ const AddTrans = ({ handleClose, type }) => {
           },
           "& .MuiOutlinedInput-root": {
             border: "white",
-          },
+          },'& .MuiOutlinedInput-notchedOutline ':{
+            border: '1px solid white',
+            borderRadius: '4px'
+        } 
         }}
         autoComplete="off"
       >

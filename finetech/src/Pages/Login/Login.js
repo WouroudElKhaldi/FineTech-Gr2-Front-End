@@ -68,6 +68,9 @@ const Login = () => {
                         margin: '2rem !important'
                     }, '& .MuiSvgIcon-root' :{
                         color: 'white'
+                    },'& .MuiOutlinedInput-notchedOutline ':{
+                        border: '1px solid white',
+                        borderRadius: '4px'
                     }
                 }}
                 

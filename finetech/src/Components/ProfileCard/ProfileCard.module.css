@@ -1,10 +1,31 @@
-.Box {
+.Name{
     position: relative;
 }
 
-.Avatar{
+.Name::after{
     position: absolute;
-    bottom: 5rem;
-    left: 50%;
-    right: 50%;
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    background-color: green;
+    border-radius: 50%;
+}
+
+.Span{
+    padding:1rem ;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--color-font-gray );
+}
+
+.ActiveSpan {
+    border-bottom: 2px solid var(--color-blue-normal);
+  }
+
+.Span:hover{
+    cursor: pointer;
+}
+
+.Span:active , .Span:focus{
+    border-bottom: 2px solid var(--color-blue-normal);
 }

@@ -95,6 +95,9 @@ const AddUser = ({handleClose , type}) => {
                     bgcolor: '#2D99EF',
                     mt: '1rem',
                     mb: '1rem'
+                },'& .MuiOutlinedInput-notchedOutline ':{
+                    border: '1px solid white',
+                    borderRadius: '4px'
                 }
             }}
             

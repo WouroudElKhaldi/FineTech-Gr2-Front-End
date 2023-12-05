@@ -57,15 +57,16 @@ const EditProfile = ( ) => {
             component='form'
             sx={{
                 bgcolor: '#212936' ,
-                width: screenWidth > 1200 ? '90%' : '100%',
+                width: '90%',
                 padding: '2rem' ,
+                mb: '5rem',
                 borderRadius: '20px',
                 '& .MuiFormControl-root': {
                      mt: 2 , 
                      mb: 2, 
                      ml:0 , 
                      mr: 0 ,
-                     width: '20rem'
+                     width: screenWidth < 550 ? '15rem' : '20rem'
                     },
                 '& .MuiInputBase-root':{
                     color : 'white', 
@@ -84,7 +85,7 @@ const EditProfile = ( ) => {
                     mt: 2 , 
                     mb: 2, 
                     height : '3.5rem',
-                    width : '20rem'
+                    width : screenWidth < 550 ? '15rem' : '20rem'
                 } ,'& .MuiButton-containedPrimary:hover':{
                     bgcolor: "#af8f34 !important"
                 } ,
@@ -93,16 +94,16 @@ const EditProfile = ( ) => {
                     margin: 0
                 }, '& .MuiButtonBase-root':{
                     borderRadius : 0,
-                    bgcolor:'#2D99EF', 
+                    bgcolor:'#1976d2', 
                     padding: '15px'
                 }, '& .MuiButtonBase-root:hover': {
                     bgcolor: '#17456E'
                 },'& .MuiOutlinedInput-notchedOutline ':{
-                    border: '1px solid white !important',
+                    border: '1px solid white',
                     borderRadius: '4px'
                 }, '& .Mui-focused':{
                     border: '#2D99EF'
-                }
+                }//1976d2
             }}
         autoComplete="off"
         >
