@@ -3,8 +3,10 @@ import { Button } from "../Button/Button"
 import AddGoalForm from "./AddGoalForm";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import EditIcon from '@mui/icons-material/Edit';
+import styles from './AddGoalForm.module.css'
 
-const AddGalModal = () => {
+const AddGalModal = ({type}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -32,7 +34,13 @@ const AddGalModal = () => {
     return(
         <>
         <span onClick={handleOpen} style={spanStyle}>
-        <Button text={'Add Goal'} color={'blue'} size={'big'} />
+        {type === 'add' ? (
+            <Button text={'Add Goal'} color={'blue'} size={'big'} />
+            ) : type === 'edit'? (
+            <span className={styles.Exit}>
+                <EditIcon/>
+            </span>
+        ): ''}
         </span>
         <Modal 
             open={open}
@@ -41,7 +49,7 @@ const AddGalModal = () => {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <AddGoalForm handleClose={handleClose}/>
+                <AddGoalForm handleClose={handleClose} type ={type}/>
             </Box>
         </Modal>
         </>

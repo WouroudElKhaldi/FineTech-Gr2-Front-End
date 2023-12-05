@@ -8,7 +8,7 @@ import Styles from './Goal.module.css';
 import TableComponent from '../../Components/Table/Table.js'
 import AddGalModal from "../../Components/AddGoal/AddGoalModal";
 import GoalChart from "../../Components/GoalChart/GoalChart";
-export default function Transaction() {
+export default function Goal() {
 
 
   const data = [
@@ -199,6 +199,16 @@ export default function Transaction() {
       >
         Manage Goals
       </Typography>
+        <Grid container md={12} sx={
+            {'& .MuiGrid2-root':{
+              display: 'flex' ,
+              alignContent: 'space-between',
+            }, 
+          '& .MuiGrid2-container':{
+            mb: '2rem', 
+            flexWrap: 'wrap'
+          }}
+          }></Grid>
       <Grid container md={15} className={Styles.bgerContainerig}>
         <Grid container md={6} xs={6} mb={"40px"}>
           <GoalChart />
@@ -211,7 +221,7 @@ export default function Transaction() {
         justifyContent: "flex-end",
         width: "95%",
       }}>
-        <AddGalModal />
+        <AddGalModal type='add' />
       </span>
       <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'goal'} />
     </Box>

@@ -1,3 +1,13 @@
 .chartContainer {
-    width: 70%; 
-    height: 250px; }
+    width: 70%;
+    height: 370px;
+    background-color: var(--color-back-card);
+    padding: 2rem;
+    border-radius: 20px
+}
+
+.H2{
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--color-font-gray);
+}   
