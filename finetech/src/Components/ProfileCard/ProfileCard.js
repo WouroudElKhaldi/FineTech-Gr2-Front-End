@@ -1,10 +1,14 @@
 import {useState , useEffect} from "react";
 import {Box, Stack , Avatar , Typography} from '@mui/material'
 import styles from './ProfileCard.module.css'
+import PersonIcon from '@mui/icons-material/Person';
+import InsertInvitationIcon from '@mui/icons-material/InsertInvitation';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { CalendarIcon } from "@mui/x-date-pickers";
 
-const ProfileCard = () => {
-
+const ProfileCard = ({handleOverview , overview , handleEdit , edit}) => {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
 
     useEffect(() => {
         const handleResize = () => {
@@ -23,10 +27,9 @@ const ProfileCard = () => {
             sx={{
                 bgcolor: '#212936',
                 width: '90%',
-                mt: '5rem',
                 mb: '2rem',
                 borderRadius: '20px',
-                padding: '2rem 0'
+                padding: '2rem 0 0 0'
             }}
         >   
         <span style={{
@@ -51,21 +54,67 @@ const ProfileCard = () => {
                         width: '100%',
                         textAlign: 'center', 
                         mt: '2rem',
+                        mb: '1.5rem' ,
                         fontFamily: 'outfit',
-                        fontWeight: '600',
+                        fontWeight: '650',
                     }}
+                    className={styles.Name}
                 >
                     James Bond
                 </Typography>
-                <Stack flexDirection={screenWidth > 500 ? 'row': 'column' }>
+                <Stack flexDirection={screenWidth > 550 ? 'row': 'column' } justifyContent='center' columnGap={'3rem'} color='#BABABA'>
+                    <span style={{
+                        display: 'flex',
+                        width: screenWidth > 550 ? '' : '100%',
+                        justifyContent: 'center',
+                        marginBottom: "1rem"
+                    }}>
+                    <PersonIcon/>
                     <Typography 
                         variant='body1'
                         component='p'
-                    >
-                        wouroud
+                        >
+                        Admin
                     </Typography>
+                    </span>
+                    <span style={{
+                        display: 'flex',
+                        width: screenWidth > 550 ? '' : '100%',
+                        justifyContent: 'center',
+                        marginBottom: "1rem"
+                    }}>
+                    <LocationOnIcon/>
+                    <Typography 
+                        variant='body1'
+                        component='p'
+                        >
+                        Akkar
+                    </Typography>
+                    </span>
+                    <span style={{
+                        display: 'flex',
+                        width: screenWidth > 550 ? '' : '100%',
+                        justifyContent: 'center', 
+                        marginBottom: "1rem"
+                    }}>
+                    <CalendarIcon/>
+                    <Typography 
+                        variant='body1'
+                        component='p'
+                        >
+                        01/12/2004
+                    </Typography>
+                    </span>
                 </Stack>
             </Stack>
+                <Stack mb='0px' ml='1rem' flexDirection='row'>
+                    <span className={`${styles.Span} ${overview ? styles.ActiveSpan : ''}`} onClick={handleOverview}>
+                        Overview
+                    </span>
+                    <span className={`${styles.Span} ${edit ? styles.ActiveSpan : ''}`} onClick={handleEdit}>
+                        Edit
+                    </span>
+                </Stack>
         </Box>
     )
 }
