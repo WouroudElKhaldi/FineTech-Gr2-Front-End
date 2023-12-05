@@ -9,13 +9,7 @@ import { useState } from 'react';
 import Stack from '@mui/material/Stack';
 import { Typography } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
 import { Button } from '../Button/Button';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
-// import InputFileUpload from './Upload Button';  
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -23,19 +17,20 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import styles from './AddGoalForm.module.css'
 
-const AddGoalForm= ({handleClose}) => {
+const AddGoalForm= ({handleClose ,type}) => {
     const formRef = React.createRef(null);
-    const [role , setRole] = useState('')
-    const [showPassword, setShowPassword] = useState(false);
-    const handleChange = (event) => {
-        setRole(event.target.value);
+   
+
+
+    const handleAddGoal = (e) => {
+        e.preventDefault();
       };
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
+    const handleEditGoal = (e) => {
+        e.preventDefault();
+       
     };
+
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -48,7 +43,6 @@ const AddGoalForm= ({handleClose}) => {
         inputFields.forEach((input) => {
           input.value = "";
         });
-        setRole("");
       };
 
     const divStyle ={
@@ -66,7 +60,7 @@ const AddGoalForm= ({handleClose}) => {
     return(
         <Box
             ref={formRef}
-            onSubmit={handleFormSubmit}
+            onSubmit = { type === 'add' ? handleAddGoal : handleEditGoal }
             component="form"
             sx={{
                 '& .MuiFormControl-root': {
@@ -93,6 +87,8 @@ const AddGoalForm= ({handleClose}) => {
             autoComplete="off"
         >
                 <div style={divStyle}>
+                {
+                        type === 'add' ? (
                     <Typography
                         variant="h4"
                         component="h4"
@@ -100,6 +96,18 @@ const AddGoalForm= ({handleClose}) => {
                     >
                         Add Goal
                     </Typography>
+                        ) : (
+                            <Typography
+                            variant="h4"
+                            component="h4"
+                            sx={{ textAlign: "left", mt: 3, mb: 3, ml: '8px', width: 'fit-content' , fontWeight: 'bold'}}
+                        >
+                        Edit Goal
+                        </Typography>
+                            )
+                        }
+
+
                     <span 
                         style={spanStyle} 
                         className={styles.Exit}
@@ -130,9 +138,7 @@ const AddGoalForm= ({handleClose}) => {
                     <Select
                     labelId="demo-simple-select-required-label"
                     id="demo-simple-select-required"
-                    value={role}
-                    label="Achieved *"
-                    onChange={handleChange}
+                    label="Achieved "
                     >
                         <MenuItem value="">
                             <em>None</em>
@@ -159,9 +165,9 @@ const AddGoalForm= ({handleClose}) => {
                 />
         
                     <div style={divStyle}>
-                        <Button text={'Add'} color={'blue'} size={'small'} type={'submit'}/>
+                    <Button text={type === 'add' ? 'Add' : 'Edit'} color={'blue'} size={'small'} type={'submit'}/>
                         <span  onClick={handleFromClear}>
-                            <Button text={'Cancel'} color={'gray'} size={'small'}/>
+                            <Button text={'Clear'} color={'gray'} size={'small'}/>
                         </span>
                     </div>
                 </Stack>

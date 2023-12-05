@@ -51,12 +51,13 @@ function GoalChart() {
         position: 'top',
       },
     },
-    barPercentage: 0.5, 
-    categoryPercentage: 0.9, 
+    barPercentage: 4, 
+    categoryPercentage: 0.1, 
   };
 
   return (
     <div className={Styles.chartContainer}>
+      <h2 className={Styles.H2}>Capital-Goal</h2>
       <div>
         <Bar data={data} options={options} ></Bar>
       </div>
