@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Box } from "@mui/material";
+import { Box , Stack} from "@mui/material";
 import React from "react";
 import { Typography } from "@mui/material";
 import Styles from './Goal.module.css';
@@ -191,7 +191,9 @@ export default function Transaction() {
 
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1 }}
+    >
+      <Stack>
       <Typography
         variant="h3"
         component="h3"
@@ -199,12 +201,14 @@ export default function Transaction() {
       >
         Manage Goals
       </Typography>
-      <Grid container md={15} className={Styles.bgerContainerig}>
-        <Grid container md={6} xs={6} mb={"40px"}>
-          <GoalChart />
-        </Grid>
-      </Grid>
-
+      <span style={{
+        width: '50%',
+        background: '#212936',
+        padding: '2rem',
+        borderRadius: '15px'
+      }}>
+      <GoalChart />
+      </span>
       <span
       style={{
         display: "flex",
@@ -214,6 +218,7 @@ export default function Transaction() {
         <AddGalModal />
       </span>
       <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'goal'} />
+      </Stack>
     </Box>
   );
 }
