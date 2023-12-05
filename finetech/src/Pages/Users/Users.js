@@ -202,35 +202,39 @@ const UserPage = () => {
             {'& .MuiGrid2-root':{
               display: 'flex' ,
               alignContent: 'space-between',
+              justifyContent: screenWidth > 1200 ?  "" : "flex-start"
             }, 
           '& .MuiGrid2-container':{
             mb: '2rem', 
             flexWrap: 'wrap'
           }}
           }>
-          <Grid md={4} container spacing={2} >
-              <Grid xs={6} md={12} sx={{
+          <Grid md={screenWidth > 1200 ? 6 : 12} container spacing={screenWidth > 1200 ? 1 : 0} sx={{
+            display: 'flex',
+            rowGap: '2rem'
+          }}>
+              <Grid xs={12} md={12} sx={{
                 padding: 0
               }}>
                 <InfoCard title={'Total'} number={'23'} />
               </Grid>
-              <Grid xs={6} md={12} sx={{
+              <Grid xs={12} md={12} sx={{
                 padding: 0
               }}>
                 <InfoCard title={'Admins'} number={'23'} />
               </Grid>
-              <Grid xs={6} md={12} sx={{
+              <Grid xs={12} md={12} sx={{
                 padding: 0
               }}>
                 <InfoCard title={'Managers'} number={'23'}/>
               </Grid>
-              <Grid xs={6} md={12} sx={{
+              <Grid xs={12} md={12} sx={{
                 padding: 0
               }}>
                 <InfoCard title={'Accountants'} number={'23'}/>
               </Grid>
           </Grid>
-          <Grid container md={6} xs={20} sx={{
+          <Grid container md={screenWidth > 1200 ? 6 : 12} xs={20} sx={{
             display: 'flex',
             justifyContent : "center"
           }}>
