@@ -5,28 +5,40 @@ import Grid from '@mui/material/Unstable_Grid2';
 import UserModal from '../AddUserForm/AddUserModal';
 import DeleteModal from '../DeleteUserForm/DeleteModal';  
 import TransModal from '../AddTransForm/AddTransModal.js'
-import DeleteTransModal from '../EditTransForm/DeleteTransModal';
+import DeleteTransModal from '../DeleteTransForm/DeleteTransModal';
 import AddGalModal from '../AddGoal/AddGoalModal';
 import DeleteGoalModal from '../EditGoal/DeleteGoalModal'
 
-const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
+const TableComponent = ({ data, wid, isEdit, ForWhat }) => {
   const [userData, setUserData] = useState(data);
   const [columns, setColumns] = useState([]);
   const [error, setError] = useState(false);
   const buton = isEdit === true ? true : false ;
 
-  useEffect(() => { 
+const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+useEffect(() => {
+    const handleResize = () => {
+        const newWidth = window.innerWidth;
+        setScreenWidth(newWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+}, []);
+
+  useEffect(() => {
     try {
       setUserData(data);
 
       if (userData.length > 0) {
         const visibleFields = Object.keys(userData[0]);
           if(buton === false){
-            setColumns(visibleFields.map((field) => ({ field, headerName: field , flex : 1})));
+            setColumns(visibleFields.map((field) => ({ field, headerName: field , flex : screenWidth > 900 ? 1 : 0})));
           }else {
             if (ForWhat === 'users' ){
               const updatedColumns = [
-                ...visibleFields.map((field) => ({ field, headerName: field, flex: 1 })),
+                ...visibleFields.map((field) => ({ field, headerName: field, flex:  screenWidth > 900 ? 1 : 0 })),
                 {
                   field: 'Edit',
                   headerName: 'Edit',
@@ -135,7 +147,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
       setError(true);
       console.error(error);
     }
-  }, [userData, data]); 
+  }, [userData, data]);
 
   return (
     <>
@@ -187,11 +199,13 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
             fontSize: '1.2rem'
           }, '& .MuiDataGrid-columnHeaderTitleContainer':{
             color: '#2D99EF !important'
+          }, '.MuiDataGrid-cell' :{
+            width: '8rem'
           }}
         }/>
     </Box>
     </>
-  );  
+  );
 };
 
 export default TableComponent;

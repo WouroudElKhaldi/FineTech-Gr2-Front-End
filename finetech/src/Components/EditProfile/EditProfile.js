@@ -57,8 +57,9 @@ const EditProfile = ( ) => {
             component='form'
             sx={{
                 bgcolor: '#212936' ,
-                width: screenWidth > 1200 ? '80%' : '100%',
+                width: screenWidth > 1200 ? '90%' : '100%',
                 padding: '2rem' ,
+                borderRadius: '20px',
                 '& .MuiFormControl-root': {
                      mt: 2 , 
                      mb: 2, 

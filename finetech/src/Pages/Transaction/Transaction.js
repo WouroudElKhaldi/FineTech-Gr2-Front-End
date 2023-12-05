@@ -1,15 +1,15 @@
-import {useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import TransactionChart from "../../Components/TransactionChart/TransactionChart";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Box } from "@mui/material";
 import React from "react";
 import { Typography } from "@mui/material";
 import InfoCard from "../../Components/InfoCard/InfoCard";
-import TableComponent from '../../Components/Table/Table.js'
-import AddTransModal from "../../Components/AddTransForm/AddTransModal";
+import TableComponent from "../../Components/Table/Table.js";
+import TransModal from "../../Components/AddTransForm/AddTransModal";
+// import styled from "@emotion/styled/types/base";
+import ProfileDetails from "../../Components/ProfileDetails/ProfileDetails";
 export default function Transaction() {
-
-
   const data = [
     {
       id: 1,
@@ -188,7 +188,6 @@ export default function Transaction() {
     };
   }, []);
 
-
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Typography
@@ -198,28 +197,77 @@ export default function Transaction() {
       >
         Manage Transactions
       </Typography>
-      <Grid container md={8} mb={"20px"}>
-        <Grid container md={6} xs={6} mb={"30px"}>
-          <TransactionChart />
-        </Grid>
-
-        <Grid md={6} container spacing={2}>
-          <Grid xs={12} md={12}>
+      <Grid
+        container
+        md={12}
+        mb={"20px"}
+        sx={{
+          "& .MuiGrid2-root": {
+            display: "flex",
+            alignContent: "space-between",
+            justifyContent: "space-between",
+          },
+        }}
+      >
+        <Grid md={screenWidth > 1200 ? 6 : 12} container spacing={1}>
+          <Grid
+            xs={12}
+            md={12}
+            sx={{
+              padding: 0,
+            }}
+          >
             <InfoCard title={"Total income"} number={"23"} />
           </Grid>
-          <Grid xs={12} md={12}>
+          <Grid
+            xs={12}
+            md={12}
+            sx={{
+              padding: 0,
+            }}
+          >
             <InfoCard title={"Total outcome"} number={"23"} />
           </Grid>
-          <Grid xs={12} md={12}>
+          <Grid
+            xs={12}
+            md={12}
+            sx={{
+              padding: 0,
+            }}
+          >
             <InfoCard title={"Total profit"} number={"23"} />
           </Grid>
         </Grid>
+        <Grid
+          container
+          xs={12}
+          md={screenWidth > 1220 ? 6 : 12}
+          mt={screenWidth < 1220 ? "30px" : "0px"}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <TransactionChart />
+        </Grid>
       </Grid>
-
-      <span>
-        <AddTransModal />
+      <span
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          width: "95%",
+        }}
+      >
+        <TransModal type="add" />
       </span>
-      <TableComponent data={data} wid={wid} isEdit={true} ForWhat={'transaction'}/>
+      <TableComponent
+        data={data}
+        wid={wid}
+        isEdit={true}
+        ForWhat={"transaction"}
+      />
+
+      <ProfileDetails />
     </Box>
   );
 }
