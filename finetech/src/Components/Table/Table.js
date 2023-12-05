@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { DataGrid , GridToolbar} from '@mui/x-data-grid';
 import Grid from '@mui/material/Unstable_Grid2';
+import UserModal from '../AddUserForm/AddUserModal';
 import DeleteModal from '../DeleteUserForm/DeleteModal';  
+import TransModal from '../AddTransForm/AddTransModal.js'
 import DeleteTransModal from '../EditTransForm/DeleteTransModal';
-import EditGoalModal from '../EditGoal/EditGoalModal';
+import AddGalModal from '../AddGoal/AddGoalModal';
 import DeleteGoalModal from '../EditGoal/DeleteGoalModal'
 
 const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
@@ -101,7 +103,7 @@ const TableComponent = ({ data , wid , isEdit , ForWhat}) => {
                         justifyContent: "center"
                       }}>
                         <span>
-                          <GoalModal type='edit' />
+                          <AddGalModal type='edit' />
                         </span>
                         </Grid>
                     ),
