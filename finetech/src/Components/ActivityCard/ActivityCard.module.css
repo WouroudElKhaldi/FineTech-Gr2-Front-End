@@ -19,9 +19,9 @@
   border-left: 3px solid var(--color-blue-normal);
 }
 .paginationn {
-  width: 40%;
+  /* width: 100%; */
   display: flex;
-  justify-content: right;
-  height: 3rem;
-  background-color: var(--color-back-card);
+  justify-content: center;
+  /* height: 3rem; */
+  /* background-color: var(--color-back-card); */
 }

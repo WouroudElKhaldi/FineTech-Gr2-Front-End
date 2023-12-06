@@ -124,15 +124,27 @@ export default function MainTab() {
     <Box
       sx={{
         width: "100%",
+        borderRadius: "10px",
         typography: "body1",
         "& .MuiBox-root ": {
-          width: "40%",
-          backgroundColor: "var(--color-back-card)",
+          width: "100%",
+          // backgroundColor: "var(--color-back-card)",
+          height: "fit-content",
         },
         "& .MuiTabPanel-root": {
-          width: "40%",
+          width: "100%",
           backgroundColor: "var(--color-back-card)",
         },
+        "& .MuiButtonBase-root": {
+          color: "white",
+        },
+        "& .MuiTabPanel-root ": {
+          borderRadius: "20px",
+        },
+        "& .  MuiTabs-indicator ": {
+          marginLeft: "40px",
+        },
+
         marginTop: "2rem",
       }}
     >
@@ -143,23 +155,27 @@ export default function MainTab() {
             <Tab label="Goal" value="Goal" />
           </TabList>
         </Box>
+
         <TabPanel key={value} value={value}>
+          <h1 style={{ fontWeight: "bold", textAlign: "center" }}>
+            {value === "Transaction" ? "Manage Transaction" : "Manage Goal"}
+          </h1>
           {filteredData
             .slice((page - 1) * itemsPerPage, page * itemsPerPage)
             .map((item) => (
               <ActivityCard key={item.id} cont={item.content} />
             ))}
+          <div className={Style.paginationn}>
+            <Pagination
+              count={Math.ceil(filteredData.length / itemsPerPage)}
+              variant="outlined"
+              color="primary"
+              page={page}
+              onChange={handleChangePage}
+            />
+          </div>
         </TabPanel>
       </TabContext>
-      <div className={Style.paginationn}>
-        <Pagination
-          count={Math.ceil(filteredData.length / itemsPerPage)}
-          variant="outlined"
-          color="primary"
-          page={page}
-          onChange={handleChangePage}
-        />
-      </div>
     </Box>
   );
 }
