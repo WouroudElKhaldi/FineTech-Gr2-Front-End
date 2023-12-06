@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { Button } from "../Button/Button"
+import AddGoalForm from "./AddGoalForm";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
-import styles from './EditGoalForm.module.css'; 
-import EditGoalForm from './EditGoalForm';
+import styles from './AddGoalForm.module.css'
 
-const  EditGoalModal = () => {
+const AddGalModal = ({type}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -32,8 +33,14 @@ const  EditGoalModal = () => {
 
     return(
         <>
-        <span className={styles.Edit} onClick={handleOpen} style={spanStyle}>
-        <EditIcon/>
+        <span onClick={handleOpen} style={spanStyle}>
+        {type === 'add' ? (
+            <Button text={'Add Goal'} color={'blue'} size={'big'} />
+            ) : type === 'edit'? (
+            <span className={styles.Exit}>
+                <EditIcon/>
+            </span>
+        ): ''}
         </span>
         <Modal 
             open={open}
@@ -42,10 +49,10 @@ const  EditGoalModal = () => {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <EditGoalForm handleClose={handleClose}/>
+                <AddGoalForm handleClose={handleClose} type ={type}/>
             </Box>
         </Modal>
         </>
     )
 }
-export default EditGoalModal
+export default AddGalModal
