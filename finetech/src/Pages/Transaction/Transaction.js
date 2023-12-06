@@ -8,7 +8,7 @@ import InfoCard from "../../Components/InfoCard/InfoCard";
 import TableComponent from "../../Components/Table/Table.js";
 import TransModal from "../../Components/AddTransForm/AddTransModal";
 // import styled from "@emotion/styled/types/base";
-import ProfileDetails from "../../Components/ProfileDetails/ProfileDetails";
+
 export default function Transaction() {
   const data = [
     {
@@ -266,8 +266,6 @@ export default function Transaction() {
         isEdit={true}
         ForWhat={"transaction"}
       />
-
-      <ProfileDetails />
     </Box>
   );
 }
