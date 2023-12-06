@@ -6,8 +6,6 @@ import {
     Stack, 
     TextField , 
     FormControl  , 
-    Select, 
-    MenuItem ,
     InputLabel, 
     OutlinedInput , 
     InputAdornment,
@@ -16,10 +14,48 @@ import {
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton';
 import {Visibility , VisibilityOff} from '@mui/icons-material';
+import { useState, useContext } from "react";
+import useApi from '../../Hooks/UseApi';
+import { AuthContext } from '../../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [loading, setLoading] = useState(false);
+    const { fetchUserData } = useContext(AuthContext);
+    const { apiCall } = useApi();
+    const navigate = useNavigate();
+    const submitHandler = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        if (!email || !password) {
+            console.log("ENTER EMAIL OR PASSWORD")
+            setLoading(false);
+            return;
+        }
+
+
+        try {
+              await apiCall({
+                url: '/api/auth/login',
+                method: 'post',
+                data: { email, password }
+            })
+         
+            await fetchUserData()
+            setLoading(false);
+            navigate('/transaction')
+        }
+        catch (error) {
+
+            console.log(error)
+
+            setLoading(false);
+        }
+    };
+
     const formRef = React.createRef(null);
-    const [role , setRole] = React.useState('')
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -27,14 +63,6 @@ const Login = () => {
         event.preventDefault();
     };
 
-    const handleChange = (event) => {
-        setRole(event.target.value);
-      };
-
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        // handleClose();
-      };
 
     return (
         <>
@@ -47,7 +75,7 @@ const Login = () => {
             <section className={style.loginFormSection}>
                 <Box 
                 ref={formRef}
-                onSubmit = {handleSubmit}
+                onSubmit={(e)=>submitHandler(e)}
                 component="form"
                 sx={{
                     '& .MuiFormControl-root': {
@@ -92,11 +120,13 @@ const Login = () => {
                             required
                             id="outlined-required"
                             label="Email"
-                            placeholder='Email'                
+                            placeholder='Email'
+                            onChange={(e) => { setEmail(e.target.value) }}                
                         />
                         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-password">Password*</InputLabel>
                         <OutlinedInput
+                            onChange={(e) => { setPassword(e.target.value) }}
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             endAdornment={
@@ -114,30 +144,6 @@ const Login = () => {
                             }
                             label="Password"
                         />
-                        </FormControl> 
-                        <FormControl required 
-                            sx={{ m: 1 , 
-                            '& .MuiSvgIcon-root':{
-                                color: 'white',
-                                '& .MuiList-root':{
-                                    bgcolor: 'transparent'
-                                }
-                            }}}>
-                            <InputLabel id="demo-simple-select-required-label">Role</InputLabel>
-                            <Select
-                            labelId="demo-simple-select-required-label"
-                            id="demo-simple-select-required"
-                            value={role}
-                            label="Role *"
-                            onChange={handleChange}
-                            >
-                                <MenuItem disabled>
-                                    <em>None</em>
-                                </MenuItem>
-                                <MenuItem value={'Admin'}>Admin</MenuItem>
-                                <MenuItem value={'Manager'}>Manager</MenuItem>
-                                <MenuItem value={'Acountant'}>Acountant</MenuItem>
-                            </Select>
                         </FormControl>                       
                         <Button text={'login'} color={'blue'} size={'small'}/>
                     </Stack>                    
