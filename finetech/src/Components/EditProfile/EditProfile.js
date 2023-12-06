@@ -44,7 +44,11 @@ const EditProfile = ( ) => {
     const handleFromClear = () => {
         const form = formRef.current;
         const inputFields = form.querySelectorAll(".MuiTextField-root input");
+        const input = form.querySelectorAll(".MuiInputBase-input MuiOutlinedInput-input Mui-readOnly MuiInputBase-readOnly css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input")
         inputFields.forEach((input) => {
+            input.value = "";
+        });
+        input.forEach((input) => {
             input.value = "";
         });
         setRole("");
@@ -156,6 +160,7 @@ const EditProfile = ( ) => {
                     </Select>
                 </FormControl>
                 {screenWidth > 900 ? (
+                <>
                 <span style={{
                     marginTop: '1rem', 
                     marginBottom: '1rem',
@@ -164,7 +169,8 @@ const EditProfile = ( ) => {
                     justifyContent: screenWidth > 900 ? 'flex-start' : 'center'
                 }}>
                     <Button text={'Submit'} color={'blue'} size={'small'} />
-                </span>                                    
+                </span>       
+                </>                           
                 ) : ""}  
                 </Stack>
                 <Stack sx={{
@@ -217,8 +223,22 @@ const EditProfile = ( ) => {
                             />
                     </FormControl>                    
                     <InputFileUpload/>
+                    {screenWidth > 900 && 
+                    <span 
+                        onClick={handleFromClear}
+                        style={{
+                            marginTop: '1rem', 
+                            marginBottom: '1rem',
+                            width : '100%',
+                            display: 'flex' ,
+                            justifyContent: screenWidth > 900 ? 'flex-end' : 'center'
+                    }}>
+                        <Button text={'Clear'} color={'gray'} size={'small'} />
+                    </span> 
+                } 
                 </Stack>
                 {screenWidth < 900 ? (
+                    <>
                     <span style={{
                         marginTop: '1rem', 
                         marginBottom: '1rem',
@@ -228,6 +248,18 @@ const EditProfile = ( ) => {
                     }}>
                         <Button text={'Submit'} color={'blue'} size={'small'} />
                     </span>
+                    <span 
+                    onClick={handleFromClear}
+                    style={{
+                        marginTop: '1rem', 
+                        marginBottom: '1rem',
+                        width : '100%',
+                        display: 'flex' ,
+                        justifyContent: screenWidth > 900 ? 'flex-start' : 'center'
+                    }}>
+                        <Button text={'Clear'} color={'gray'} size={'small'} />
+                    </span>
+                    </>
                 ): ""}
             </Stack>
         </Box>
