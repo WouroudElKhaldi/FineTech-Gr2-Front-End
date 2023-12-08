@@ -7,174 +7,21 @@ import { Typography } from "@mui/material";
 import InfoCard from "../../Components/InfoCard/InfoCard";
 import TableComponent from "../../Components/Table/Table.js";
 import TransModal from "../../Components/AddTransForm/AddTransModal";
+
 // import styled from "@emotion/styled/types/base";
+import useApi from "../../Hooks/UseApi";
 
 export default function Transaction() {
-  const data = [
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      role: "Admin",
-      dob: "1990-01-01",
-      email: "john@example.com",
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Doe",
-      role: "Manager",
-      dob: "1995-02-15",
-      email: "jane@example.com",
-    },
-    {
-      id: 3,
-      firstName: "Alice",
-      lastName: "Smith",
-      role: "Accountant",
-      dob: "1988-07-20",
-      email: "alice@example.com",
-    },
-    {
-      id: 4,
-      firstName: "Bob",
-      lastName: "Johnson",
-      role: "Admin",
-      dob: "1992-04-10",
-      email: "bob@example.com",
-    },
-    {
-      id: 5,
-      firstName: "Eva",
-      lastName: "Williams",
-      role: "Manager",
-      dob: "1997-09-05",
-      email: "eva@example.com",
-    },
-    {
-      id: 6,
-      firstName: "Charlie",
-      lastName: "Brown",
-      role: "Accountant",
-      dob: "1985-12-12",
-      email: "charlie@example.com",
-    },
-    {
-      id: 7,
-      firstName: "Grace",
-      lastName: "Miller",
-      role: "Admin",
-      dob: "1993-06-30",
-      email: "grace@example.com",
-    },
-    {
-      id: 8,
-      firstName: "Daniel",
-      lastName: "Davis",
-      role: "Manager",
-      dob: "1989-03-18",
-      email: "daniel@example.com",
-    },
-    {
-      id: 9,
-      firstName: "Olivia",
-      lastName: "Wilson",
-      role: "Accountant",
-      dob: "1994-11-25",
-      email: "olivia@example.com",
-    },
-    {
-      id: 10,
-      firstName: "Frank",
-      lastName: "Anderson",
-      role: "Admin",
-      dob: "1987-08-08",
-      email: "frank@example.com",
-    },
-    {
-      id: 11,
-      firstName: "Sophia",
-      lastName: "Moore",
-      role: "Manager",
-      dob: "1991-05-22",
-      email: "sophia@example.com",
-    },
-    {
-      id: 12,
-      firstName: "William",
-      lastName: "Martin",
-      role: "Accountant",
-      dob: "1996-10-12",
-      email: "william@example.com",
-    },
-    {
-      id: 13,
-      firstName: "Ava",
-      lastName: "Thompson",
-      role: "Admin",
-      dob: "1986-02-28",
-      email: "ava@example.com",
-    },
-    {
-      id: 14,
-      firstName: "James",
-      lastName: "Clark",
-      role: "Manager",
-      dob: "1998-04-08",
-      email: "james@example.com",
-    },
-    {
-      id: 15,
-      firstName: "Emma",
-      lastName: "Ward",
-      role: "Accountant",
-      dob: "1984-09-15",
-      email: "emma@example.com",
-    },
-    {
-      id: 16,
-      firstName: "Liam",
-      lastName: "Evans",
-      role: "Admin",
-      dob: "1999-12-03",
-      email: "liam@example.com",
-    },
-    {
-      id: 17,
-      firstName: "Isabella",
-      lastName: "Cooper",
-      role: "Manager",
-      dob: "1983-07-07",
-      email: "isabella@example.com",
-    },
-    {
-      id: 18,
-      firstName: "Wouroud",
-      lastName: "Fisher",
-      role: "Accountant",
-      dob: "1990-11-20",
-      email: "jackson@example.com",
-    },
-    {
-      id: 19,
-      firstName: "Marwa",
-      lastName: "Bennett",
-      role: "Admin",
-      dob: "1988-03-25",
-      email: "olivia@example.com",
-    },
-    {
-      id: 20,
-      firstName: "Ethan",
-      lastName: "Coleman",
-      role: "Manager",
-      dob: "1995-06-18",
-      email: "ethan@example.com",
-    },
-  ];
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [wid, setWid] = useState(screenWidth < 500 ? "100%" : "80%");
+    const { apiCall } = useApi();
+    const [loading, setLoading] = useState(true);
+  const [income, setIncome] = useState(null);
+  const [outcome, setOutcome] = useState(null);
+  const [profit, setProfit] = useState(null);
+  const [incPerc, setIncPerc] = useState(null);
+  const [outcPerc, setoutcPerc] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -187,6 +34,54 @@ export default function Transaction() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+  
+
+  useEffect(() => {
+    const fetchIncome = async () => {
+      try {
+        const total = await apiCall({
+          url: "/api/calculations/sum-income",
+          method: "get",
+        });
+        setIncome(total.data.totalIncome);
+        setIncPerc(total.data.incomePercentage);
+
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+    // console.log(object)
+    const fetchOutcome = async () => {
+      try {
+        const total = await apiCall({
+          url: "/api/calculations/sum-outcome",
+          method: "get",
+        });
+        console.log("After API Call:", total);
+        setOutcome(total.data.totalOutcome);
+        setoutcPerc(total.data.outcomePercentage);
+        setLoading(false);
+        console.log("Outcome:", total.data.totalOutcome);
+        console.log("%", total.data.outcomePercentage);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+
+
+ 
+    fetchIncome();
+    fetchOutcome();
+
+
+    if (income !== null && outcome !== null) {
+      const profitt = income - outcome;
+      setProfit(profitt);
+    }
+  }, );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -217,7 +112,13 @@ export default function Transaction() {
               padding: 0,
             }}
           >
-            <InfoCard title={"Total income"} number={"23"} />
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              income !== null && (
+                <InfoCard title={"Total income"} number={income} />
+              )
+            )}
           </Grid>
           <Grid
             xs={12}
@@ -226,7 +127,13 @@ export default function Transaction() {
               padding: 0,
             }}
           >
-            <InfoCard title={"Total outcome"} number={"23"} />
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              outcome !== null && (
+                <InfoCard title={"Total Outcome"} number={outcome} />
+              )
+            )}{" "}
           </Grid>
           <Grid
             xs={12}
@@ -235,7 +142,7 @@ export default function Transaction() {
               padding: 0,
             }}
           >
-            <InfoCard title={"Total profit"} number={"23"} />
+            <InfoCard title={"Total profit"} number={profit} />
           </Grid>
         </Grid>
         <Grid
@@ -248,7 +155,15 @@ export default function Transaction() {
             justifyContent: "center",
           }}
         >
-          <TransactionChart />
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            income !== null &&
+            outcome !== null && (
+              <TransactionChart incPerc={incPerc} outcPerc={outcPerc} />
+            )
+          )}{" "}
+          
         </Grid>
       </Grid>
       <span
@@ -260,12 +175,12 @@ export default function Transaction() {
       >
         <TransModal type="add" />
       </span>
-      <TableComponent
-        data={data}
+      {/* <TableComponent
+        // data={data}
         wid={wid}
         isEdit={true}
         ForWhat={"transaction"}
-      />
+      /> */}
     </Box>
   );
 }
