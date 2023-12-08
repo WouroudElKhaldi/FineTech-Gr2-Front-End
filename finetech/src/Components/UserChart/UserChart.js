@@ -9,12 +9,12 @@ Chart.register(
     Legend 
 )
 
-const UserChart = () => {
+const UserChart = ({userPercentage}) => {
 const data = {
     labels: ['Admin', 'Manager', 'Accountant'] , 
     datasets : [{
         label: 'User',
-        data: [40, 10, 50], 
+        data: [userPercentage.Admin, userPercentage.Manager, userPercentage.Accountant], 
         backgroundColor: ['#2D99EF', '#17456E', '#FACD4B' ],
         hoverOffset: 10,
     }]

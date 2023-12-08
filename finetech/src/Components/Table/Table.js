@@ -13,6 +13,7 @@ const TableComponent = ({ data, wid, isEdit, ForWhat }) => {
   const [userData, setUserData] = useState(data);
   const [columns, setColumns] = useState([]);
   const [error, setError] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
   const buton = isEdit === true ? true : false ;
 
 const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -27,11 +28,21 @@ useEffect(() => {
     };
 }, []);
 
+const handleEditClick = (params) => {
+  const selectedRow = userData.find((row) => row.id === params.id);
+  setSelectedRowData(selectedRow);
+};
+
+const handleDeleteClick = (params) => {
+  const selectedRow = userData.find((row) => row.id === params.id);
+  setSelectedRowData(selectedRow);
+};
+
   useEffect(() => {
     try {
       setUserData(data);
 
-      if (userData.length > 0) {
+      if (data && data.length > 0) {
         const visibleFields = Object.keys(userData[0]);
           if(buton === false){
             setColumns(visibleFields.map((field) => ({ field, headerName: field , flex : screenWidth > 900 ? 1 : 0})));
@@ -48,7 +59,7 @@ useEffect(() => {
                       justifyContent: "center"
                     }}>
                       <span>
-                        <UserModal type='edit'/>
+                        <UserModal type='edit' onClick={handleEditClick} data={selectedRowData}/>
                       </span>
                       </Grid>
                   ),
@@ -62,7 +73,7 @@ useEffect(() => {
                       justifyContent: "center"
                     }}>
                       <span>
-                        <DeleteModal/>
+                        <DeleteModal onClick={handleDeleteClick} data={selectedRowData}/>
                       </span>
                       </Grid>
                   ),
@@ -173,7 +184,7 @@ useEffect(() => {
       sx={
         {
           marginBottom: '4rem' ,
-          width: '95%',
+          width: '98%',
           bgcolor: '#212936', 
           border : 0, 
           '& .MuiToolbar-root , .MuiInputBase-input , .MuiDataGrid-columnHeaderTitleContainer , .MuiDataGrid-cell':{
@@ -201,6 +212,8 @@ useEffect(() => {
             color: '#2D99EF !important'
           }, '.MuiDataGrid-cell' :{
             width: '8rem'
+          }, '& .MuiSelect-select , & .MuiTablePagination-select , & .MuiSelect-standard MuiInputBase-input css-194a1fa-MuiSelect-select-MuiInputBase-input':{
+            color : '#2D99EF !important'
           }}
         }/>
     </Box>

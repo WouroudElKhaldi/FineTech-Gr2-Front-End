@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     const fetchUserData = async () => {
         try {
             setCheckUser(true)
-            const response = await axiosInstance.get('/api/auth/user');
+            const response = await axiosInstance.get('/api/auth/logged-in-user');
             setUser(response.data.user);
         } catch(err) {
           

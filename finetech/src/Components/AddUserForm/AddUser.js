@@ -14,31 +14,88 @@ import { Button } from '../Button/Button';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputFileUpload from './Upload Button';  
+import OutlinedInput from '@mui/material/OutlinedInput'; 
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import axios from 'axios'
 import styles from './AddUser.module.css'
 
-const AddUser = ({handleClose , type}) => {
-    const formRef = React.createRef(null);
+const UserForm = ({handleClose , type}) => {
+    const [loading, setLoading] = useState(false);
+    const [firstName , setFirstName] = useState('')
+    const [lastName , setLastName] = useState('')
+    const [image , setImage] = useState('')
+    const [password , setPassword] = useState('')
     const [role , setRole] = useState('')
+    const [email , setEmail] = useState('')
+    const [dob , setDob] = useState('')
     const [showPassword, setShowPassword] = useState(false);
-    const handleChange = (event) => {
-        setRole(event.target.value);
-      };
+    const [error , setError] = useState(false)
+    const [errorMessage , setErrorMessage] = useState('')
+    
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if(name === 'image'){
+            setImage(value)
+        }else if(name === 'firstName'){
+            setFirstName(value)
+        }else if (name === 'lastName'){
+            setLastName(value)
+        }else if (name === 'password'){
+            setPassword(value)
+        }else if (name === "email"){
+            setEmail(value)
+        }else if (name === 'dob'){
+            setDob(value)
+        } else if (name === 'role'){
+            setRole(value)
+        }
+    };
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
-
-    const handleAddUser = (e) => {
+    
+    const handleAddUser = async (e) => {
         e.preventDefault();
-        // handleClose();
+        setLoading(true)
+        if (!firstName || !lastName || !role || !dob || !email || !password){
+            setError(true)
+            setErrorMessage('All input fields are required')
+            return ;
+        }
+        try {    
+            const sentUser = await axios.post(
+              'http://localhost:4000/api/auth/create',
+                {
+                    firstName: firstName ,
+                    lastName : lastName ,
+                    dob : dob , 
+                    image : image ,
+                    role : role ,
+                    password: password,
+                    email : email
+                },
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              }
+            );
+            console.log(sentUser)
+            setError(false)
+            setLoading(false)
+        } catch (error) {
+            setError(true)
+            setErrorMessage('Something goes wrong')
+            setLoading(false)
+            console.log('Error in API call' , errorMessage , error)
+        }
+
       };
 
     const handleEditUser = (e) => {
@@ -47,12 +104,13 @@ const AddUser = ({handleClose , type}) => {
     };
 
       const handleFromClear = () => {
-        const form = formRef.current;
-        const inputFields = form.querySelectorAll(".MuiTextField-root input");
-        inputFields.forEach((input) => {
-          input.value = "";
-        });
-        setRole("");
+        setFirstName('')
+        setLastName('')
+        setEmail('')
+        setImage('')
+        setRole('')
+        setPassword('')
+        setFirstName('')
       };
 
     const divStyle ={
@@ -69,8 +127,6 @@ const AddUser = ({handleClose , type}) => {
 
     return(
         <Box
-            ref={formRef}
-            onSubmit = { type === 'add' ? handleAddUser : handleEditUser }
             component="form"
             sx={{
                 '& .MuiFormControl-root': {
@@ -126,26 +182,32 @@ const AddUser = ({handleClose , type}) => {
                     <span 
                         style={spanStyle} 
                         className={styles.Exit}
-                     onClick={() => {
+                        onClick={() => {
                         handleClose();
                         handleFromClear();
                       }}>
                     <CloseIcon/>
                     </span>
                 </div>
-            
+                <form
+                    onSubmit = { type === 'add' ? handleAddUser : handleEditUser }
+                >
                 <Stack>
                 <TextField
                     required
-                    id="outlined-required"
+                    id="outlined-required1"
                     label="FirstName"
                     placeholder='FirstName'
+                    name='firstName'
+                    onChange={handleChange}
                 />
                 <TextField
                     required
-                    id="outlined-required"
+                    id="outlined-required2"
                     label="LastName"
                     placeholder='LastName'
+                    name='lastName'
+                    onChange={handleChange}
                 />
                  <FormControl required 
                     sx={{ m: 1 , 
@@ -160,6 +222,7 @@ const AddUser = ({handleClose , type}) => {
                     labelId="demo-simple-select-required-label"
                     id="demo-simple-select-required"
                     value={role}
+                    name='role'
                     label="Role *"
                     onChange={handleChange}
                     >
@@ -176,11 +239,13 @@ const AddUser = ({handleClose , type}) => {
                     id="outlined-required"
                     label="Email"
                     placeholder='Email'
+                    name='email'
+                    onChange={handleChange}
                 />
                 <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
                 <InputLabel htmlFor="outlined-adornment-password">Password*</InputLabel>
                 <OutlinedInput
-                    id="outlined-adornment-password"
+                    id="outlined-adornment-password1"
                     type={showPassword ? 'text' : 'password'}
                     endAdornment={
                     <InputAdornment position="end">
@@ -196,43 +261,28 @@ const AddUser = ({handleClose , type}) => {
                     </InputAdornment>
                     }
                     label="Password"
-                />
-                </FormControl>
-                <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">Confirm Password*</InputLabel>
-                <OutlinedInput
-                    id="outlined-adornment-password"
-                    type={showPassword ? 'text' : 'password'}
-                    endAdornment={
-                    <InputAdornment position="end">
-                        <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                        style={{color: 'white'}}
-                        >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                    </InputAdornment>
-                    }
-                    label="Password"
+                    name='password'
+                    onChange={handleChange}
+
                 />
                 </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker']}>
-                        <DateTimePicker label="Date" />
+                        <DatePicker label="Date" value={dob} onChange={setDob}/>
                     </DemoContainer>
                 </LocalizationProvider>
-                <InputFileUpload/>
+                <input type='file' name='image' id='image' onChange={handleChange}/>
                     <div style={divStyle}>
-                        <Button text={type === 'add' ? 'Add' : 'Edit'} color={'blue'} size={'small'} type={'submit'}/>
+                        <span onClick={ type === 'add' ? handleAddUser : handleEditUser}>
+                        <Button text={type === 'add' ? 'Add' : 'Edit'} color={'blue'} size={'small'} type={'submit'} />
+                        </span>
                         <span  onClick={handleFromClear}>
                             <Button text={'Clear'} color={'gray'} size={'small'}/>
                         </span>
                     </div>
                 </Stack>
+                </form>
         </Box>
         )
 }
-export default AddUser ;
+export default UserForm ;

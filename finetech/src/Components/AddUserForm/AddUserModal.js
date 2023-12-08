@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Button } from "../Button/Button"
-import AddUser from "./AddUser";
+import UserForm from "./AddUser";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './AddUser.module.css'
-const UserModal = ({type}) => {
+const UserModal = ({type , data}) => {
+    // console.log(data)
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -48,7 +49,7 @@ const UserModal = ({type}) => {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <AddUser handleClose={handleClose} type={type}/>
+                <UserForm handleClose={handleClose} type={type}/>
             </Box>
         </Modal>
         </>
