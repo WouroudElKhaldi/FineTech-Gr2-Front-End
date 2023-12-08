@@ -6,11 +6,10 @@ import Notification from "../Pages/Notification/Notification";
 import Profile from "../Pages/Profile/Profile";
 import Report from "../Pages/Report/Report";
 import Transaction from "../Pages/Transaction/Transaction";
-
 import Users from "../Pages/Users/Users";
 import NotFound from "../Pages/NotFound/NotFound";
-
 import LayoutWithSidebar from "./LayoutWithSidebar"
+
 function AppRoutes() {
   return (
     <>

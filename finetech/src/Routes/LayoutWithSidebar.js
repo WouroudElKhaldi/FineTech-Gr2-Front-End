@@ -6,7 +6,7 @@ function LayoutWithSidebar({ children }) {
     <>
       <div
         style={{
-          minHeight: "8vh",
+          minHeight: "8zvh",
           margin: "0%",
           display: "grid",
           gridTemplateColumns: "20% 75%",
