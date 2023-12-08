@@ -1,7 +1,7 @@
 .sidebarNav {
     position: relative;
     min-height: 100vh;
-    width: 100%;
+    width: 20vw;
     background-color: var(--color-back-card);
     transition: transform  0.5s ease-out;
     display: flex;

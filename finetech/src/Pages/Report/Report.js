@@ -1,8 +1,9 @@
 import React from 'react'
 import style from './Report.module.css'
+import Navbar from '../../Layouts/Navbar/Navbar'
 import { Button } from '../../Components/Button/Button'
 import Grid from '@mui/material/Unstable_Grid2';
-import { Box , Stack} from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import InfoCard from '../../Components/InfoCard/InfoCard'
 import LineChart from '../../Components/ReportTransChart/LineChart'
 import PieChart from '../../Components/ReportTransChart/PieChart'
@@ -25,74 +26,82 @@ const Report = () => {
   }, []);
 
   return (
-    <section className={style.reportContainer}>
-      <h1 className={style.reportContainerTitle}>Manage Reports</h1>
-      <Box 
-      component='form'
-      sx={{
-        '& .css-1d3z3hw-MuiOutlinedInput-notchedOutline':{
-          bgcolor: '#212936',
-          zIndex: -1
-        }, '& .MuiSvgIcon-root' : {
-          color: 'white',
-          zIndex: '99'
-        }, '& .MuiFormLabel-root , & .MuiInputBase-root':{
-          color: 'white',
-        }
-      }}
-      >
-        <Stack flexDirection='row'columnGap='4rem'>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DatePicker']}>
-            <DatePicker label="Start Date" />
-          </DemoContainer>
-        </LocalizationProvider>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DemoContainer components={['DatePicker']}>
-              <DatePicker label="End Date" />
-            </DemoContainer>
-        </LocalizationProvider>
-        </Stack>
-      <Button size='small' color='blue' type='submit' text='generate' />
-      </Box>  
-      <Box sx={{ flexGrow: 1, ml: 2 }}>
-        <Grid container md={12} sx={
-          {
-            '& .MuiGrid2-root': {
-              display: 'flex',
-              alignContent: 'space-between',
-            },
-            '& .MuiGrid2-container': {
-              mb: '2rem',
-              flexWrap: 'wrap'
-            }, '& .MuiBox-root css-bapq3l':{
-              margin: 0
+    <>
+      <main className={style.reportContainer}>
+        <h1 className={style.reportContainerTitle}>Manage Reports</h1>
+        <Box
+          component='form'
+          sx={{
+            '& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
+              bgcolor: '#212936',
+              zIndex: -1
+            }, '& .MuiSvgIcon-root': {
+              color: 'white',
+              zIndex: '99'
+            }, '& .MuiFormLabel-root , & .MuiInputBase-root': {
+              color: 'white',
+            }
+          }}
+          style={{ height: '10%' }}
+        >
+          <Stack flexDirection='row' columnGap='4rem'>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={['DatePicker']}>
+                <DatePicker label="Start Date" />
+              </DemoContainer>
+            </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={['DatePicker']}>
+                <DatePicker label="End Date" />
+              </DemoContainer>
+            </LocalizationProvider>
+          </Stack>
+          <Button size='small' color='blue' type='submit' text='generate' />
+        </Box>
+        <Box sx={{ flexGrow: 1, ml: 2 }}>
+          <Grid container md={12} sx={
+            {
+              '& .MuiGrid2-root': {
+                display: 'flex',
+                alignItems: 'space-between'
+              },
+              '& .MuiGrid2-container': {
+                mb: '2rem',
+                flexWrap: 'wrap'
+              }, '& .MuiBox-root css-bapq3l': {
+                margin: 0
+              },
+              '& .MuiInputBase-input': {
+                width: '40%'
+              }
             }
           }
-        }>
-          <Grid container md={12} columnSpacing={'2rem'}>
-            <Grid md={screenWidth > 1200 ? 6 : 12} columnSpacing={'2rem'}>
-              <Grid md={6}>
-                <InfoCard title={'Total'} number={'23'}/>
+          style={{ height: '10%' }}>
+            <Grid container md={12} spacing={'1rem'} justifyContent={'center'} alignItems={'center'}>
+              <Grid md={6} display={'flex'} spacing={'1rem'} justifyContent={'space-between'}>
+                <Grid item md={6}>
+                  <InfoCard title={'Total Incomes:'} number={'$ 23'} />
+                </Grid>
+                <Grid item md={6}>
+                  <InfoCard title={'Total Outcomes:'} number={'$ 23'} />
+                </Grid>
               </Grid>
-              <Grid md={6}>
-                <InfoCard title={'Total'} number={'23'}/>
-              </Grid>
-            </Grid>
-            <Grid md={screenWidth > 1200 ? 6 : 12} columnSpacing={'2rem'}>
-              <Grid md={6}>
-                <InfoCard title={'Total'} number={'23'}/>
-              </Grid>
-              <Grid md={6}>
-                <InfoCard title={'Total'} number={'23'}/>
+
+              <Grid md={6} display={'flex'} spacing={'1rem'} justifyContent={'space-between'}>
+                <Grid item md={4}>
+                  <InfoCard title={'Total Profits:'} number={'$ 23'} />
+                </Grid>
+                <Grid item md={4}>
+                  <InfoCard title={'Last Capital:'} number={'$ 23'} />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Box>
-
-      <LineChart />
-    </section>
+          <LineChart />
+          <PieChart />
+        </Box>
+      </main>
+    </>
   )
 }
 
