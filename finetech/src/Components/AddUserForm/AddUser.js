@@ -231,7 +231,7 @@ const UserForm = ({handleClose , type}) => {
                         </MenuItem>
                         <MenuItem value={'Admin'}>Admin</MenuItem>
                         <MenuItem value={'Manager'}>Manager</MenuItem>
-                        <MenuItem value={'Acountant'}>Acountant</MenuItem>
+                        <MenuItem value={'Accountent'}>Accountent</MenuItem>
                     </Select>
                 </FormControl>
                 <TextField
