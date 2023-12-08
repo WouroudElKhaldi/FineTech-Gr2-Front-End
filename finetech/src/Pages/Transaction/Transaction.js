@@ -22,6 +22,7 @@ export default function Transaction() {
   const [profit, setProfit] = useState(null);
   const [incPerc, setIncPerc] = useState(null);
   const [outcPerc, setoutcPerc] = useState(null);
+  const [transactions , setTransactions]=useState([])
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,17 +72,43 @@ export default function Transaction() {
       }
     };
 
+    const fetchAllTrans = async () => {
+      try {
+        const total = await apiCall({
+          url: "/api/transactionss/view-trans",
+          method: "get",
+        });
+        console.log("After API Call:", total);
+         const updatedData = total.map((transaction) => ({
+           ...transaction,
+           userName:
+             transaction.User.firstName + " " + transaction.User.lastName,
+           categoryName: transaction.Category.name,
+         }));
+        setTransactions(updatedData);
 
- 
+        setLoading(false);
+        console.log("Transactions:", total);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+
     fetchIncome();
     fetchOutcome();
+    fetchAllTrans();
+  },[]);
 
 
+  useEffect(() => {
     if (income !== null && outcome !== null) {
       const profitt = income - outcome;
       setProfit(profitt);
     }
-  }, );
+  }, [income, outcome, transactions]);
+
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -163,7 +190,6 @@ export default function Transaction() {
               <TransactionChart incPerc={incPerc} outcPerc={outcPerc} />
             )
           )}{" "}
-          
         </Grid>
       </Grid>
       <span
@@ -175,12 +201,14 @@ export default function Transaction() {
       >
         <TransModal type="add" />
       </span>
-      {/* <TableComponent
+      <TableComponent
         // data={data}
+        data={transactions !== null && transactions}
         wid={wid}
         isEdit={true}
         ForWhat={"transaction"}
-      /> */}
+        
+      />
     </Box>
   );
 }

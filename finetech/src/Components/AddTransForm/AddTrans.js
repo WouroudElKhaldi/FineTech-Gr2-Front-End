@@ -24,69 +24,66 @@ const types = [
     label: "Outcome",
   },
 ];
-const data = [
-  {
-    value: "Water",
-    label: "Water",
-  },
-  {
-    value: "Electricity",
-    label: "Electricity",
-  },
-  {
-    value: "Salaries",
-    label: "Salaries",
-  },
-  {
-    value: "maintainance",
-    label: "maintainance",
-  },
-  {
-    value: "debts",
-    label: "debts",
-  },
-];
+// const data = [
+//   {
+//     value: "Water",
+//     label: "Water",
+//   },
+//   {
+//     value: "Electricity",
+//     label: "Electricity",
+//   },
+//   {
+//     value: "Salaries",
+//     label: "Salaries",
+//   },
+//   {
+//     value: "maintainance",
+//     label: "maintainance",
+//   },
+//   {
+//     value: "debts",
+//     label: "debts",
+//   },
+// ]
 
-
+// ;
 
 /////////////////////////////////////////////
 
-const AddTrans = ({ handleClose, type }) => {
+const AddTrans = ({ handleClose, type, selectedRowData }) => {
   const formRef = React.createRef(null); // it referance the DOM
   const [categoryId, setCategoryId] = React.useState("");
   const [selectedType, setSelectedType] = React.useState("");
-  const [amount,setAmount]= useState(null)
-  const [categories,setCategories]=useState([])
+  const [amount, setAmount] = useState();
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
+  const { apiCall } = useApi();
 
-    const { apiCall } = useApi();
-
-
+  const userId = user.id;
   const handleChange = (event) => {
     if (event.target.name === "type") {
       setSelectedType(event.target.value);
-    } else if(event.target.name==="categoryId") {
+    } else if (event.target.name === "categoryId") {
       setCategoryId(event.target.value);
-    }
-    else{
-      setAmount(event.target.value)
+    } else {
+      setAmount(event.target.value);
     }
   };
 
-  // const handleFormSubmit = (e) => {
-  //   e.preventDefault();
-  //   // handleClose();
-  // };
   const handleAddTrans = async (e) => {
     e.preventDefault();
-
- 
     try {
       const total = await apiCall({
         url: "/api/transactionss/add",
         method: "post",
-        data: dataForm,
+        data: {
+          type: selectedType,
+          amount: amount,
+          userId: userId,
+          categoryId: categoryId,
+        },
       });
       // Assuming the response contains updated transaction data, handle it appropriately.
       // For example, you might want to update the UI or show a success message.
@@ -94,24 +91,42 @@ const AddTrans = ({ handleClose, type }) => {
     } catch (error) {
       // Handle errors more gracefully, e.g., show a user-friendly error message.
       console.log("Error adding transaction:", error);
-    
-  };
-  
-    // handleClose();
-  };
+    }
 
-  const handleEditUser = (e) => {
+    handleClose();
+  };
+  ////////////////////
+    useEffect(() => {
+      if (type === "edit" && selectedRowData) {
+        // Populate your form fields with selectedRowData
+        setSelectedType(selectedRowData.type);
+        setCategoryId(selectedRowData.categoryId);
+        setAmount(selectedRowData.amount);
+        // ... (other fields)
+      }
+    }, [type, selectedRowData]);
+
+  const handleEditUser = async (e) => {
     e.preventDefault();
-    // handleClose();
-  };
-
-  const handleFromClear = () => {
-    const form = formRef.current;
-    const inputFields = form.querySelectorAll(".MuiTextField-root input");
-    inputFields.forEach((input) => {
-      input.value = "";
-    });
-    setCategoryId("");
+    try {
+      const total = await apiCall({
+        url: "/api/transactionss/edit",
+        method: "patch",
+        data: {
+          type: selectedType,
+          amount: amount,
+          userId: userId,
+          categoryId: categoryId,
+        },
+      });
+      // Assuming the response contains updated transaction data, handle it appropriately.
+      // For example, you might want to update the UI or show a success message.
+      console.log("Transaction edited successfully:", total.data);
+    } catch (error) {
+      // Handle errors more gracefully, e.g., show a user-friendly error message.
+      console.log("Error adding transaction:", error);
+    }
+    handleClose();
   };
 
   const divStyle = {
@@ -126,14 +141,7 @@ const AddTrans = ({ handleClose, type }) => {
     alignItems: "center",
   };
 
-  const dataForm=new FormData()
-  dataForm.append("type", selectedType);
-  dataForm.append("categoryId",categoryId);
-  dataForm.append("amount", amount)
-  dataForm.append("userId",user.id)
-
   useEffect(() => {
- 
     // console.log(object)
     const fetchCategories = async () => {
       try {
@@ -143,27 +151,21 @@ const AddTrans = ({ handleClose, type }) => {
         });
         console.log("After API Call:", total);
         setCategories(total.data);
-      
+
         setLoading(false);
         console.log("types:", total.data);
-
       } catch (error) {
         console.log(error);
         setLoading(false);
       }
     };
 
-
-
     fetchCategories();
- 
   }, []);
+
   return (
     <>
       <Box
-        ref={formRef}
-        component="form"
-        onSubmit={type === "add" ? handleAddTrans : handleEditUser}
         sx={{
           "& .MuiFormControl-root": {
             mt: 2,
@@ -230,97 +232,91 @@ const AddTrans = ({ handleClose, type }) => {
             className={styles.Exit}
             onClick={() => {
               handleClose();
-              handleFromClear();
             }}
           >
             <CloseIcon />
           </span>
         </div>
-        <form onSubmit={handleAddTrans}>
-
-        </form>
-        <Stack>
-          
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Type *</InputLabel>
-            <Select
-              name="type"
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={selectedType}
-              label="Type *"
-              onChange={(e) => handleChange(e)}
-              sx={{
-                "& .MuiSvgIcon-root": {
-                  color: (theme) => theme.palette.primary.main,
-                },
-              }}
-            >
-              {types.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Categories *</InputLabel>
-            <Select
-              name="categoryId"
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={categoryId}
-              label="categories *"
-              onChange={(e) => handleChange(e)}
-              sx={{
-                "& .MuiSvgIcon-root": {
-                  color: (theme) => theme.palette.primary.main,
-                },
-              }}
-            >
-
-            
-             {categories &&
-    categories
-      .filter((option) =>
-        selectedType === "Income" ? option.type === "Income" : option.type === "Outcome"
-      )
-      .map((option) => (
-        <MenuItem key={option.id} value={option.id}>
-          {option.name}
+        <form onSubmit={type === "add" ? handleAddTrans : handleEditUser}>
+          <Stack>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Type *</InputLabel>
+              <Select
+                name="type"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={selectedType}
+                label="Type *"
+                onChange={(e) => handleChange(e)}
+                sx={{
+                  "& .MuiSvgIcon-root": {
+                    color: (theme) => theme.palette.primary.main,
+                  },
+                }}
+              >
+                {types.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
                   </MenuItem>
                 ))}
-            </Select>
-          </FormControl>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">
+                Categories *
+              </InputLabel>
+              <Select
+                name="categoryId"
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={categoryId}
+                label="categories *"
+                onChange={(e) => handleChange(e)}
+                sx={{
+                  "& .MuiSvgIcon-root": {
+                    color: (theme) => theme.palette.primary.main,
+                  },
+                }}
+              >
+                {categories &&
+                  categories
+                    .filter((option) =>
+                      selectedType === "Income"
+                        ? option.type === "Income"
+                        : option.type === "Outcome"
+                    )
+                    .map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+              </Select>
+            </FormControl>
 
-          <TextField
-            name="amount"
-            required
-            id="outlined-required"
-            label="Amount"
-            placeholder="Amount"
-            type="number"
-            onInput={(e) => {
-              e.target.value = Math.max(0, parseInt(e.target.value))
-                .toString()
-                .slice(0, 12);
-            }}
-            onChange={(e) => handleChange(e)}
-          />
-
-          <div style={divStyle}>
-            <Button
-            type={"submit"}
-              text={type === "add" ? "Add" : "Edit"}
-              color={"blue"}
-              size={"small"}
-         
+            <TextField
+              name="amount"
+              required
+              id="outlined-required"
+              label="Amount"
+              placeholder="Amount"
+              type="number"
+              onInput={(e) => {
+                e.target.value = Math.max(0, parseInt(e.target.value))
+                  .toString()
+                  .slice(0, 12);
+              }}
+              onChange={(e) => handleChange(e)}
             />
-            <span onClick={handleFromClear}>
-              <Button text={"Clear"} color={"Gray"} size={"small"} />
-            </span>
-          </div>
-        </Stack>
+            <div style={divStyle}>
+              <Button
+                type={"submit"}
+                text={type === "add" ? "Add" : "Edit"}
+                color={"blue"}
+                size={"small"}
+              />
+            </div>
+          </Stack>
+        </form>
       </Box>
     </>
   );

@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
 import styles from "./AddTrans.module.css";
-const TransModal = ({ type }) => {
+const TransModal = ({ type, selectedRowData }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -50,7 +50,11 @@ const TransModal = ({ type }) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddTrans handleClose={handleClose} type={type} />
+          <AddTrans
+            handleClose={handleClose}
+            type={type}
+            selectedRowData={selectedRowData}
+          />
         </Box>
       </Modal>
     </>
