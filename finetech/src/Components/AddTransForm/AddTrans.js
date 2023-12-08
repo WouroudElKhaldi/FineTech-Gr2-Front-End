@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import { Typography } from "@mui/material";
@@ -10,32 +10,18 @@ import styles from "./AddTrans.module.css";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import useApi from "../../Hooks/UseApi";
+import { AuthContext } from "../../Context/AuthContext";
 ////////////////////////////////////////
-//create calender picker using mui
-const dateNow = new Date(); // Creating a new date object with the current date and time
-const year = dateNow.getFullYear(); // Getting current year from the created Date object
-const monthWithOffset = dateNow.getUTCMonth() + 1; // January is 0 by default in JS. Offsetting +1 to fix date for calendar.
-const month = // Setting current Month number from current Date object
-  monthWithOffset.toString().length < 2 // Checking if month is < 10 and pre-prending 0 to adjust for date input.
-    ? `0${monthWithOffset}`
-    : monthWithOffset;
-const date =
-  dateNow.getUTCDate().toString().length < 2 // Checking if date is < 10 and pre-prending 0 if not to adjust for date input.
-    ? `0${dateNow.getUTCDate()}`
-    : dateNow.getUTCDate();
 
-const materialDateInput = `${year}-${month}-${date}`; // combining to format for defaultValue or value attribute of material <TextField>
-
-///////////////////////////////////////
 const types = [
   {
     value: "Income",
     label: "Income",
   },
   {
-    value: "Expences",
-    label: "Expences",
+    value: "Outcome",
+    label: "Outcome",
   },
 ];
 const data = [
@@ -61,17 +47,30 @@ const data = [
   },
 ];
 
+
+
 /////////////////////////////////////////////
 
 const AddTrans = ({ handleClose, type }) => {
   const formRef = React.createRef(null); // it referance the DOM
-  const [category, setCategory] = React.useState("");
+  const [categoryId, setCategoryId] = React.useState("");
   const [selectedType, setSelectedType] = React.useState("");
+  const [amount,setAmount]= useState(null)
+  const [categories,setCategories]=useState([])
+  const [loading, setLoading] = useState(true);
+  const {user} = useContext(AuthContext)
+
+    const { apiCall } = useApi();
+
+
   const handleChange = (event) => {
     if (event.target.name === "type") {
       setSelectedType(event.target.value);
-    } else {
-      setCategory(event.target.value);
+    } else if(event.target.name==="categoryId") {
+      setCategoryId(event.target.value);
+    }
+    else{
+      setAmount(event.target.value)
     }
   };
 
@@ -79,8 +78,25 @@ const AddTrans = ({ handleClose, type }) => {
   //   e.preventDefault();
   //   // handleClose();
   // };
-  const handleAddUser = (e) => {
+  const handleAddTrans = async (e) => {
     e.preventDefault();
+
+ 
+    try {
+      const total = await apiCall({
+        url: "/api/transactionss/add",
+        method: "post",
+        data: dataForm,
+      });
+      // Assuming the response contains updated transaction data, handle it appropriately.
+      // For example, you might want to update the UI or show a success message.
+      console.log("Transaction added successfully:", total.data);
+    } catch (error) {
+      // Handle errors more gracefully, e.g., show a user-friendly error message.
+      console.log("Error adding transaction:", error);
+    
+  };
+  
     // handleClose();
   };
 
@@ -95,7 +111,7 @@ const AddTrans = ({ handleClose, type }) => {
     inputFields.forEach((input) => {
       input.value = "";
     });
-    setCategory("");
+    setCategoryId("");
   };
 
   const divStyle = {
@@ -109,12 +125,45 @@ const AddTrans = ({ handleClose, type }) => {
     display: "flex",
     alignItems: "center",
   };
+
+  const dataForm=new FormData()
+  dataForm.append("type", selectedType);
+  dataForm.append("categoryId",categoryId);
+  dataForm.append("amount", amount)
+  dataForm.append("userId",user.id)
+
+  useEffect(() => {
+ 
+    // console.log(object)
+    const fetchCategories = async () => {
+      try {
+        const total = await apiCall({
+          url: "/api/categories/view-all-categories",
+          method: "get",
+        });
+        console.log("After API Call:", total);
+        setCategories(total.data);
+      
+        setLoading(false);
+        console.log("types:", total.data);
+
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+
+
+
+    fetchCategories();
+ 
+  }, []);
   return (
     <>
       <Box
         ref={formRef}
         component="form"
-        onSubmit={type === "add" ? handleAddUser : handleEditUser}
+        onSubmit={type === "add" ? handleAddTrans : handleEditUser}
         sx={{
           "& .MuiFormControl-root": {
             mt: 2,
@@ -131,10 +180,15 @@ const AddTrans = ({ handleClose, type }) => {
           },
           "& .MuiOutlinedInput-root": {
             border: "white",
-          },'& .MuiOutlinedInput-notchedOutline ':{
-            border: '1px solid white',
-            borderRadius: '4px'
-        } 
+          },
+          "& .MuiOutlinedInput-notchedOutline ": {
+            border: "1px solid white",
+            borderRadius: "4px",
+          },
+          "& .MuiButtonBase-root": {
+            // color: "black",
+            // backgroundColor: "aqua",
+          },
         }}
         autoComplete="off"
       >
@@ -182,10 +236,15 @@ const AddTrans = ({ handleClose, type }) => {
             <CloseIcon />
           </span>
         </div>
+        <form onSubmit={handleAddTrans}>
+
+        </form>
         <Stack>
+          
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Type *</InputLabel>
             <Select
+              name="type"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={selectedType}
@@ -207,10 +266,11 @@ const AddTrans = ({ handleClose, type }) => {
           <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Categories *</InputLabel>
             <Select
+              name="categoryId"
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={category}
-              label="Categories *"
+              value={categoryId}
+              label="categories *"
               onChange={(e) => handleChange(e)}
               sx={{
                 "& .MuiSvgIcon-root": {
@@ -218,44 +278,43 @@ const AddTrans = ({ handleClose, type }) => {
                 },
               }}
             >
-              {data.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
+
+            
+             {categories &&
+    categories
+      .filter((option) =>
+        selectedType === "Income" ? option.type === "Income" : option.type === "Outcome"
+      )
+      .map((option) => (
+        <MenuItem key={option.id} value={option.id}>
+          {option.name}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
-          <TextField
-            required
-            id="outlined-required"
-            label="Company"
-            placeholder="Company"
-          />
-          <TextField
-            required
-            id="outlined-required"
-            label="User"
-            placeholder="User"
-          />
 
           <TextField
+            name="amount"
             required
             id="outlined-required"
             label="Amount"
             placeholder="Amount"
             type="number"
+            onInput={(e) => {
+              e.target.value = Math.max(0, parseInt(e.target.value))
+                .toString()
+                .slice(0, 12);
+            }}
+            onChange={(e) => handleChange(e)}
           />
-          <TextField
-            required
-            id="outlined-required"
-            label="Description"
-            placeholder="Description"
-          />
+
           <div style={divStyle}>
             <Button
+            type={"submit"}
               text={type === "add" ? "Add" : "Edit"}
               color={"blue"}
               size={"small"}
+         
             />
             <span onClick={handleFromClear}>
               <Button text={"Clear"} color={"Gray"} size={"small"} />

@@ -3,19 +3,17 @@ import { Doughnut } from "react-chartjs-2";
 import style from "./TransactionChart.module.css";
 Chart.register(Tooltip, ArcElement, Legend);
 
-const TransactionChart = () => {
+const TransactionChart = ({incPerc, outcPerc}) => {
   const data = {
     labels: ["Income", "Outcome"],
-    datasets : [{
-       
-        data: [60, 40], 
-        backgroundColor: ['#2D99EF', '#17456E' ],
+    datasets: [
+      {
+        data: [incPerc, outcPerc],
+        backgroundColor: ["#2D99EF", "#17456E"],
         hoverOffset: 10,
-    }]
+      },
+    ],
   };
-
-
-
 
   return (
     <div className={style.container}>
