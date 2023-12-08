@@ -129,6 +129,9 @@ export default function Transaction() {
             alignContent: "space-between",
             justifyContent: "space-between",
           },
+          // "& .InfoCard_Container":{
+          //   marginBottom:"1rem"
+          // },
         }}
       >
         <Grid md={screenWidth > 1200 ? 6 : 12} container spacing={1}>
@@ -137,6 +140,7 @@ export default function Transaction() {
             md={12}
             sx={{
               padding: 0,
+              marginBottom: "1.5Rem",
             }}
           >
             {loading ? (
@@ -152,6 +156,7 @@ export default function Transaction() {
             md={12}
             sx={{
               padding: 0,
+              marginBottom: "1.5Rem",
             }}
           >
             {loading ? (
@@ -167,6 +172,7 @@ export default function Transaction() {
             md={12}
             sx={{
               padding: 0,
+              marginBottom: "1.5Rem",
             }}
           >
             <InfoCard title={"Total profit"} number={profit} />
@@ -207,7 +213,6 @@ export default function Transaction() {
         wid={wid}
         isEdit={true}
         ForWhat={"transaction"}
-        
       />
     </Box>
   );

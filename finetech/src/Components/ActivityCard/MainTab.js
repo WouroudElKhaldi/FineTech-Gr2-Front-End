@@ -158,7 +158,7 @@ export default function MainTab() {
 
         <TabPanel key={value} value={value}>
           <h1 style={{ fontWeight: "bold", textAlign: "center" }}>
-            {value === "Transaction" ? "Manage Transaction" : "Manage Goal"}
+            {value === "Transaction" ? "History Transaction" : "History Goal"}
           </h1>
           {filteredData
             .slice((page - 1) * itemsPerPage, page * itemsPerPage)

@@ -26,28 +26,23 @@ export default function ProfileDetails() {
           // "& .MuiTypography-root ":{hei},
         }}
       >
-        <Typography variant="h4">Additional Details</Typography>
+        <Typography variant="h4" fontSize={"1.5Rem"} fontWeight={"bold"}>
+          Additional Details
+        </Typography>
         <div>
           <span className={style.span}>
-            <BadgeIcon/>
-            <Typography
-              variant="subtitle1"
-              marginRight={"20px"}
-            >
+            <BadgeIcon />
+            <Typography variant="subtitle1" marginRight={"20px"}>
               {" "}
               ID:
             </Typography>{" "}
-            <Typography variant="subtitle1">
-              {datas.id}
-            </Typography>
+            <Typography variant="subtitle1">{datas.id}</Typography>
           </span>
 
           <span className={style.span}>
+            
             <DnsIcon />
-            <Typography
-              variant="subtitle1"
-              marginRight={"20px"}
-            >
+            <Typography variant="subtitle1" marginRight={"20px"}>
               Name:
             </Typography>
             <Typography variant="subtitle1">
@@ -57,10 +52,7 @@ export default function ProfileDetails() {
 
           <span className={style.span}>
             <EmailIcon />
-            <Typography
-              variant="subtitle1"
-              marginRight={"20px"}
-            >
+            <Typography variant="subtitle1" marginRight={"20px"}>
               {" "}
               Email:
             </Typography>
@@ -69,10 +61,7 @@ export default function ProfileDetails() {
 
           <span className={style.span}>
             <EventIcon />
-            <Typography
-              variant="subtitle1"
-              marginRight={"20px"}
-            >
+            <Typography variant="subtitle1" marginRight={"20px"}>
               Date of Birth:
             </Typography>
             <Typography variant="subtitle1">{datas.dob}</Typography>
