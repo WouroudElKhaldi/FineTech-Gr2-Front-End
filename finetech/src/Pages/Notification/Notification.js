@@ -4,6 +4,7 @@ import Box from '@mui/material/Box'
 import  {Stack} from '@mui/material'
 import {Typography} from '@mui/material'
 import Pagination from '@mui/material/Pagination';
+import Sidebar from '../../Layouts/Sidebar/Sidebar'
 
 export default function Notification() {
 
@@ -40,6 +41,7 @@ const handlePageChange = (event, value) => {
 
   return (
     <Box sx={{height : '100vh'}}>
+      <Sidebar/>
       <Typography
                         variant="h3"
                         component="h3"

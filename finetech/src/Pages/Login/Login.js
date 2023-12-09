@@ -14,12 +14,13 @@ import {
 } from '@mui/material'
 import IconButton from '@mui/material/IconButton';
 import {Visibility , VisibilityOff} from '@mui/icons-material';
-import { useState, useContext } from "react";
+import { useState, useContext , useEffect } from "react";
 import useApi from '../../Hooks/UseApi';
 import { AuthContext } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [loading, setLoading] = useState(false);
@@ -34,7 +35,6 @@ const Login = () => {
             setLoading(false);
             return;
         }
-
 
         try {
               await apiCall({
@@ -55,6 +55,17 @@ const Login = () => {
         }
     };
 
+    useEffect(() => {
+        const handleResize = () => {
+          const newWid = window.innerWidth;
+          setScreenWidth(newWid);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => {
+          window.removeEventListener("resize", handleResize);
+        };
+      }, []);
+
     const formRef = React.createRef(null);
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -66,13 +77,20 @@ const Login = () => {
 
     return (
         <>
-        <div  className={style.container}>
-            <section className={style.loginHeroSectionContainer}>
+        <div  className={style.container} style={{
+            height: '100vh', 
+            display: 'flex',
+            justifyContent: 'center'
+        }}>
+            <section className={style.loginHeroSectionContainer} style={{
+                display: screenWidth < 800 ? 'none': 'flex'
+            }}>
                 <div className={style.loginHeroSection}>
-                    <img src={loginLogo} className={style.loginHeroSectionImage} alt='login' />
+                    <img src={loginLogo} className={style.loginHeroSectionImage} alt='login' width='100%'/>
                 </div>
             </section>
-            <section className={style.loginFormSection}>
+            <section className={style.loginFormSection} 
+            >
                 <Box 
                 ref={formRef}
                 onSubmit={(e)=>submitHandler(e)}
@@ -83,7 +101,7 @@ const Login = () => {
                          mb: 2, 
                          ml:0 , 
                          mr: 0 ,
-                         width: '25rem'
+                         width: screenWidth > 1000 ? '25rem' : '20rem'
                         },
                     '& .MuiInputBase-root':{
                         color : 'white', 
@@ -107,13 +125,17 @@ const Login = () => {
                     <Typography
                         variant="h3"
                         component="h3"
-                        sx={{ textAlign: "left", mt: 3, mb: 3, ml: '8px', width: 'fit-content' , fontWeight: 'bold'}}
+                        sx={{ textAlign: "left", mt: 3, mb: 3, ml: '8px', width: 'fit-content' , fontWeight: 'bold',
+                        fontFamily: 'outfit',
+                        fontSize: screenWidth < 800 ? '2.5rem' : '3.2rem'
+                    }}
                     >
                     Login to your account
                     </Typography>
                     <Stack
                         sx={{
                             rowGap: '2rem',
+                            alignItems: screenWidth < 800 ? 'center' : 'flex-start'
                         }}
                     >
                         <TextField

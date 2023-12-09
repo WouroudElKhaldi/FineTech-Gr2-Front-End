@@ -13,7 +13,7 @@
     }
     
     .loginHeroSection {
-        height: 100vh;
+        height: 100%;
         width: 100%;
         display: inherit;
         align-items: center;
@@ -21,13 +21,15 @@
     }
     
     .loginHeroSectionImage {
-        height: 70%;
+        height: 100%;
         width: 70%;
     }
     
     .loginFormSection {
-        width: 40vw;
+        width: 40%;
         height: 70vh;
+        display: flex;
+        align-items: center;
     }
     
     .loginForm {
@@ -126,10 +128,10 @@
     }
 }
 
-@media screen and (max-width: 769px) {
+@media screen and (max-width: 800px) {
     .container {
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
         justify-content: space-between;
         align-items: center;
     }
