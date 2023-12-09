@@ -7,6 +7,7 @@ import UserChart from "../../Components/UserChart/UserChart";
 import { Typography } from "@mui/material";
 import UserModal from '../../Components/AddUserForm/AddUserModal';
 import useApi from '../../Hooks/UseApi';
+import Sidebar from '../../Layouts/Sidebar/Sidebar';
 
 const UserPage = () => {
   const {apiCall} = useApi() ;
@@ -83,7 +84,8 @@ const UserPage = () => {
   }, [])
 
   return (
-    <Box sx={{ flexGrow: 1 , ml: 2 }}>
+    <Box sx={{ flexGrow: 1 , display: 'flex' , flexDirection: 'column', ml: '5rem'}}>
+      <Sidebar/>
         <Typography
         variant="h3"
         component="h3"

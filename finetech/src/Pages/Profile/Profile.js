@@ -26,13 +26,13 @@ const Profile = () => {
     const getUser = async() =>{
       const userFetched = await apiCall({url:'api/auth/user',method:'post',data:{id:user.id}})
       if(userFetched){
-        setUserData(userFetched)
+        setUserData(userFetched.User)
       }
     }
     getUser()
   }
     }
-  },[user])
+  },[apiCall , user])
 
   const handleOverview = () => {
     setOverview(true);

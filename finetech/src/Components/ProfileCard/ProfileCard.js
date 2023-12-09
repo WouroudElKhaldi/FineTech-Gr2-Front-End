@@ -2,13 +2,20 @@ import {useState , useEffect} from "react";
 import {Box, Stack , Avatar , Typography} from '@mui/material'
 import styles from './ProfileCard.module.css'
 import PersonIcon from '@mui/icons-material/Person';
-import InsertInvitationIcon from '@mui/icons-material/InsertInvitation';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { CalendarIcon } from "@mui/x-date-pickers";
 
-const ProfileCard = ({handleOverview , overview , handleEdit , edit}) => {
+const ProfileCard = ({handleOverview , overview , handleEdit , edit , userData }) => {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-
+    // const userData = {
+    //     firstName : 'Wouroud',
+    //     lastName: 'EL Khaldi',
+    //     image : 'wouoru',
+    //     password: 'wouroud',
+    //     role: 'Admin',
+    //     email: 'warde@gmail.com',
+    //     dob: '02-02-2004'
+    // }
+    // userData && console.log(userData)
 
     useEffect(() => {
         const handleResize = () => {
@@ -60,7 +67,7 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit}) => {
                     }}
                     className={styles.Name}
                 >
-                    James Bond
+                    {userData.firstName !== null ? userData.firstName : ''}  {userData.lastName !== null ? userData.lastName : ''}
                 </Typography>
                 <Stack flexDirection={screenWidth > 550 ? 'row': 'column' } justifyContent='center' columnGap={'3rem'} color='#BABABA'>
                     <span style={{
@@ -74,21 +81,7 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit}) => {
                         variant='body1'
                         component='p'
                         >
-                        Admin
-                    </Typography>
-                    </span>
-                    <span style={{
-                        display: 'flex',
-                        width: screenWidth > 550 ? '' : '100%',
-                        justifyContent: 'center',
-                        marginBottom: "1rem"
-                    }}>
-                    <LocationOnIcon/>
-                    <Typography 
-                        variant='body1'
-                        component='p'
-                        >
-                        Akkar
+                        {userData.role}
                     </Typography>
                     </span>
                     <span style={{
@@ -102,7 +95,7 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit}) => {
                         variant='body1'
                         component='p'
                         >
-                        01/12/2004
+                        {userData.dob !== null && userData.dob  }
                     </Typography>
                     </span>
                 </Stack>

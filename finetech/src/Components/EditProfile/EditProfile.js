@@ -7,13 +7,32 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import InputFileUpload from "../AddUserForm/Upload Button";
 import { Button } from "../Button/Button";
+import axios from "axios";
 
-const EditProfile = ( ) => {
+const EditProfile = ({}) => {
+    const userData = {
+        firstName : 'Wouroud',
+        lastName: 'EL Khaldi',
+        image : 'wouoru',
+        password: 'wouroud',
+        role: 'Admin',
+        email: 'warde@gmail.com',
+        dob: '02-02-2004'
+    }
     const formRef = React.createRef(null);
-    const [role , setRole] = useState('')
+    const [firstName , setFirstName] = useState(userData && userData.firstName !== null && userData.firstName)
+    const [lastName , setLastName] = useState(userData && userData.lastName !== null && userData.lastName)
+    const [image , setImage] = useState(userData && userData.image !== null && userData.image)
+    const [password , setPassword] = useState(userData && userData.password !== null && userData.password)
+    const [role , setRole] = useState(userData && userData.role !== null && userData.role)
+    const [email , setEmail] = useState(userData && userData.email !== null && userData.email)
+    const [dob , setDob] = useState(userData && userData.dob !== null && userData.dob)
     const [showPassword , setShowPassword] = useState(false)
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [display, setDisplay] = useState(screenWidth < 900 ? 'column' : 'row');
+    const [error , setError] = useState(false)
+    const [errorMessage , setErrorMessage] = useState('')
+    const [loading , setLoading] = useState(false)
 
     useEffect(() => {
         const handleResize = () => {
@@ -27,9 +46,24 @@ const EditProfile = ( ) => {
         };
     }, []);
     
-    const handleChange = (event) => {
-        setRole(event.target.value);
-      };
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if(name === 'image'){
+            setImage(value)
+        }else if(name === 'firstName'){
+            setFirstName(value)
+        }else if (name === 'lastName'){
+            setLastName(value)
+        }else if (name === 'password'){
+            setPassword(value)
+        }else if (name === "email"){
+            setEmail(value)
+        }else if (name === 'dob'){
+            setDob(value)
+        } else if (name === 'role'){
+            setRole(value)
+        }
+    };
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -37,8 +71,40 @@ const EditProfile = ( ) => {
         event.preventDefault();
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault() ;
+        if (!firstName || !lastName || !role || !dob || !email || !password){
+            setError(true)
+            setErrorMessage('All input fields are required')
+            return ;
+        }
+        try {
+            const updateUser = await axios.patch(
+                'api/auth/update',
+                {
+                    firstName: firstName ,
+                    lastName : lastName ,
+                    dob : dob , 
+                    image : image ,
+                    role : role ,
+                    password: password,
+                    email : email                    
+                },
+              {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    },                    
+              }
+            )
+            console.log(updateUser)
+            setError(false)
+            setLoading(false)
+        } catch (error){
+            setError(true)
+            setErrorMessage('Something goes wrong')
+            setLoading(false)
+            console.log('Error in API call' , errorMessage , error)
+        }
       };
 
     const handleFromClear = () => {
@@ -56,9 +122,6 @@ const EditProfile = ( ) => {
 
     return(
         <Box 
-            ref={formRef}
-            onSubmit={handleSubmit}
-            component='form'
             sx={{
                 bgcolor: '#212936' ,
                 width: '90%',
@@ -111,6 +174,9 @@ const EditProfile = ( ) => {
             }}
         autoComplete="off"
         >
+            <form 
+            ref={formRef}
+            >
             <Stack flexDirection={display} sx={{
                 justifyContent: screenWidth > 900 ? 'space-around' : 'center',
             }}>
@@ -122,20 +188,23 @@ const EditProfile = ( ) => {
                         id="outlined-required"
                         label="FirstName"
                         placeholder='FirstName'
+                        onChange={handleChange}
                     /> 
                     <TextField
                         required
                         id="outlined-required"
                         label="LastName"
                         placeholder='LastName'
+                        onChange={handleChange}
                     />    
                     <TextField
                         required
                         id="outlined-required"
                         label="Email"
                         placeholder='Email'
+                        onChange={handleChange}
                     />      
-                                     <FormControl required 
+                    <FormControl required 
                     sx={{ m: 1 , 
                     '& .MuiSvgIcon-root':{
                         color: 'white',
@@ -199,6 +268,10 @@ const EditProfile = ( ) => {
                                 </IconButton>
                             </InputAdornment>
                             }
+                            label= "Password"
+                            name="Oldpassword"
+                            disabled
+                            value={userData.password}
                         />
                     </FormControl>
                     <FormControl sx={{ m: 1, width: '20ch' }} variant="outlined">
@@ -220,6 +293,8 @@ const EditProfile = ( ) => {
                             </InputAdornment>
                             }
                             label="Password"
+                            name="password"
+                            onChange={handleChange}
                             />
                     </FormControl>                    
                     <InputFileUpload/>
@@ -245,7 +320,8 @@ const EditProfile = ( ) => {
                         width : '100%',
                         display: 'flex' ,
                         justifyContent: screenWidth > 900 ? 'flex-start' : 'center'
-                    }}>
+                    }}
+                    onClick={handleSubmit}>
                         <Button text={'Submit'} color={'blue'} size={'small'} />
                     </span>
                     <span 
@@ -262,6 +338,7 @@ const EditProfile = ( ) => {
                     </>
                 ): ""}
             </Stack>
+            </form>
         </Box>
     )
 }
