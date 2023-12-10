@@ -15,6 +15,7 @@ const Sidebar = () => {
     const { user } = useContext(AuthContext)
     const [isOpen, setIsOpen] = useState(false);
     const [items, setItems] = useState([]);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const managerItems = [
         { item: "Transactions", link: "/transaction", icon: <PaidIcon/> },
@@ -37,60 +38,72 @@ const Sidebar = () => {
         { item: "Profile", link: "/profile", icon: <PersonIcon/> },
     ];
 
+
     useEffect(() => {
         if (user) {
-            if (user.role !== null) {
-                if (user.role === 'Admin') {
-                    setItems(managerItems);
-                } else if (user.role === 'Manager') {
-                    setItems(adminItems);
-                } else {
-                    setItems(accountantItems);
-                }
+          if (user.role !== null) {
+            if (user.role === "Admin") {
+              setItems(adminItems);
+            } else if (user.role === "Manager") {
+              setItems(managerItems);
+            } else {
+              setItems(accountantItems);
             }
+          }
         }
-    }, [user]);
-
-    return (
+      }, [user]);
+    
+      const handleItemClick = (item) => {
+        setSelectedItem(item);
+      };
+    
+      return (
         <nav className={`${styles.sidebar} ${isOpen ? styles.open : ""}`}>
-            <div className={styles["sidebar-inner"]}>
-                <header className={styles["sidebar-header"]}>
+          <div className={styles["sidebar-inner"]}>
+            <header className={styles["sidebar-header"]}>
+              <button
+                type="button"
+                className={`${styles["sidebar-burger"]} ${styles.button}`}
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <span className={styles["material-symbols-outlined"]}>
+                  {isOpen ? <CloseIcon /> : <MenuIcon />}
+                </span>
+              </button>
+            </header>
+            <nav className={styles["sidebar-menu"]}>
+              {items &&
+                items.map((item) => (
+                  <Link
+                    to={item.link}
+                    key={item.item}
+                    style={{ textDecoration: "none" }}
+                  >
                     <button
-                        type="button"
-                        className={`${styles["sidebar-burger"]} ${styles.button}`}
-                        onClick={() => setIsOpen(!isOpen)}
+                      type="button"
+                      className={`${styles["sidebar-button"]} ${
+                        styles.button
+                      } ${selectedItem === item ? styles.selected : ""}`}
+                      tabIndex="0"
+                      onClick={() => handleItemClick(item)}
                     >
-                        <span className={styles["material-symbols-outlined"]}>
-                            {isOpen ? (<CloseIcon />) : (<MenuIcon />)}
-                        </span>
+                      <span style={{ color: "white" }}>{item.icon}</span>
+                      <p
+                        style={{
+                          fontFamily: "outfit",
+                          fontSize: "1.2rem",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {item.item}
+                      </p>
                     </button>
-                </header>
-                <nav className={styles["sidebar-menu"]}>
-                    {items && items.map((item) => (
-                        <Link to={item.link} key={item.item} style={{
-                            textDecoration: 'none'
-                        }}>
-                            <button
-                                type="button"
-                                className={`${styles["sidebar-button"]} ${styles.button}`}
-                            >
-                                <span style={{
-                                    color: 'white'
-                                }}>
-                                    {item.icon}
-                                </span>
-                                <p style={{
-                                    fontFamily: 'outfit',
-                                    fontSize: '1.2rem',
-                                    fontWeight: 600
-                                }}>{item.item}</p>
-                            </button>
-                        </Link>
-                    ))}
-                </nav>
-            </div>
+                  </Link>
+                ))}
+            </nav>
+          </div>
         </nav>
-    );
-};
-
+      );
+    };
+    
 export default Sidebar;

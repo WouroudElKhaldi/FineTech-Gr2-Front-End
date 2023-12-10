@@ -15,7 +15,7 @@ const Navbar = () => {
         <p>
       Hi, <span style={{ color: '#2D99EF' }}>User Name</span>
     </p>
-          <img  className ={style.userImg} src={user} alt="User Image" />
+          <img  className ={style.userImg} src={user} alt="User img" />
         </div>
       </div>
     </nav>

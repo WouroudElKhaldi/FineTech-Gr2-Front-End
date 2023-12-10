@@ -1,28 +1,28 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import TransactionChart from "../../Components/TransactionChart/TransactionChart";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Box } from "@mui/material";
-import React from "react";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import InfoCard from "../../Components/InfoCard/InfoCard";
-import TableComponent from "../../Components/Table/Table.js";
+import TableComponent from "../../Components/Table/Table";
 import TransModal from "../../Components/AddTransForm/AddTransModal";
-
-// import styled from "@emotion/styled/types/base";
+import Sidebar from "../../Layouts/Sidebar/Sidebar";
+import Navbar from "../../Layouts/Navbar/Navbar";
 import useApi from "../../Hooks/UseApi";
 
 export default function Transaction() {
-
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [wid, setWid] = useState(screenWidth < 500 ? "100%" : "80%");
-    const { apiCall } = useApi();
-    const [loading, setLoading] = useState(true);
+  const { apiCall } = useApi();
+  const [loading, setLoading] = useState(true);
   const [income, setIncome] = useState(null);
   const [outcome, setOutcome] = useState(null);
   const [profit, setProfit] = useState(null);
   const [incPerc, setIncPerc] = useState(null);
-  const [outcPerc, setoutcPerc] = useState(null);
-  const [transactions , setTransactions]=useState([])
+  const [outcPerc, setOutcPerc] = useState(null);
+  const [transactions, setTransactions] = useState([]);
+  const [error, setError] = useState(false);
+  const [networkError, setNetworkError] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -35,7 +35,16 @@ export default function Transaction() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
+
+  useEffect(() => {
+    const handleOffline = () => {
+      setNetworkError(true);
+    };
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchIncome = async () => {
@@ -46,29 +55,23 @@ export default function Transaction() {
         });
         setIncome(total.data.totalIncome);
         setIncPerc(total.data.incomePercentage);
-
-        setLoading(false);
       } catch (error) {
-        console.log(error);
-        setLoading(false);
+        console.error("Error fetching income:", error);
+        setError(true);
       }
     };
-    // console.log(object)
+
     const fetchOutcome = async () => {
       try {
         const total = await apiCall({
           url: "/api/calculations/sum-outcome",
           method: "get",
         });
-        console.log("After API Call:", total);
         setOutcome(total.data.totalOutcome);
-        setoutcPerc(total.data.outcomePercentage);
-        setLoading(false);
-        console.log("Outcome:", total.data.totalOutcome);
-        console.log("%", total.data.outcomePercentage);
+        setOutcPerc(total.data.outcomePercentage);
       } catch (error) {
-        console.log(error);
-        setLoading(false);
+        console.error("Error fetching outcome:", error);
+        setError(true);
       }
     };
 
@@ -78,19 +81,16 @@ export default function Transaction() {
           url: "/api/transactionss/view-trans",
           method: "get",
         });
-        console.log("After API Call:", total);
-         const updatedData = total.map((transaction) => ({
-           ...transaction,
-           userName:
-             transaction.User.firstName + " " + transaction.User.lastName,
-           categoryName: transaction.Category.name,
-         }));
+        const updatedData = total.map((transaction) => ({
+          ...transaction,
+          userName: transaction.User.firstName + " " + transaction.User.lastName,
+          categoryName: transaction.Category.name,
+        }));
         setTransactions(updatedData);
-
-        setLoading(false);
-        console.log("Transactions:", total);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching transactions:", error);
+        setError(true);
+      } finally {
         setLoading(false);
       }
     };
@@ -98,8 +98,7 @@ export default function Transaction() {
     fetchIncome();
     fetchOutcome();
     fetchAllTrans();
-  },[]);
-
+  }, []);
 
   useEffect(() => {
     if (income !== null && outcome !== null) {
@@ -108,112 +107,49 @@ export default function Transaction() {
     }
   }, [income, outcome, transactions]);
 
-
-
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Typography
-        variant="h3"
-        component="h3"
-        sx={{ textAlign: "left", mt: 3, mb: 3, ml: 2, fontWeight: "bold" }}
-      >
+    <Box sx={{ flexGrow: 1, pl: "5rem" }}>
+      <Navbar />
+      <Sidebar />
+      <Typography variant="h3" component="h3" sx={{ textAlign: "left",pt: '5rem' , mb: 5, fontWeight: "bold" , fontFamily:'outfit' }}>
         Manage Transactions
       </Typography>
-      <Grid
-        container
-        md={12}
-        mb={"20px"}
-        sx={{
-          "& .MuiGrid2-root": {
-            display: "flex",
-            alignContent: "space-between",
-            justifyContent: "space-between",
-          },
-          // "& .InfoCard_Container":{
-          //   marginBottom:"1rem"
-          // },
-        }}
-      >
-        <Grid md={screenWidth > 1200 ? 6 : 12} container spacing={1}>
-          <Grid
-            xs={12}
-            md={12}
-            sx={{
-              padding: 0,
-              marginBottom: "1.5Rem",
-            }}
-          >
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              income !== null && (
-                <InfoCard title={"Total income"} number={income} />
-              )
-            )}
+      {networkError ? (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Typography variant="h5" color="error">Network Issue</Typography>
+        </div>
+      ) : loading ? (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Typography variant="h5">Loading...</Typography>
+        </div>
+      ) : error ? (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Typography variant="h5" color="error">Error loading data</Typography>
+        </div>
+      ) : (
+        <>
+        <Grid container md={12} mb={"20px"} sx={{ "& .MuiGrid2-root": { display: "flex", alignContent: "space-between", justifyContent: "space-between" } }}>
+          <Grid md={screenWidth > 1200 ? 6 : 12} container spacing={1}>
+            <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
+              {income !== null && <InfoCard title={"Total income"} number={income} />}
+            </Grid>
+            <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
+              {outcome !== null && <InfoCard title={"Total Outcome"} number={outcome} />}
+            </Grid>
+            <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
+              <InfoCard title={"Total profit"} number={profit} />
+            </Grid>
           </Grid>
-          <Grid
-            xs={12}
-            md={12}
-            sx={{
-              padding: 0,
-              marginBottom: "1.5Rem",
-            }}
-          >
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              outcome !== null && (
-                <InfoCard title={"Total Outcome"} number={outcome} />
-              )
-            )}{" "}
-          </Grid>
-          <Grid
-            xs={12}
-            md={12}
-            sx={{
-              padding: 0,
-              marginBottom: "1.5Rem",
-            }}
-          >
-            <InfoCard title={"Total profit"} number={profit} />
+          <Grid container xs={12} md={screenWidth > 1220 ? 6 : 12} mt={screenWidth < 1220 ? "30px" : "0px"} sx={{ display: "flex", justifyContent: "center" }}>
+            {income !== null && outcome !== null && <TransactionChart incPerc={incPerc} outcPerc={outcPerc} />}
           </Grid>
         </Grid>
-        <Grid
-          container
-          xs={12}
-          md={screenWidth > 1220 ? 6 : 12}
-          mt={screenWidth < 1220 ? "30px" : "0px"}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          {loading ? (
-            <p>Loading...</p>
-          ) : (
-            income !== null &&
-            outcome !== null && (
-              <TransactionChart incPerc={incPerc} outcPerc={outcPerc} />
-            )
-          )}{" "}
-        </Grid>
-      </Grid>
-      <span
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          width: "95%",
-        }}
-      >
+      <span style={{ display: "flex", justifyContent: "flex-end", width: "95%" }}>
         <TransModal type="add" />
       </span>
-      <TableComponent
-        // data={data}
-        data={transactions !== null && transactions}
-        wid={wid}
-        isEdit={true}
-        ForWhat={"transaction"}
-      />
+      <TableComponent data={transactions !== null && transactions} wid={wid} isEdit={true} ForWhat={"transaction"} />
+      </>
+        )}
     </Box>
   );
 }

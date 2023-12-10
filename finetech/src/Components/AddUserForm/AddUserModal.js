@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from "../Button/Button"
 import UserForm from "./AddUser";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './AddUser.module.css'
+import { json } from 'react-router-dom';
 const UserModal = ({type , data}) => {
-    // console.log(data)
+    const [userData , setUserData] = useState({})
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -23,13 +24,17 @@ const UserModal = ({type , data}) => {
         p: 4,
         display: 'flex',
         justifyContent: 'center'
-      };
-
-      const spanStyle ={
+    };
+    
+    const spanStyle ={
         width : 'fit-content',
         display : 'block'
-      }
-
+    }
+    
+    useEffect(()=>{
+        setUserData(data)
+        console.log('hello')
+    }, [data])
 
     return(
         <>
@@ -37,7 +42,7 @@ const UserModal = ({type , data}) => {
         {type === 'add' ? (
             <Button text={'Add User'} color={'blue'} size={'big'} />
             ) : type === 'edit'? (
-            <span className={styles.Exit}>
+                <span className={styles.Exit}>
                 <EditIcon/>
             </span>
         ): ''}
@@ -49,7 +54,8 @@ const UserModal = ({type , data}) => {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <UserForm handleClose={handleClose} type={type}/>
+                {data && JSON.stringify(data)}
+                <UserForm handleClose={handleClose} type={type} data={data}/>
             </Box>
         </Modal>
         </>

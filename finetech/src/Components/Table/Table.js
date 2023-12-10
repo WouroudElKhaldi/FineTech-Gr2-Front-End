@@ -1,25 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { DataGrid , GridToolbar} from '@mui/x-data-grid';
@@ -32,12 +10,13 @@ import AddGalModal from '../GoalForm/AddGoalModal';
 import DeleteGoalModal from '../GoalForm/DeleteGoalModal';
 
 
-const TableComponent = ({ data, wid, isEdit, ForWhat,  }) => {
+const TableComponent = ({ data, isEdit, ForWhat,  }) => {
   const [userData, setUserData] = useState(data);
   const [columns, setColumns] = useState([]);
   const [error, setError] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const buton = isEdit === true ? true : false;
+  
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   useEffect(() => {
@@ -51,16 +30,15 @@ const TableComponent = ({ data, wid, isEdit, ForWhat,  }) => {
     };
   }, []);
 
-  const handleEditClick = (params) => {
-    const selectedRow = userData.find((row) => row.id === params.id);
-    setSelectedRowData(selectedRow);
-    
+  const handleEditClick = (e , row) => {
+    e.preventDefault()
+    console.log(row)
+    setSelectedRowData(row);
   };
 
-  const handleDeleteClick = (params) => {
-    const selectedRow = userData.find((row) => row.id === params.id);
-    // Call the onEditClick function from props and pass the selected row data
-    setSelectedRowData(selectedRow);
+  const handleDeleteClick = (e , row ) => {
+    e.preventDefault()
+    setSelectedRowData(row);
   };
 
   let visibleFields;
@@ -71,7 +49,10 @@ const TableComponent = ({ data, wid, isEdit, ForWhat,  }) => {
       if (data && data.length > 0) {
         if (ForWhat === "transaction") {
           visibleFields = ["id", "type", "amount", "userName", "categoryName"];
-        } else {
+        }else if (ForWhat === "users") {
+          visibleFields = ["id", "firstName", "lastName", "role", "dob"];
+        } 
+        else {
           visibleFields = Object.keys(userData[0]);
         }
         if (buton === false) {
@@ -102,13 +83,17 @@ const TableComponent = ({ data, wid, isEdit, ForWhat,  }) => {
                       justifyContent: "center",
                     }}
                   >
-                    <span>
+                    <button
+                      onClick={(e) => handleEditClick(e , params.row )}
+                    >
+                      {
+                        userData !== null && 
                       <UserModal
-                        type="edit"
-                        onClick={handleEditClick}
-                        data={selectedRowData}
+                      type="edit"
+                      data={selectedRowData}
                       />
-                    </span>
+                    }
+                    </button>
                   </Grid>
                 ),
               },
@@ -124,12 +109,13 @@ const TableComponent = ({ data, wid, isEdit, ForWhat,  }) => {
                       justifyContent: "center",
                     }}
                   >
-                    <span>
+                    <button
+                      onClick={(e) => handleDeleteClick(e , params.row )}
+                    >
                       <DeleteModal
-                        onClick={handleDeleteClick}
                         data={selectedRowData}
                       />
-                    </span>
+                    </button>
                   </Grid>
                 ),
               },
@@ -298,6 +284,7 @@ const TableComponent = ({ data, wid, isEdit, ForWhat,  }) => {
                 height: "90px !important",
                 maxHeight: "90px !important",
                 fontSize: "1.2rem",
+                mb: screenWidth < 500 ? '1rem' : '0'
               },
             "& .MuiDataGrid-columnHeaderTitleContainer": {
               color: "#2D99EF !important",

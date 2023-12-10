@@ -36,7 +36,7 @@
   .sidebar-header {
     display: flex;
     align-items: center;
-    height: 72px;
+    height: 5rem;
     background: rgb(0 0 0 / 15%);
   }
   
@@ -73,12 +73,14 @@
     opacity: 0.8;
   }
   
-  .sidebar-button:hover {
+  .sidebar-button:hover,
+  .sidebar-button:focus {
     background: var(--color-blue-hover);
     opacity: 1;
   }
   
-  .sidebar-button:hover > span {
+  .sidebar-button:hover > span,
+  .sidebar-button:focus > span {
     opacity: 1;
   }
   
