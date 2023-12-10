@@ -45,6 +45,7 @@ const Profile = () => {
       const userFetched = await apiCall({url:'api/auth/user',method:'post',data:{id:user.id}})
       if(userFetched){
         setUserData(userFetched.User)
+      
       }
       setLoading(false);
     }catch(error){

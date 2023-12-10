@@ -68,7 +68,7 @@
 //     </Box>
 //   );
 // }
-import * as React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -78,6 +78,8 @@ import Style from "./ActivityCard.module.css";
 import ActivityCard from "./ActivityCard";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import useApi from "../../Hooks/UseApi";
+import { AuthContext } from "../../Context/AuthContext";
 const mockData = [
   { id: "1", type: "Transaction", content: "Transaction 1 Details" },
   { id: "2", type: "Transaction", content: "Transaction 2 Details" },
@@ -108,7 +110,9 @@ const itemsPerPage = 5;
 export default function MainTab() {
   const [value, setValue] = React.useState("Transaction");
   const [page, setPage] = React.useState(1);
-
+    const { user } = useContext(AuthContext);
+    const { apiCall } = useApi();
+const userId = user.id;
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setPage(1); // Reset the page when switching tabs
