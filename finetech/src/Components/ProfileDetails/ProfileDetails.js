@@ -6,15 +6,21 @@ import EmailIcon from "@mui/icons-material/Email";
 import EventIcon from "@mui/icons-material/Event";
 import DnsIcon from "@mui/icons-material/Dns";
 import style from "./ProfileDetails.module.css";
-const datas = {
-  id: 15,
-  firstName: "Emma",
-  lastName: "Ward",
-  role: "Accountant",
-  dob: "1984-09-15",
-  email: "emma@example.com",
-};
-export default function ProfileDetails() {
+// const userData = {
+//   id: 15,
+//   firstName: "Emma",
+//   lastName: "Ward",
+//   role: "Accountant",
+//   dob: "1984-09-15",
+//   email: "emma@example.com",
+// };
+export default function ProfileDetails({ userData }) {
+  if(!userData){
+    return <p>Loading ...</p>
+  }
+  const { id, firstName,lastName, email, dob /* other user data properties */ } =
+    userData;
+      const datePart = userData.dob.slice(0, 10);
   return (
     <div>
       <Box
@@ -36,17 +42,16 @@ export default function ProfileDetails() {
               {" "}
               ID:
             </Typography>{" "}
-            <Typography variant="subtitle1">{datas.id}</Typography>
+            <Typography variant="subtitle1">{userData.id}</Typography>
           </span>
 
           <span className={style.span}>
-            
             <DnsIcon />
             <Typography variant="subtitle1" marginRight={"20px"}>
               Name:
             </Typography>
             <Typography variant="subtitle1">
-              {datas.firstName} {datas.lastName}
+              {userData.firstName} {userData.lastName}
             </Typography>
           </span>
 
@@ -56,7 +61,7 @@ export default function ProfileDetails() {
               {" "}
               Email:
             </Typography>
-            <Typography variant="subtitle1">{datas.email}</Typography>
+            <Typography variant="subtitle1">{userData.email}</Typography>
           </span>
 
           <span className={style.span}>
@@ -64,7 +69,7 @@ export default function ProfileDetails() {
             <Typography variant="subtitle1" marginRight={"20px"}>
               Date of Birth:
             </Typography>
-            <Typography variant="subtitle1">{datas.dob}</Typography>
+            <Typography variant="subtitle1">{datePart}</Typography>
           </span>
         </div>
       </Box>
