@@ -19,10 +19,10 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit  , userData}
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    //   if (!userData) {
-    //     // Handle the case when userData is null or undefined
-    //     return null; // or render a loading state or an error message
-    //   }
+      if (!userData) {
+        // Handle the case when userData is null or undefined
+        return null; // or render a loading state or an error message
+      }
 
 
 
