@@ -58,7 +58,8 @@ const Profile = () => {
         {overview && 
           <MainTab
             userData={userData}
-          />}
+          />
+          }
 
         { overview && 
           <ProfileDetails

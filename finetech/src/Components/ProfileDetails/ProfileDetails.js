@@ -19,7 +19,8 @@ export default function ProfileDetails({ userData }) {
     return <p>Loading ...</p>
   }
   const { id, firstName,lastName, email, dob /* other user data properties */ } =
-    userData;
+    userData 
+|| {};
       const datePart = userData.dob.slice(0, 10);
   return (
     <div>
