@@ -104,7 +104,7 @@ const DeleteTransModal = ({
     setLoading(true);
     try {
       const response = await apiCall({
-        url: "", // your url 
+        url: "/api/transactionss/delete", // your url
         method: "delete",
         data: {
           id: selectedRowData.id,
