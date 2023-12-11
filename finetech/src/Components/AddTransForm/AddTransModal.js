@@ -1,14 +1,472 @@
-import { useState } from "react";
-import { Button } from "../Button/Button";
-import AddTrans from "./AddTrans";
+
+// import React, { useState, useEffect, useContext } from "react";
+// import Box from "@mui/material/Box";
+// import TextField from "@mui/material/TextField";
+// import { Typography } from "@mui/material";
+// import { Button } from "../Button/Button";
+// import Stack from "@mui/material/Stack";
+// import MenuItem from "@mui/material/MenuItem";
+// import CloseIcon from "@mui/icons-material/Close";
+// import styles from "./AddTrans.module.css";
+// import InputLabel from "@mui/material/InputLabel";
+// import FormControl from "@mui/material/FormControl";
+// import Select from "@mui/material/Select";
+// import useApi from "../../Hooks/UseApi";
+// import { AuthContext } from "../../Context/AuthContext";
+// ////////////////////////////////////////
+// import Modal from "@mui/material/Modal";
+// import EditIcon from "@mui/icons-material/Edit";
+
+// const TransModal = ({ type, selectedRowData }) => {
+//   const [open, setOpen] = useState(false);
+//   const handleOpen = () => setOpen(true);
+//   const handleClose = () => setOpen(false);
+
+// const styless= {
+//   position: "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: "30rem",
+//   bgcolor: "#212936",
+//   border: "2px solid #171B24",
+//   boxShadow: "24",
+//   p: "4",
+//   display: "flex",
+//   justifyContent: "center",
+//   alignItems: "center",
+// };
+
+//   const types = [
+//     {
+//       value: "Income",
+//       label: "Income",
+//     },
+//     {
+//       value: "Outcome",
+//       label: "Outcome",
+//     },
+//   ];
+
+//   const { user } = useContext(AuthContext);
+//   const [categoryId, setCategoryId] = React.useState("");
+//   const [selectedType, setSelectedType] = React.useState("");
+//   const [amount, setAmount] = useState();
+//   const [categories, setCategories] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const { apiCall } = useApi();
+
+//   const userId = user.id;
+
+//   const handleChange = (event) => {
+//     if (event.target.name === "type") {
+//       setSelectedType(event.target.value);
+//     } else if (event.target.name === "categoryId") {
+//       setCategoryId(event.target.value);
+//     } else {
+//       setAmount(event.target.value);
+//     }
+//   };
+
+//   const handleAddTrans = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const total = await apiCall({
+//         url: "/api/transactionss/add",
+//         method: "post",
+//         data: {
+//           type: selectedType,
+//           amount: amount,
+//           userId: userId,
+//           categoryId: categoryId,
+//         },
+//       });
+//       console.log("Transaction added successfully:", total.data);
+//     } catch (error) {
+//       console.log("Error adding transaction:", error);
+//     }
+
+//     handleClose();
+//   };
+
+//   useEffect(() => {
+//     if (type === "edit" && selectedRowData) {
+//       setSelectedType(selectedRowData.type);
+//       setCategoryId(selectedRowData.categoryId);
+//       setAmount(selectedRowData.amount);
+//     }
+//   }, [type, selectedRowData]);
+
+//   const handleEditUser = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const total = await apiCall({
+//         url: "/api/transactionss/edit",
+//         method: "patch",
+//         data: {
+//           type: selectedType,
+//           amount: amount,
+//           userId: userId,
+//           categoryId: categoryId,
+//         },
+//       });
+//       console.log("Transaction edited successfully:", total.data);
+//     } catch (error) {
+//       console.log("Error adding transaction:", error);
+//     }
+//     handleClose();
+//   };
+
+//   const divStyle = {
+//     display: "flex",
+//     justifyContent: "space-between",
+//     width: "25rem",
+//     marginTop: "1.5rem",
+//   };
+//   useEffect(() => {
+//     // console.log(object)
+//     const fetchCategories = async () => {
+//       try {
+//         const total = await apiCall({
+//           url: "/api/categories/view-all-categories",
+//           method: "get",
+//         });
+//         console.log("After API Call:", total);
+//         setCategories(total.data);
+
+//         setLoading(false);
+//         console.log("types:", total.data);
+//       } catch (error) {
+//         console.log(error);
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchCategories();
+//   }, []);
+//   return (
+//     <>
+//       <span onClick={handleOpen} className={styles.Exit}>
+//         {type === "add" ? (
+//           <Button text={"Add Transaction"} color={"blue"} size={"big"} />
+//         ) : type === "edit" ? (
+//           <span className={styles.Exit}>
+//             <EditIcon />
+//           </span>
+//         ) : (
+//           ""
+//         )}
+//       </span>
+//       <Modal
+//         open={open}
+//         onClose={handleClose}
+//         aria-labelledby="modal-modal-title"
+//         aria-describedby="modal-modal-description"
+//       >
+//         <Box sx={styless}>
+//           <Box
+//             component="form"
+//             sx={{
+//               "& .MuiFormControl-root": {
+//                 mt: 2,
+//                 mb: 2,
+//                 ml: 0,
+//                 mr: 0,
+//                 width: "25rem",
+//               },
+//               "& .MuiInputBase-input": {
+//                 color: "white",
+//               },
+//               "& .MuiFormLabel-root": {
+//                 color: "white",
+//               },
+//               "& .MuiOutlinedInput-root": {
+//                 border: "white",
+//               },
+//               "& .MuiOutlinedInput-notchedOutline ": {
+//                 border: "1px solid white",
+//                 borderRadius: "4px",
+//               },
+//               "& .MuiButtonBase-root": {
+//                 color: "black",
+//                 backgroundColor: "aqua",
+//               },
+//             }}
+//             autoComplete="off"
+//           >
+//             <div style={divStyle}>
+//               {type === "add" ? (
+//                 <Typography
+//                   variant="h4"
+//                   component="h4"
+//                   sx={{
+//                     textAlign: "left",
+//                     mt: 3,
+//                     mb: 3,
+//                     ml: "8px",
+//                     width: "fit-content",
+//                     fontWeight: "bold",
+//                   }}
+//                 >
+//                   Add Transactions
+//                 </Typography>
+//               ) : (
+//                 <Typography
+//                   variant="h4"
+//                   component="h4"
+//                   sx={{
+//                     textAlign: "left",
+//                     mt: 3,
+//                     mb: 3,
+//                     ml: "8px",
+//                     width: "fit-content",
+//                     fontWeight: "bold",
+//                   }}
+//                 >
+//                   Edit Transactions
+//                 </Typography>
+//               )}
+
+//               <span
+//                 className={styles.Exit}
+//                 onClick={() => {
+//                   handleClose();
+//                 }}
+//               >
+//                 <CloseIcon />
+//               </span>
+//             </div>
+//             <form onSubmit={type === "add" ? handleAddTrans : handleEditUser}>
+//               <Stack>
+//                 <FormControl fullWidth>
+//                   <InputLabel id="demo-simple-select-label">Type *</InputLabel>
+//                   <Select
+//                     name="type"
+//                     labelId="demo-simple-select-label"
+//                     id="demo-simple-select"
+//                     value={selectedType}
+//                     label="Type *"
+//                     onChange={(e) => handleChange(e)}
+//                     sx={{
+//                       "& .MuiSvgIcon-root": {
+//                         color: (theme) => theme.palette.primary.main,
+//                       },
+//                     }}
+//                   >
+//                     {types.map((option) => (
+//                       <MenuItem key={option.value} value={option.value}>
+//                         {option.label}
+//                       </MenuItem>
+//                     ))}
+//                   </Select>
+//                 </FormControl>
+//                 <FormControl fullWidth>
+//                   <InputLabel id="demo-simple-select-label">
+//                     Categories *
+//                   </InputLabel>
+//                   <Select
+//                     name="categoryId"
+//                     labelId="demo-simple-select-label"
+//                     id="demo-simple-select"
+//                     value={categoryId}
+//                     label="categories *"
+//                     onChange={(e) => handleChange(e)}
+//                     sx={{
+//                       "& .MuiSvgIcon-root": {
+//                         color: (theme) => theme.palette.primary.main,
+//                       },
+//                     }}
+//                   >
+//                     {categories &&
+//                       categories
+//                         .filter((option) =>
+//                           selectedType === "Income"
+//                             ? option.type === "Income"
+//                             : option.type === "Outcome"
+//                         )
+//                         .map((option) => (
+//                           <MenuItem key={option.id} value={option.id}>
+//                             {option.name}
+//                           </MenuItem>
+//                         ))}
+//                   </Select>
+//                 </FormControl>
+
+//                 <TextField
+//                   name="amount"
+//                   required
+//                   id="outlined-required"
+//                   label="Amount"
+//                   placeholder="Amount"
+//                   type="number"
+//                   onInput={(e) => {
+//                     e.target.value = Math.max(0, parseInt(e.target.value))
+//                       .toString()
+//                       .slice(0, 12);
+//                   }}
+//                   onChange={(e) => handleChange(e)}
+//                 />
+//                 <div style={divStyle}>
+//                   <Button
+//                     type={"submit"}
+//                     text={type === "add" ? "Add" : "Edit"}
+//                     color={"blue"}
+//                     size={"small"}
+//                   />
+//                 </div>
+//               </Stack>
+//             </form>
+//           </Box>
+//         </Box>
+//       </Modal>
+//     </>
+//   );
+// };
+
+// export default TransModal;
 import Modal from "@mui/material/Modal";
+import { Button } from "../Button/Button";
 import Box from "@mui/material/Box";
 import EditIcon from "@mui/icons-material/Edit";
+import React, { useState, useEffect, useContext } from "react";
+import TextField from "@mui/material/TextField";
+import { Typography } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import MenuItem from "@mui/material/MenuItem";
+import CloseIcon from "@mui/icons-material/Close";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import useApi from "../../Hooks/UseApi";
+import { AuthContext } from "../../Context/AuthContext";
 import styles from "./AddTrans.module.css";
-const TransModal = ({ type, selectedRowData }) => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
+const TransModal = ({
+  type,
+  selectedRowData,
+  open,
+  handleClose,
+  handleEditClose,
+}) => {
+  const types = [
+    {
+      value: "Income",
+      label: "Income",
+    },
+    {
+      value: "Outcome",
+      label: "Outcome",
+    },
+  ];
+
+  const [selectedTransactionId, setSelectedTransactionId] = useState(null);
+  const [categoryId, setCategoryId] = React.useState("");
+  const [selectedType, setSelectedType] = React.useState("");
+  const [amount, setAmount] = useState();
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useContext(AuthContext);
+  const { apiCall } = useApi();
+
+  const userId = user.id;
+
+  const handleChange = (event) => {
+    if (event.target.name === "type") {
+      setSelectedType(event.target.value);
+    } else if (event.target.name === "categoryId") {
+      setCategoryId(event.target.value);
+    } else {
+      setAmount(event.target.value);
+    }
+  };
+
+  const handleOpen = (rowData) => {
+    setSelectedTransactionId(rowData.id); // Set the selected transaction ID
+    open.setOpen(true);
+  };
+
+  const handleAddTrans = async (e) => {
+    e.preventDefault();
+    try {
+      const total = await apiCall({
+        url: "/api/transactionss/add",
+        method: "post",
+        data: {
+          type: selectedType,
+          amount: amount,
+          userId: userId,
+          categoryId: categoryId,
+        },
+      });
+      console.log("Transaction added successfully:", total.data);
+    } catch (error) {
+      console.log("Error adding transaction:", error);
+    }
+
+    handleClose();
+  };
+
+  const handleEditUser = async (e) => {
+    e.preventDefault();
+    try {
+      const total = await apiCall({
+        url: `http://localhost:4000/api/transactionss/edit`, // Use the selected transaction ID
+        method: "patch",
+        data: {
+          id: selectedRowData.id,
+          type: selectedType,
+          amount: amount,
+          userId: userId,
+          categoryId: categoryId,
+        },
+        headers: {
+          // Move headers outside of the data object
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      // setSuccessEdit(true);
+      // setError(false);
+      setLoading(false);
+      handleClose();
+      console.log("Transaction edited successfully:", total.data);
+    } catch (error) {
+      console.log("Error editing transaction:", error);
+      handleClose();
+    }
+  };
+
+
+
+
+
+  useEffect(() => {
+    if (type === "edit" && selectedRowData) {
+      setSelectedType(selectedRowData.type);
+      setCategoryId(selectedRowData.categoryId);
+      setAmount(selectedRowData.amount);
+    }
+  }, [type, selectedRowData]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const total = await apiCall({
+          url: "/api/categories/view-all-categories",
+          method: "get",
+        });
+        console.log("After API Call:", total);
+        setCategories(total.data);
+
+        setLoading(false);
+        console.log("types:", total.data);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const style = {
     position: "absolute",
@@ -25,39 +483,184 @@ const TransModal = ({ type, selectedRowData }) => {
     alignItem: "center",
   };
 
+  const divStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "25rem",
+    marginTop: "1.5rem",
+  };
+
   const spanStyle = {
-    width: "fit-content",
-    display: "block",
+    display: "flex",
+    alignItems: "center",
   };
 
   return (
     <>
-      <span onClick={handleOpen} style={spanStyle}>
-        {type === "add" ? (
-          <Button text={"Add Transaction"} color={"blue"} size={"big"} />
-        ) : type === "edit" ? (
-          <span className={styles.Exit}>
-            <EditIcon />
-          </span>
-        ) : (
-          ""
-        )}{" "}
-      </span>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleClose ? handleClose : handleEditClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <AddTrans
-            handleClose={handleClose}
-            type={type}
-            selectedRowData={selectedRowData}
-          />
+          <Box
+            sx={{
+              "& .MuiFormControl-root": {
+                mt: 2,
+                mb: 2,
+                ml: 0,
+                mr: 0,
+                width: "25rem",
+              },
+              "& .MuiInputBase-input": {
+                color: "white",
+              },
+              "& .MuiFormLabel-root": {
+                color: "white",
+              },
+              "& .MuiOutlinedInput-root": {
+                border: "white",
+              },
+              "& .MuiOutlinedInput-notchedOutline ": {
+                border: "1px solid white",
+                borderRadius: "4px",
+              },
+              "& .MuiButtonBase-root": {
+                // color: "black",
+                // backgroundColor: "aqua",
+              },
+            }}
+            autoComplete="off"
+          >
+            <div style={divStyle}>
+              {type === "add" ? (
+                <Typography
+                  variant="h4"
+                  component="h4"
+                  sx={{
+                    textAlign: "left",
+                    mt: 3,
+                    mb: 3,
+                    ml: "8px",
+                    width: "fit-content",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Add Transactions
+                </Typography>
+              ) : (
+                <Typography
+                  variant="h4"
+                  component="h4"
+                  sx={{
+                    textAlign: "left",
+                    mt: 3,
+                    mb: 3,
+                    ml: "8px",
+                    width: "fit-content",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Edit Transactions
+                </Typography>
+              )}
+
+              <span
+                style={spanStyle}
+                className={styles.Exit}
+                onClick={() => {
+                  handleClose();
+                }}
+              >
+                <CloseIcon />
+              </span>
+            </div>
+            <form onSubmit={type === "add" ? handleAddTrans : handleEditUser}>
+              <Stack>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Type *</InputLabel>
+                  <Select
+                    name="type"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={selectedType}
+                    label="Type *"
+                    onChange={(e) => handleChange(e)}
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        color: (theme) => theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    {types.map((option) => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Categories *
+                  </InputLabel>
+                  <Select
+                    name="categoryId"
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={categoryId}
+                    label="categories *"
+                    onChange={(e) => handleChange(e)}
+                    sx={{
+                      "& .MuiSvgIcon-root": {
+                        color: (theme) => theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    {categories &&
+                      categories
+                        .filter((option) =>
+                          selectedType === "Income"
+                            ? option.type === "Income"
+                            : option.type === "Outcome"
+                        )
+                        .map((option) => (
+                          <MenuItem key={option.id} value={option.id}>
+                            {option.name}
+                          </MenuItem>
+                        ))}
+                  </Select>
+                </FormControl>
+
+                <TextField
+                  name="amount"
+                  required
+                  id="outlined-required"
+                  label="Amount"
+                  placeholder="Amount"
+                  type="number"
+                  onInput={(e) => {
+                    e.target.value = Math.max(0, parseInt(e.target.value))
+                      .toString()
+                      .slice(0, 12);
+                  }}
+                  onChange={(e) => handleChange(e)}
+                />
+                <div style={divStyle}>
+                  <Button
+                    type={"submit"}
+                    text={type === "add" ? "Add" : "Edit"}
+                    color={"blue"}
+                    size={"small"}
+                  />
+                </div>
+              </Stack>
+            </form>
+          </Box>
         </Box>
       </Modal>
     </>
   );
 };
+
 export default TransModal;
