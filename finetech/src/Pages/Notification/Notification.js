@@ -4,7 +4,8 @@ import Box from '@mui/material/Box'
 import  {Stack} from '@mui/material'
 import {Typography} from '@mui/material'
 import Pagination from '@mui/material/Pagination';
-import Sidebar from '../../Layouts/Sidebar/Sidebar'
+import Sidebar from '../../Layouts/Sidebar/Sidebar';
+import Navbar from '../../Layouts/Navbar/Navbar'
 
 export default function Notification() {
 
@@ -40,12 +41,13 @@ const handlePageChange = (event, value) => {
 };
 
   return (
-    <Box sx={{height : '100vh'}}>
+    <Box sx={{ ml: '5rem' , mt: '5rem'}}>
+      <Navbar/>
       <Sidebar/>
       <Typography
                         variant="h3"
                         component="h3"
-                        sx={{ textAlign: "left", mt: 8, mb: 8, width: 'fit-content' , fontFamily: 'Outfit', fontWeight: 'bold'}}
+                        sx={{ textAlign: "left", mb: 8, width: 'fit-content' , fontFamily: 'Outfit', fontWeight: 'bold'}}
                         >
                         Latest Notifications
                     </Typography>

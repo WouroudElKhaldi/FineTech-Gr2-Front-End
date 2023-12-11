@@ -16,6 +16,7 @@
     font-weight: 600;
     font-size: 1.3rem;
     color: var(--color-font-gray );
+    z-index: 1;
 }
 
 .ActiveSpan {

@@ -6,27 +6,19 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import InputFileUpload from "../AddUserForm/Upload Button";
+import { Typography } from "@mui/material";
 import { Button } from "../Button/Button";
 import axios from "axios";
 
-const EditProfile = ({}) => {
-    const userData = {
-        firstName : 'Wouroud',
-        lastName: 'EL Khaldi',
-        image : 'wouoru',
-        password: 'wouroud',
-        role: 'Admin',
-        email: 'warde@gmail.com',
-        dob: '02-02-2004'
-    }
+const EditProfile = ({userData}) => {
     const formRef = React.createRef(null);
-    const [firstName , setFirstName] = useState(userData && userData.firstName !== null && userData.firstName)
-    const [lastName , setLastName] = useState(userData && userData.lastName !== null && userData.lastName)
-    const [image , setImage] = useState(userData && userData.image !== null && userData.image)
-    const [password , setPassword] = useState(userData && userData.password !== null && userData.password)
-    const [role , setRole] = useState(userData && userData.role !== null && userData.role)
-    const [email , setEmail] = useState(userData && userData.email !== null && userData.email)
-    const [dob , setDob] = useState(userData && userData.dob !== null && userData.dob)
+    const [firstName, setFirstName] = useState('');
+    const [lastName , setLastName] = useState('')
+    const [image , setImage] = useState('')
+    const [password , setPassword] = useState('')
+    const [role , setRole] = useState('')
+    const [email , setEmail] = useState('')
+    const [dob , setDob] = useState('')
     const [showPassword , setShowPassword] = useState(false)
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [display, setDisplay] = useState(screenWidth < 900 ? 'column' : 'row');
@@ -107,19 +99,6 @@ const EditProfile = ({}) => {
         }
       };
 
-    const handleFromClear = () => {
-        const form = formRef.current;
-        const inputFields = form.querySelectorAll(".MuiTextField-root input");
-        const input = form.querySelectorAll(".MuiInputBase-input MuiOutlinedInput-input Mui-readOnly MuiInputBase-readOnly css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input")
-        inputFields.forEach((input) => {
-            input.value = "";
-        });
-        input.forEach((input) => {
-            input.value = "";
-        });
-        setRole("");
-    };
-
     return(
         <Box 
             sx={{
@@ -170,13 +149,25 @@ const EditProfile = ({}) => {
                     borderRadius: '4px'
                 }, '& .Mui-focused':{
                     border: '#2D99EF'
-                }//1976d2
+                }, ' & .css-1d3z3hw-MuiOutlinedInput-notchedOutline':{
+                    border: '1px solid white !important',
+                    borderRadius: '4px'                    
+                } , '& .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-disabled':{
+                    color: 'white'
+                } , '& .MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled':{
+                    color: 'white !important'
+                }
             }}
         autoComplete="off"
         >
-            <form 
-            ref={formRef}
-            >
+            {loading ? (
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Typography variant="h5">Loading...</Typography>
+      </div>                
+            ):(
+                <form 
+                ref={formRef}
+                >
             <Stack flexDirection={display} sx={{
                 justifyContent: screenWidth > 900 ? 'space-around' : 'center',
             }}>
@@ -189,29 +180,29 @@ const EditProfile = ({}) => {
                         label="FirstName"
                         placeholder='FirstName'
                         onChange={handleChange}
-                    /> 
+                        /> 
                     <TextField
                         required
                         id="outlined-required"
                         label="LastName"
                         placeholder='LastName'
                         onChange={handleChange}
-                    />    
+                        />    
                     <TextField
                         required
                         id="outlined-required"
                         label="Email"
                         placeholder='Email'
                         onChange={handleChange}
-                    />      
-                    <FormControl required 
+                        />      
+                    <FormControl required disabled
                     sx={{ m: 1 , 
-                    '& .MuiSvgIcon-root':{
-                        color: 'white',
-                        '& .MuiList-root':{
-                            bgcolor: 'transparent'
-                        }
-                    }}}>
+                        '& .MuiSvgIcon-root':{
+                            color: 'white',
+                            '& .MuiList-root':{
+                                bgcolor: 'transparent'
+                            }
+                        }}}>
                     <InputLabel id="demo-simple-select-required-label">Role</InputLabel>
                     <Select
                     labelId="demo-simple-select-required-label"
@@ -256,7 +247,7 @@ const EditProfile = ({}) => {
                             id="outlined-adornment-password"
                             type={showPassword ? 'text' : 'password'}
                             endAdornment={
-                            <InputAdornment position="end">
+                                <InputAdornment position="end">
                                 <IconButton
                                 aria-label="toggle password visibility"
                                 onClick={handleClickShowPassword}
@@ -271,8 +262,7 @@ const EditProfile = ({}) => {
                             label= "Password"
                             name="Oldpassword"
                             disabled
-                            value={userData.password}
-                        />
+                            />
                     </FormControl>
                     <FormControl sx={{ m: 1, width: '20ch' }} variant="outlined">
                         <InputLabel htmlFor="outlined-adornment-password">New Password*</InputLabel>
@@ -298,19 +288,6 @@ const EditProfile = ({}) => {
                             />
                     </FormControl>                    
                     <InputFileUpload/>
-                    {screenWidth > 900 && 
-                    <span 
-                        onClick={handleFromClear}
-                        style={{
-                            marginTop: '1rem', 
-                            marginBottom: '1rem',
-                            width : '100%',
-                            display: 'flex' ,
-                            justifyContent: screenWidth > 900 ? 'flex-end' : 'center'
-                    }}>
-                        <Button text={'Clear'} color={'gray'} size={'small'} />
-                    </span> 
-                } 
                 </Stack>
                 {screenWidth < 900 ? (
                     <>
@@ -324,21 +301,11 @@ const EditProfile = ({}) => {
                     onClick={handleSubmit}>
                         <Button text={'Submit'} color={'blue'} size={'small'} />
                     </span>
-                    <span 
-                    onClick={handleFromClear}
-                    style={{
-                        marginTop: '1rem', 
-                        marginBottom: '1rem',
-                        width : '100%',
-                        display: 'flex' ,
-                        justifyContent: screenWidth > 900 ? 'flex-start' : 'center'
-                    }}>
-                        <Button text={'Clear'} color={'gray'} size={'small'} />
-                    </span>
                     </>
                 ): ""}
             </Stack>
             </form>
+        )}
         </Box>
     )
 }

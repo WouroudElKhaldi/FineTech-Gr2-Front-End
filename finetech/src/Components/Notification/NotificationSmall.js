@@ -16,7 +16,7 @@ const NotificationSmallCard = ({size , user, action , index ,date}) => {
     return(  
         <Box 
             sx={{
-                width: size === 'small' ? '25rem' : '65rem',
+                width: size === 'small' ? '25rem' : '90%',
                 bgcolor: '#212936',
                 border : size === 'small' ? '' : 'solid 1px #2D99EF',
                 borderRadius: size === 'small' ? '' : '20px' ,
