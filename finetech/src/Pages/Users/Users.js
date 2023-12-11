@@ -11,6 +11,7 @@ import Sidebar from "../../Layouts/Sidebar/Sidebar";
 import Navbar from "../../Layouts/Navbar/Navbar";
 import { Button } from "../../Components/Button/Button";
 import DeleteModal from "../../Components/DeleteUserForm/DeleteModal";
+import toast, { Toaster } from "react-hot-toast";
 
 const UserPage = () => {
   const { apiCall } = useApi();
@@ -34,6 +35,9 @@ const UserPage = () => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [successAdd, setSuccessAdd] = useState(false);
+  const [successDelete, setSuccessDelete] = useState(false);
+  const [successEdit, setSuccessEdit] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleEditOpen = () => setOpenEdit(true);
   const handleOpenDelete = () => setOpenDelete(true);
@@ -123,7 +127,26 @@ const UserPage = () => {
 
     fetchUserData();
     fetchUserNumber();
-  }, []);
+  }, [successDelete, successAdd, successEdit]);
+
+  useEffect(() => {
+    if (successDelete) {
+      toast.success(
+        `User ${
+          selectedRowData.firstName + " " + selectedRowData.lastName
+        } has been deleted`
+      );
+      setSuccessDelete(false);
+    }
+    if (successAdd) {
+      toast.success("User Added Successfuly");
+      setSuccessAdd(false);
+    }
+    if (successEdit) {
+      toast.success("User Updated Successfuly");
+      setSuccessDelete(false);
+    }
+  }, [successDelete, selectedRowData, successAdd]);
 
   return (
     <Box
@@ -131,6 +154,7 @@ const UserPage = () => {
     >
       <Navbar />
       <Sidebar />
+      <Toaster />
       <Typography
         variant="h3"
         component="h3"
@@ -295,12 +319,16 @@ const UserPage = () => {
             open={openEdit}
             handleClose={handleClose}
             selectedRowData={selectedRowData && selectedRowData}
+            setSuccessAdd={setSuccessAdd}
+            setSuccessEdit={setSuccessEdit}
           />
           <DeleteModal
             selectedRowData={selectedRowData && selectedRowData}
             handleOpenDelete={handleOpenDelete}
             openDelete={openDelete}
             handleClose={handleClose}
+            setSuccessDelete={setSuccessDelete}
+            setOpenDelete={setOpenDelete}
           />
         </>
       )}

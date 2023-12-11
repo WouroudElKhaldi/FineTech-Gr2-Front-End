@@ -34,7 +34,7 @@
     width: 15rem;
     border: 1px white solid ;
     border-radius: 25px;
-    justify-content: center;
+    justify-content: space-around;
     gap: 2rem;
     padding: 0.2rem;
   }
@@ -45,9 +45,7 @@
   }
   
   .userCard img {
-    width: 40px; /* Adjust the size of the user image as needed */
-    border-radius: 50%; /* Assuming the user image is a circle */
-    margin-right: 8px;
+    border-radius: 50%; 
   }
   .userName{
     color: rgb(49, 124, 189);
