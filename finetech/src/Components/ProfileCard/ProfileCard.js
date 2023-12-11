@@ -7,7 +7,6 @@ import { CalendarIcon } from "@mui/x-date-pickers";
 const ProfileCard = ({handleOverview , overview , handleEdit , edit  , userData}) => {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [loading , setLoading] = useState(false)  
-    const [data , setData] = useState(userData)
 
     useEffect(() => {
         const handleResize = () => {
@@ -19,13 +18,6 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit  , userData}
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-      if (!userData) {
-        // Handle the case when userData is null or undefined
-        return null; // or render a loading state or an error message
-      }
-
-
-
     return(
         <Box
         className={styles.Box} 

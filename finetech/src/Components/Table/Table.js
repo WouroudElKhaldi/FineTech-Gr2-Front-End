@@ -1,22 +1,21 @@
-import { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
-import { DataGrid , GridToolbar} from '@mui/x-data-grid';
-import Grid from '@mui/material/Unstable_Grid2';
-import UserModal from '../AddUserForm/AddUserModal';
-import DeleteModal from '../DeleteUserForm/DeleteModal';  
-import TransModal from '../AddTransForm/AddTransModal.js'
-import DeleteTransModal from '../DeleteTransForm/DeleteTransModal';
-import AddGalModal from '../GoalForm/AddGoalModal';
-import DeleteGoalModal from '../GoalForm/DeleteGoalModal';
+import { useState, useEffect } from "react";
+import { Box, IconButton } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import Grid from "@mui/material/Unstable_Grid2";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-
-const TableComponent = ({ data, isEdit, ForWhat,  }) => {
-  const [userData, setUserData] = useState(data);
+const TableComponent = ({
+  data,
+  isEdit,
+  ForWhat,
+  handleEditOpen,
+  setSelectedRowData,
+  handleOpenDelete,
+}) => {
   const [columns, setColumns] = useState([]);
   const [error, setError] = useState(false);
-  const [selectedRowData, setSelectedRowData] = useState(null);
   const buton = isEdit === true ? true : false;
-  
 
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   useEffect(() => {
@@ -30,30 +29,27 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
     };
   }, []);
 
-  const handleEditClick = (e , row) => {
-    e.preventDefault()
-    console.log(row)
+  const handleEdit = (e, row) => {
+    e.preventDefault();
+    handleEditOpen();
     setSelectedRowData(row);
   };
 
-  const handleDeleteClick = (e , row ) => {
-    e.preventDefault()
+  const handleDelete = (e, row) => {
+    e.preventDefault();
+    handleOpenDelete();
     setSelectedRowData(row);
   };
 
   let visibleFields;
   useEffect(() => {
     try {
-      setUserData(data);
-
-      if (data && data.length > 0) {
         if (ForWhat === "transaction") {
           visibleFields = ["id", "type", "amount", "userName", "categoryName"];
-        }else if (ForWhat === "users") {
+        } else if (ForWhat === "users") {
           visibleFields = ["id", "firstName", "lastName", "role", "dob"];
-        } 
-        else {
-          visibleFields = Object.keys(userData[0]);
+        } else {
+          visibleFields = Object.keys(data[0]);
         }
         if (buton === false) {
           setColumns(
@@ -83,17 +79,9 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
                       justifyContent: "center",
                     }}
                   >
-                    <button
-                      onClick={(e) => handleEditClick(e , params.row )}
-                    >
-                      {
-                        userData !== null && 
-                      <UserModal
-                      type="edit"
-                      data={selectedRowData}
-                      />
-                    }
-                    </button>
+                    <IconButton onClick={(e) => handleEdit(e, params.row)}>
+                      <EditIcon />
+                    </IconButton>
                   </Grid>
                 ),
               },
@@ -109,13 +97,9 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
                       justifyContent: "center",
                     }}
                   >
-                    <button
-                      onClick={(e) => handleDeleteClick(e , params.row )}
-                    >
-                      <DeleteModal
-                        data={selectedRowData}
-                      />
-                    </button>
+                    <IconButton onClick={(e) => handleDelete(e, params.row)}>
+                      <DeleteIcon />
+                    </IconButton>
                   </Grid>
                 ),
               },
@@ -141,9 +125,9 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
                       justifyContent: "center",
                     }}
                   >
-                    <span>
-                      <TransModal type="edit" />
-                    </span>
+                    <IconButton onClick={(e) => handleEdit(e, params.row)}>
+                      <EditIcon />
+                    </IconButton>
                   </Grid>
                 ),
               },
@@ -159,9 +143,9 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
                       justifyContent: "center",
                     }}
                   >
-                    <span>
-                      <DeleteTransModal />
-                    </span>
+                    <IconButton onClick={(e) => handleDelete(e, params.row)}>
+                      <DeleteIcon />
+                    </IconButton>
                   </Grid>
                 ),
               },
@@ -187,9 +171,9 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
                       justifyContent: "center",
                     }}
                   >
-                    <span>
-                      <AddGalModal type="edit" />
-                    </span>
+                    <IconButton onClick={(e) => handleEdit(e, params.row)}>
+                      <EditIcon />
+                    </IconButton>
                   </Grid>
                 ),
               },
@@ -206,7 +190,9 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
                     }}
                   >
                     <span>
-                      <DeleteGoalModal />
+                      <IconButton onClick={(e) => handleDelete(e, params.row)}>
+                        <DeleteIcon />
+                      </IconButton>
                     </span>
                   </Grid>
                 ),
@@ -215,23 +201,20 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
             setColumns(updatedColumns);
           }
         }
-      } else {
-        setColumns([]);
-      }
 
       setError(false);
     } catch (error) {
       setError(true);
       console.error(error);
     }
-  }, [userData, data]);
+  }, []);
 
   return (
     <>
       <Box sx={{ height: 707, mt: "3rem", mb: "3rem", fontFamily: "outfit" }}>
         <DataGrid
           columns={columns}
-          rows={userData}
+          rows={data}
           getRowId={(row) => row.id}
           pageSizeOptions={[5, 10, 20, 100]}
           initialState={{
@@ -284,7 +267,7 @@ const TableComponent = ({ data, isEdit, ForWhat,  }) => {
                 height: "90px !important",
                 maxHeight: "90px !important",
                 fontSize: "1.2rem",
-                mb: screenWidth < 500 ? '1rem' : '0'
+                mb: screenWidth < 500 ? "1rem" : "0",
               },
             "& .MuiDataGrid-columnHeaderTitleContainer": {
               color: "#2D99EF !important",

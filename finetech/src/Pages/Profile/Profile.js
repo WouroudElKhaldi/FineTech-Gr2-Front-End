@@ -75,6 +75,8 @@ const Profile = () => {
     <div style={{
       marginLeft: '5rem'
     }}>
+      <Navbar />
+      <Sidebar/>
       {networkError ? (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" , height: '100vh'}}>
           <Typography variant="h5" color="error">Network Issue</Typography>
@@ -89,8 +91,6 @@ const Profile = () => {
         </div>
       ) : (
         <>
-      <Navbar />
-      <Sidebar/>
       <span style={{
         marginTop: '6rem', 
         display: 'flex',
