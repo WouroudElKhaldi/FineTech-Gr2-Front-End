@@ -5,7 +5,6 @@ import {DemoContainer} from '@mui/x-date-pickers/internals/demo'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import InputFileUpload from "../AddUserForm/Upload Button";
 import { Typography } from "@mui/material";
 import { Button } from "../Button/Button";
 import axios from "axios";
@@ -287,7 +286,6 @@ const EditProfile = ({userData}) => {
                             onChange={handleChange}
                             />
                     </FormControl>                    
-                    <InputFileUpload/>
                 </Stack>
                 {screenWidth < 900 ? (
                     <>
