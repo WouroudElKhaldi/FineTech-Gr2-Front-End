@@ -2,37 +2,74 @@ import { useState } from "react";
 import Modal from "@mui/material/Modal";
 import { Box, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "./DeleteUser.module.css";
 import { Typography } from "@mui/material";
-import { Button } from "../Button/Button";
+import Button from "@mui/material/Button";
+import useApi from "../../Hooks/UseApi";
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "30rem",
-  bgcolor: "#212936",
-  border: "2px solid #171B24",
-  boxShadow: 24,
-  p: 4,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-};
+const DeleteModal = ({
+  openDelete,
+  handleClose,
+  selectedRowData,
+  setSuccessDelete,
+  setOpenDelete,
+}) => {
+  const { apiCall } = useApi();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-const divStyle = {
-  display: "flex",
-  justifyContent: "space-between",
-  width: "25rem",
-};
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "30rem",
+    bgcolor: "#212936",
+    border: "2px solid #171B24",
+    boxShadow: 24,
+    p: 4,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  };
 
-const span = {
-  display: "flex",
-  alignItems: "center",
-};
+  const divStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "25rem",
+    paddingBottom: "1rem",
+  };
 
-const DeleteModal = ({ openDelete, handleClose, selectedRowData }) => {
+  const span = {
+    display: "flex",
+    alignItems: "center",
+    color: "white",
+    padding: 0,
+  };
+
+  const handleDelete = async () => {
+    setLoading(true);
+    try {
+      const response = await apiCall({
+        url: "/api/auth/delete",
+        method: "delete",
+        data: {
+          id: selectedRowData.id,
+        },
+      });
+      setLoading(false);
+      setError(false);
+      setSuccessDelete(true);
+      setOpenDelete(false);
+    } catch (error) {
+      setLoading(false);
+      setError(true);
+      setSuccessDelete(false);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -64,15 +101,22 @@ const DeleteModal = ({ openDelete, handleClose, selectedRowData }) => {
               <CloseIcon />
             </IconButton>
           </div>
-          <div
+          <span
             style={{
+              width: "50%",
               display: "flex",
               justifyContent: "center",
-              marginTop: "2rem",
             }}
           >
-            <Button text={"Delete"} size={"small"} color={"blue"} />
-          </div>
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              size="large"
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+          </span>
         </Box>
       </Modal>
     </>

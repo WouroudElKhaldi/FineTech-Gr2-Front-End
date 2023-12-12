@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TransactionChart from "../../Components/TransactionChart/TransactionChart";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Box } from "@mui/material";
@@ -7,8 +7,12 @@ import InfoCard from "../../Components/InfoCard/InfoCard";
 import TableComponent from "../../Components/Table/Table";
 import TransModal from "../../Components/AddTransForm/AddTransModal";
 import Sidebar from "../../Layouts/Sidebar/Sidebar";
+import { Button } from "../../Components/Button/Button";
 import Navbar from "../../Layouts/Navbar/Navbar";
 import useApi from "../../Hooks/UseApi";
+import DeleteTransModal from "../../Components/DeleteTransForm/DeleteTransModal";
+import SaleChart from "../../Components/SaleChart/SaleChart";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function Transaction() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -21,8 +25,22 @@ export default function Transaction() {
   const [incPerc, setIncPerc] = useState(null);
   const [outcPerc, setOutcPerc] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [chartData, setChartData] = useState([]);
   const [error, setError] = useState(false);
   const [networkError, setNetworkError] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleEditOpen = () => setOpenEdit(true);
+  const handleOpenDelete = () => setOpenDelete(true);
+  const handleClose = () => {
+    setOpen(false);
+    setOpenEdit(false);
+    setOpenDelete(false);
+  };
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const handleResize = () => {
@@ -83,7 +101,8 @@ export default function Transaction() {
         });
         const updatedData = total.map((transaction) => ({
           ...transaction,
-          userName: transaction.User.firstName + " " + transaction.User.lastName,
+          userName:
+            transaction.User.firstName + " " + transaction.User.lastName,
           categoryName: transaction.Category.name,
         }));
         setTransactions(updatedData);
@@ -95,6 +114,20 @@ export default function Transaction() {
       }
     };
 
+    const fetchChartData = async () => {
+      try {
+        const response = await apiCall({
+          url: "/api/transactionss/by-category",
+          method: "post",
+          data: { categoryId: 8 },
+        });
+        setChartData(response);
+      } catch (error) {
+        console.error("Error fetching chart data:", error);
+      }
+    };
+
+    fetchChartData();
     fetchIncome();
     fetchOutcome();
     fetchAllTrans();
@@ -108,48 +141,160 @@ export default function Transaction() {
   }, [income, outcome, transactions]);
 
   return (
-    <Box sx={{ flexGrow: 1, pl: "5rem" }}>
+    <Box
+      sx={{ flexGrow: 1, display: "flex", flexDirection: "column", ml: "5rem" }}
+    >
       <Navbar />
       <Sidebar />
-      <Typography variant="h3" component="h3" sx={{ textAlign: "left",pt: '5rem' , mb: 5, fontWeight: "bold" , fontFamily:'outfit' }}>
+      <Typography
+        variant="h3"
+        component="h3"
+        sx={{
+          textAlign: "left",
+          pt: "5rem",
+          mb: 5,
+          fontWeight: "bold",
+          fontFamily: "outfit",
+        }}
+      >
         Manage Transactions
       </Typography>
       {networkError ? (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Typography variant="h5" color="error">Network Issue</Typography>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h5" color="error">
+            Network Issue
+          </Typography>
         </div>
       ) : loading ? (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Typography variant="h5">Loading...</Typography>
         </div>
       ) : error ? (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Typography variant="h5" color="error">Error loading data</Typography>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h5" color="error">
+            Error loading data
+          </Typography>
         </div>
       ) : (
         <>
-        <Grid container md={12} mb={"20px"} sx={{ "& .MuiGrid2-root": { display: "flex", alignContent: "space-between", justifyContent: "space-between" } }}>
-          <Grid md={screenWidth > 1200 ? 6 : 12} container spacing={1}>
-            <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
-              {income !== null && <InfoCard title={"Total income"} number={income} />}
+          <Grid
+            container
+            md={11.8}
+            mb={"20px"}
+            justifyContent="space-between"
+            sx={{
+              alignContent: "space-between",
+              "& .MuiGrid2-root": {
+                alignContent: "space-between",
+              },
+            }}
+          >
+            <Grid
+              md={screenWidth > 1220 ? 2.5 : screenWidth < 600 ? 12 : 6}
+              container
+              spacing={1}
+              rowGap="1rem"
+            >
+              <Grid xs={12} md={12} sx={{ padding: 0 }}>
+                {income !== null && (
+                  <InfoCard title={"Total income"} number={income} />
+                )}
+              </Grid>
+              <Grid xs={12} md={12} sx={{ padding: 0 }}>
+                {outcome !== null && (
+                  <InfoCard title={"Total Outcome"} number={outcome} />
+                )}
+              </Grid>
+              <Grid xs={12} md={12} sx={{ padding: 0 }}>
+                <InfoCard title={"Total profit"} number={profit} />
+              </Grid>
             </Grid>
-            <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
-              {outcome !== null && <InfoCard title={"Total Outcome"} number={outcome} />}
+            <Grid
+              container
+              xs={12}
+              md={screenWidth > 1220 ? 3 : screenWidth < 600 ? 12 : 6}
+              mt={screenWidth < 1220 ? "2rem" : "0px"}
+              sx={{
+                display: "flex",
+                justifyContent: screenWidth > 1220 ? "center" : "start",
+              }}
+            >
+              {income !== null && outcome !== null && (
+                <TransactionChart
+                  incPerc={incPerc}
+                  outcPerc={outcPerc}
+                  screenWidth={screenWidth}
+                />
+              )}
             </Grid>
-            <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
-              <InfoCard title={"Total profit"} number={profit} />
+            <Grid
+              container
+              md={screenWidth > 1220 ? 5 : 12}
+              mt={screenWidth < 1220 ? "2rem" : ""}
+              mb={screenWidth < 1220 ? "1rem" : ""}
+            >
+              {chartData && <SaleChart chartData={chartData && chartData} />}
             </Grid>
           </Grid>
-          <Grid container xs={12} md={screenWidth > 1220 ? 6 : 12} mt={screenWidth < 1220 ? "30px" : "0px"} sx={{ display: "flex", justifyContent: "center" }}>
-            {income !== null && outcome !== null && <TransactionChart incPerc={incPerc} outcPerc={outcPerc} />}
-          </Grid>
-        </Grid>
-      <span style={{ display: "flex", justifyContent: "flex-end", width: "95%" }}>
-        <TransModal type="add" />
-      </span>
-      <TableComponent data={transactions !== null && transactions} wid={wid} isEdit={true} ForWhat={"transaction"} />
-      </>
-        )}
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "end",
+              width: "98%",
+            }}
+          >
+            <span
+              style={{
+                width: "fit-content",
+              }}
+              onClick={handleOpen}
+            >
+              <Button text={"Add Transaction"} color={"blue"} size={"big"} />
+            </span>
+          </span>
+          <TableComponent
+            data={transactions !== null && transactions}
+            isEdit={user && user.role === "Manager" ? false : true}
+            ForWhat={"transaction"}
+            handleEditOpen={handleEditOpen}
+            setSelectedRowData={setSelectedRowData}
+            handleOpenDelete={handleOpenDelete}
+          />
+          <TransModal open={open} handleClose={handleClose} type="add" />
+
+          <TransModal
+            type="edit"
+            open={openEdit}
+            handleClose={handleClose}
+            selectedRowData={selectedRowData && selectedRowData}
+          />
+          <DeleteTransModal
+            selectedRowData={selectedRowData && selectedRowData}
+            handleOpenDelete={handleOpenDelete}
+            openDelete={openDelete}
+            handleClose={handleClose}
+            setOpenDelete={setOpenDelete}
+          />
+        </>
+      )}
     </Box>
   );
 }

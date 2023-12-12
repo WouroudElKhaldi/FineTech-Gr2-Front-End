@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
-import Grid from "@mui/material/Unstable_Grid2";
-import { Box , Stack} from "@mui/material";
+import { useState, useEffect, useContext } from "react";
+import { Box, Stack } from "@mui/material";
 import React from "react";
+
+import { AuthContext } from "../../Context/AuthContext";
+
 import { Typography } from "@mui/material";
 import DeleteGoalModal from "../../Components/GoalForm/DeleteGoalModal";
-import Styles from './Goal.module.css';
 import useApi from "../../Hooks/UseApi";
 import Sidebar from "../../Layouts/Sidebar/Sidebar";
 import Navbar from "../../Layouts/Navbar/Navbar";
@@ -44,7 +45,7 @@ export default function Goal() {
   const handleRowClick = (row) => {
     setSelectedRow(row);
   };
-  
+
   // const handleClose = () => {
   //   setIsChartOpen(false);
   //   setSelectedRow(null);
@@ -67,7 +68,7 @@ export default function Goal() {
   //   setIsChartOpen(prevIsChartOpen => !prevIsChartOpen);
   //   handleClose(); // Call the handleClose prop
   // };
-  
+
 
   const data = [
     {
@@ -79,7 +80,7 @@ export default function Goal() {
       email: "john@example.com",
     },
   ];
-
+  const { user } = useContext(AuthContext);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [wid, setWid] = useState(screenWidth < 500 ? "100%" : "80%");
 
@@ -100,13 +101,13 @@ export default function Goal() {
       setLoading(true);
       setNetworkError(false);
       setError(false);
-    
+
       try {
         const response = await apiCall({
           url: "/api/goals", // Adjust the URL based on your API
           method: "get",
         });
-    
+
         setGoalData(response.data); // Corrected variable name to setGoalData
         setLoading(false);
       } catch (error) {
@@ -125,11 +126,11 @@ export default function Goal() {
 
 
   return (
-    <Box sx={{ flexGrow: 1 }}
+    <Box
+      sx={{ flexGrow: 1, display: "flex", flexDirection: "column", ml: "5rem" }}
     >
-      {/* <Navbar /> */}
-      {/* <Sidebar /> */}
-      <Stack>
+      <Navbar />
+      <Sidebar />
       <Typography
         variant="h3"
         component="h3"
@@ -138,71 +139,74 @@ export default function Goal() {
         Manage Goals
       </Typography>
       {/* {selectedRow && ( */}
-          <span
-            style={{
-              width: '50%',
-              background: '#212936',
-              padding: '2rem',
-              borderRadius: '15px',
-            }}
-          >
-      <GoalChart  handleClose={handleClose}
-              isChartOpen={!!selectedRow}
-              row={selectedRow}
-              profit={profit}
-              target={target}
-              />
-      </span>
-        {/* )} */}
-      {/* <span
-      style={{
-        display: "flex",
-        justifyContent: "flex-end",
-        width: "95%",
-      }}>
-        <AddGalModal type='add' />
-      </span>
-      <TableComponent data={goalData !==null && goalData} wid={wid} isEdit={true} ForWhat={'goal'}  onRowClick={handleRowClick}/> */}
       <span
-            style={{
-              display: "flex",
-              justifyContent: "end",
-              width: "95%",
-            }}
-          >
-            <span
-              style={{
-                width: "fit-content",
-              }}
-              onClick={handleOpen}
-            >
-              <Button text={"Add User"} color={"blue"} size={"big"} />
-            </span>
-          </span>
-          <TableComponent
-            data={goalData !== null && goalData}
-            isEdit={true}
-            ForWhat={"transaction"}
-            handleEditOpen={handleEditOpen}
-            setSelectedRowData={setSelectedRowData}
-            handleOpenDelete={handleOpenDelete}
-          />
-          <AddGalModal open={open} handleClose={handleClose} type="add" />
+        style={{
+          width: "50%",
+          background: "#212936",
+          padding: "2rem",
+          borderRadius: "15px",
+          marginBottom: '2rem'
+        }}
+      >
+        <GoalChart
+          handleClose={handleClose}
+          isChartOpen={!!selectedRow}
+          row={selectedRow}
+          profit={profit}
+          target={target}
+        />
+      </span>
+      {/*   
+      <span
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          width: "95%",
+        }}
+      > */}
+      {/* <Button
+     style={{
+      display: "flex",
+      justifyContent: "flex-end",
+      width: "95%",
+    }}
+  variant="contained"
+  size="large"
+  onClick={handleOpen}
+>
+  Add Goal
+</Button> */}
+      <span
+        style={{
+          width: "fit-content",
+        }}
+        onClick={handleOpen}
+      >
+        <Button variant="contained" size='large' onClick={handleOpen}>Add Goall</Button>            </span>
 
-          <AddGalModal
-            type="edit"
-            open={openEdit}
-            handleClose={handleClose}
-            selectedRowData={selectedRowData && selectedRowData}
-          />
-          <DeleteGoalModal
-            selectedRowData={selectedRowData && selectedRowData}
-            handleOpenDelete={handleOpenDelete}
-            openDelete={openDelete}
-            handleClose={handleClose}
-            setOpenDelete={setOpenDelete}
-          />
-      </Stack>
+      <TableComponent
+        data={goalData !== null && goalData}
+        isEdit={user && user.role === "Accountant" ? false : true}
+        ForWhat={"goal"}
+        handleEditOpen={handleEditOpen}
+        setSelectedRowData={setSelectedRowData}
+        handleOpenDelete={handleOpenDelete}
+      />
+      <AddGalModal open={open} handleClose={handleClose} type="add" />
+
+      <AddGalModal
+        type="edit"
+        open={openEdit}
+        handleClose={handleClose}
+        selectedRowData={selectedRowData && selectedRowData}
+      />
+      <DeleteGoalModal
+        selectedRowData={selectedRowData && selectedRowData}
+        handleOpenDelete={handleOpenDelete}
+        openDelete={openDelete}
+        handleClose={handleClose}
+        setOpenDelete={setOpenDelete}
+      />
     </Box>
-  );
+  )
 }

@@ -6,19 +6,11 @@ import EmailIcon from "@mui/icons-material/Email";
 import EventIcon from "@mui/icons-material/Event";
 import DnsIcon from "@mui/icons-material/Dns";
 import style from "./ProfileDetails.module.css";
-// const userData = {
-//   id: 15,
-//   firstName: "Emma",
-//   lastName: "Ward",
-//   role: "Accountant",
-//   dob: "1984-09-15",
-//   email: "emma@example.com",
-// };
 export default function ProfileDetails({ userData }) {
   if(!userData){
     return <p>Loading ...</p>
   }
-  const { id, firstName,lastName, email, dob /* other user data properties */ } =
+  const { id, firstName,lastName, email, dob} =
     userData 
 || {};
       const datePart = userData.dob.slice(0, 10);

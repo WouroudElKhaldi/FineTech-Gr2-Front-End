@@ -13,13 +13,6 @@ Chart.register(
 );
 
 function GoalChart({  handleClose, isChartOpen ,totalProfit,totalTarget }) {
-  console.log('GoalChart rendering. isChartOpen:', isChartOpen);
-
-  if (isChartOpen) {
-    console.log('GoalChart not rendered. isChartOpen:', isChartOpen);
-    return null;
-  }
-
 
   // const divStyle = {
   //   display: 'flex',
@@ -82,12 +75,6 @@ function GoalChart({  handleClose, isChartOpen ,totalProfit,totalTarget }) {
     <div className={Styles.chartContainer}>
 
       <h2 className={Styles.H2}>Profit-Goal</h2>
-      <span
-        // style={spanStyle}
-        className={Styles.Exit}
-        onClick={handleClose}>
-        <CloseIcon />
-      </span>
       <div>
         <Bar data={data} options={options}></Bar>
       </div>

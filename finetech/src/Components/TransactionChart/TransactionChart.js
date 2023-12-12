@@ -3,7 +3,7 @@ import { Doughnut } from "react-chartjs-2";
 import style from "./TransactionChart.module.css";
 Chart.register(Tooltip, ArcElement, Legend);
 
-const TransactionChart = ({incPerc, outcPerc}) => {
+const TransactionChart = ({incPerc, outcPerc , screenWidth}) => {
   const data = {
     labels: ["Income", "Outcome"],
     datasets: [
@@ -16,7 +16,9 @@ const TransactionChart = ({incPerc, outcPerc}) => {
   };
 
   return (
-    <div className={style.container}>
+    <div className={style.container} style={{
+      width: screenWidth > 550 ? '25rem' : '18rem'
+    }}>
       <h2 className={style.titleChart}>Transactions</h2>
       <Doughnut data={data}></Doughnut>
     </div>

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import UserForm from "./AddUser";
 import Modal from "@mui/material/Modal";
 import {
   Box,
@@ -22,6 +21,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "axios";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+
+dayjs.extend(customParseFormat);
 
 const UserModal = ({
   type,
@@ -29,6 +32,8 @@ const UserModal = ({
   open,
   handleClose,
   handleEditClose,
+  setSuccessAdd,
+  setSuccessEdit,
 }) => {
   const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -41,6 +46,19 @@ const UserModal = ({
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (type === "edit" && selectedRowData) {
+      setFirstName(selectedRowData.firstName);
+      setLastName(selectedRowData.lastName);
+      setImage(selectedRowData.image);
+      setPassword(selectedRowData.password);
+      setRole(selectedRowData.role);
+      setEmail(selectedRowData.email);
+      const dobValue = dayjs(selectedRowData.dob);
+      setDob(dobValue);
+    }
+  }, [type, selectedRowData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -93,9 +111,10 @@ const UserModal = ({
           },
         }
       );
-      console.log(sentUser);
+      setSuccessAdd(true);
       setError(false);
       setLoading(false);
+      handleClose();
     } catch (error) {
       setError(true);
       setErrorMessage("Something goes wrong");
@@ -104,9 +123,44 @@ const UserModal = ({
     }
   };
 
-  const handleEditUser = (e) => {
+  const handleEditUser = async (e) => {
     e.preventDefault();
-    // handleClose();
+    setLoading(true);
+    if (!firstName || !lastName || !role || !dob || !email) {
+      setError(true);
+      setErrorMessage("All input fields are required");
+      return;
+    }
+    try {
+      const updatedUser = await axios.patch(
+        "http://localhost:4000/api/auth/update",
+        {
+          id: selectedRowData.id,
+          firstName: firstName,
+          lastName: lastName,
+          dob: dob,
+          image: image,
+          role: role,
+          password: password,
+          email: email,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      setSuccessEdit(true);
+      setError(false);
+      setLoading(false);
+      handleClose();
+    } catch (error) {
+      setError(true);
+      setErrorMessage("Something went wrong");
+      setLoading(false);
+      console.error("Error in API call", errorMessage, error);
+    }
   };
 
   const handleFromClear = () => {
@@ -242,6 +296,7 @@ const UserModal = ({
                   placeholder="FirstName"
                   name="firstName"
                   onChange={handleChange}
+                  value={firstName}
                 />
                 <TextField
                   required
@@ -250,6 +305,7 @@ const UserModal = ({
                   placeholder="LastName"
                   name="lastName"
                   onChange={handleChange}
+                  value={lastName}
                 />
                 <FormControl
                   required
@@ -289,6 +345,7 @@ const UserModal = ({
                   placeholder="Email"
                   name="email"
                   onChange={handleChange}
+                  value={email}
                 />
                 <FormControl sx={{ m: 1, width: "25ch" }} variant="outlined">
                   <InputLabel htmlFor="outlined-adornment-password">
@@ -313,6 +370,7 @@ const UserModal = ({
                     label="Password"
                     name="password"
                     onChange={handleChange}
+                    value={password}
                   />
                 </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
