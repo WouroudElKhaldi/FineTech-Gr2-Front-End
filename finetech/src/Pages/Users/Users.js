@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useContext } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Box } from "@mui/material";
 import InfoCard from "../../Components/InfoCard/InfoCard";
@@ -12,9 +12,11 @@ import Navbar from "../../Layouts/Navbar/Navbar";
 import { Button } from "../../Components/Button/Button";
 import DeleteModal from "../../Components/DeleteUserForm/DeleteModal";
 import toast, { Toaster } from "react-hot-toast";
+import { AuthContext } from "../../Context/AuthContext";
 
 const UserPage = () => {
   const { apiCall } = useApi();
+  const {user} = useContext(AuthContext)
   const [userData, setUserData] = useState(null);
   const [userNumber, setUserNumber] = useState({
     Admin: null,
@@ -307,7 +309,7 @@ const UserPage = () => {
           </span>
           <TableComponent
             data={userData !== null && userData}
-            isEdit={true}
+            isEdit={user && user.role === 'Manager'? false : true}
             ForWhat={"users"}
             handleEditOpen={handleEditOpen}
             setSelectedRowData={setSelectedRowData}

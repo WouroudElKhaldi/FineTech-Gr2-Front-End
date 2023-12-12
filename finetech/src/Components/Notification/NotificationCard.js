@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import styles from './NotificationCard.module.css'
 import { Link } from "react-router-dom";
 
-const NotificationCard = ({handleClose}) => {
+const NotificationCard = ({handleClose , notifications}) => {
 
     const divStyle ={
         display : 'flex',
@@ -20,14 +20,6 @@ const NotificationCard = ({handleClose}) => {
         display : 'flex', 
         alignItems: 'center',
     }
-
-    const notifications = [
-        { id: 1, user: 'Adam Jobs', action: 'Added a new transaction' , date: '12/12/2023' },
-        { id: 2, user: 'Adam Jobs', action: 'Added a new transaction' , date: '12/12/2023' },
-        { id: 3, user: 'Adam Jobs', action: 'Added a new transaction' , date: '12/12/2023' },
-        { id: 4, user: 'Adam Jobs', action: 'Added a new transaction' , date: '12/12/2023' },
-        
-    ];
 
     return(
         <Box>

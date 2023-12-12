@@ -6,7 +6,6 @@ import { CalendarIcon } from "@mui/x-date-pickers";
 
 const ProfileCard = ({handleOverview , overview , handleEdit , edit  , userData}) => {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-    const [loading , setLoading] = useState(false)  
 
     useEffect(() => {
         const handleResize = () => {
@@ -18,6 +17,7 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit  , userData}
             window.removeEventListener('resize', handleResize);
         };
     }, []);
+    const date = userData && userData.dob.slice(0, 10);
     return(
         <Box
         className={styles.Box} 
@@ -27,14 +27,11 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit  , userData}
                 mb: '2rem',
                 borderRadius: '20px',
                 padding: '2rem 0 0 0',
+                display: 'flex',
+                flexDirection:'column',
+                zIndex: 0
             }}
         >   
-        {loading ? (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Typography variant="h5" color="error">Loading</Typography>
-            </div>            
-        ):(
-            <>
             <span style={{
                 width: '100%',
                 display: 'flex', 
@@ -91,7 +88,7 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit  , userData}
                         variant='body1'
                         component='p'
                         >
-                        {userData && userData.dob !== null && userData.dob  }
+                        {userData && userData.dob !== null && date }
                     </Typography>
                     </span>
                 </Stack>
@@ -104,8 +101,6 @@ const ProfileCard = ({handleOverview , overview , handleEdit , edit  , userData}
                         Edit
                     </span>
                 </Stack>
-            </>        
-            )}
         </Box>
     )
 }
