@@ -7,12 +7,12 @@ import {
   TextField,
   InputLabel,
   Select,
+  Button ,
   MenuItem,
   Stack,
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { Button } from "../Button/Button";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -22,6 +22,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import axios from "axios";
 import dayjs from "dayjs";
+import LoadingButton from '@mui/lab/LoadingButton'
 import customParseFormat from "dayjs/plugin/customParseFormat";
 
 dayjs.extend(customParseFormat);
@@ -114,12 +115,13 @@ const UserModal = ({
       setSuccessAdd(true);
       setError(false);
       setLoading(false);
-      handleClose();
     } catch (error) {
       setError(true);
       setErrorMessage("Something goes wrong");
       setLoading(false);
       console.log("Error in API call", errorMessage, error);
+    } finally{
+      handleClose();
     }
   };
 
@@ -388,15 +390,11 @@ const UserModal = ({
                   <span
                     onClick={type === "add" ? handleAddUser : handleEditUser}
                   >
-                    <Button
-                      text={type === "add" ? "Add" : "Edit"}
-                      color={"blue"}
-                      size={"small"}
-                      type={"submit"}
-                    />
-                  </span>
-                  <span onClick={handleFromClear}>
-                    <Button text={"Clear"} color={"gray"} size={"small"} />
+                    {loading === true ? (
+                      <LoadingButton variant="contained" size="large" loading >Loading</LoadingButton>
+                    ): (
+                      <Button variant="contained" size="large" color="primary" type="submit">Submit</Button>
+                    )}
                   </span>
                 </div>
               </Stack>

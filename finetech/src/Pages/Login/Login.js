@@ -1,7 +1,7 @@
 import React from 'react'
 import style from './Login.module.css'
 import loginLogo from '../../Assets/LoginHeroSection.svg'
-import { Button } from '../../Components/Button/Button'
+import Button from '@mui/material/Button'
 import { 
     Stack, 
     TextField , 
@@ -18,15 +18,25 @@ import { useState, useContext , useEffect } from "react";
 import useApi from '../../Hooks/UseApi';
 import { AuthContext } from '../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import LoadingButton from '@mui/lab/LoadingButton'
+import toast , {Toaster} from 'react-hot-toast'
 
 const Login = () => {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const [loading, setLoading] = useState(false);
+    const [success , setSuccess] = useState(false)
     const { fetchUserData } = useContext(AuthContext);
     const { apiCall } = useApi();
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        if (success){
+            toast.success('Logged in Successfuly')
+        }
+    }, [success])
+
     const submitHandler = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -45,12 +55,11 @@ const Login = () => {
          
             await fetchUserData()
             setLoading(false);
+            setSuccess(true)
             navigate('/transaction')
         }
         catch (error) {
-
             console.log(error)
-
             setLoading(false);
         }
     };
@@ -82,6 +91,7 @@ const Login = () => {
             display: 'flex',
             justifyContent: 'center'
         }}>
+            <Toaster/>
             <section className={style.loginHeroSectionContainer} style={{
                 display: screenWidth < 800 ? 'none': 'flex'
             }}>
@@ -166,8 +176,17 @@ const Login = () => {
                             }
                             label="Password"
                         />
-                        </FormControl>                       
-                        <Button text={'login'} color={'blue'} size={'small'}/>
+                        </FormControl>     
+                        {
+                            loading === true ? (
+                            <LoadingButton loading variant="outlined" size="large">
+                                Login
+                            </LoadingButton>
+                            ) : (
+                                <Button variant="contained" color="primary" size="large" onSubmit={submitHandler} type='submit'>Login</Button>
+                            )
+                        }                  
+                        
                     </Stack>                    
                 </Box>
             </section>

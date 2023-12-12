@@ -19,7 +19,6 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
-
   const navigate = useNavigate();
 
   const managerItems = [

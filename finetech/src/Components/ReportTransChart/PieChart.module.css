@@ -10,7 +10,7 @@
 .categoryStatisticsIncome, .categoryStatisticsOutcome {
     background-color: var(--color-back-card);
     height: 100%;
-    width: 35%;
+    width: 45%;
     border-radius: 1.5rem;
     display: inherit;
     flex-direction: column;

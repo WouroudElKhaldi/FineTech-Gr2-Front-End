@@ -9,7 +9,8 @@ import UserModal from "../../Components/AddUserForm/AddUserModal";
 import useApi from "../../Hooks/UseApi";
 import Sidebar from "../../Layouts/Sidebar/Sidebar";
 import Navbar from "../../Layouts/Navbar/Navbar";
-import { Button } from "../../Components/Button/Button";
+import Button from "@mui/material/Button";
+import AddIcon from '@mui/icons-material/Add';
 import DeleteModal from "../../Components/DeleteUserForm/DeleteModal";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../../Context/AuthContext";
@@ -140,16 +141,16 @@ const UserPage = () => {
         } has been deleted`
       );
       setSuccessDelete(false);
-    }
+    }else 
     if (successAdd) {
       toast.success("User Added Successfuly");
       setSuccessAdd(false);
-    }
+    }else
     if (successEdit) {
       toast.success("User Updated Successfuly");
       setSuccessDelete(false);
     }
-  }, [successDelete, selectedRowData, successAdd]);
+  }, [successDelete, selectedRowData, successAdd, successEdit]);
 
   return (
     <Box
@@ -225,9 +226,9 @@ const UserPage = () => {
             }}
           >
             <Grid
-              md={screenWidth > 1220 ? 2.5 : screenWidth < 600 ? 12 : 6}
+              md={screenWidth > 1300 ? 2.5 : screenWidth < 600 ? 12 : 6}
               container
-              spacing={screenWidth > 1200 ? 1 : 0}
+              spacing={screenWidth > 1300 ? 1 : 0}
               sx={{
                 display: "flex",
                 rowGap: "2rem",
@@ -241,8 +242,8 @@ const UserPage = () => {
                 }}
               >
                 <InfoCard
-                  title={"Total"}
-                  number={userNumber && userNumber.totalUser}
+                  title={"Total Users"}
+                  number={`${userNumber && userNumber.totalUser} Users`}
                 />
               </Grid>
               <Grid
@@ -253,8 +254,8 @@ const UserPage = () => {
                 }}
               >
                 <InfoCard
-                  title={"Admins"}
-                  number={userNumber && userNumber.Admin}
+                  title={"Total Admins"}
+                  number={`${userNumber && userNumber.Admin} Admins`}
                 />
               </Grid>
               <Grid
@@ -265,8 +266,8 @@ const UserPage = () => {
                 }}
               >
                 <InfoCard
-                  title={"Managers"}
-                  number={userNumber && userNumber.Manager}
+                  title={"Total Managers"}
+                  number={`${userNumber && userNumber.Manager} Managers`}
                 />
               </Grid>
               <Grid
@@ -277,14 +278,14 @@ const UserPage = () => {
                 }}
               >
                 <InfoCard
-                  title={"Accountants"}
-                  number={userNumber && userNumber.Accountant}
+                  title={"Total Accountants"}
+                  number={`${userNumber && userNumber.Accountant} Accountants`}
                 />
               </Grid>
             </Grid>
             <Grid
               container
-              md={screenWidth > 1220 ? 3 : screenWidth < 600 ? 12 : 6}
+              md={screenWidth > 1300 ? 3 : screenWidth < 600 ? 12 : 6}
               xs={20}
               sx={{
                 display: "flex",
@@ -295,7 +296,7 @@ const UserPage = () => {
             </Grid>
             <Grid
               container
-              md={screenWidth > 1220 ? 5 : 12 }
+              md={screenWidth > 1300 ? 5 : 12 }
               xs={20}
               sx={{
                 display: "flex",
@@ -318,7 +319,7 @@ const UserPage = () => {
               }}
               onClick={handleOpen}
             >
-              <Button text={"Add User"} color={"blue"} size={"big"} />
+              <Button variant="contained" color='primary' size='large'startIcon={<AddIcon/>}>Add User</Button>
             </span>
           </span>
           <TableComponent

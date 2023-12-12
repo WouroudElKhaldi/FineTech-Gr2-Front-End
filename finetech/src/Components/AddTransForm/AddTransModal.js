@@ -1,5 +1,5 @@
 import Modal from "@mui/material/Modal";
-import { Button } from "../Button/Button";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import React, { useState, useEffect, useContext } from "react";
 import TextField from "@mui/material/TextField";
@@ -12,6 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import useApi from "../../Hooks/UseApi";
 import { AuthContext } from "../../Context/AuthContext";
+import LoadingButton from '@mui/lab/LoadingButton';
 import styles from "./AddTrans.module.css";
 // import io from "socket.io-client";
 
@@ -23,6 +24,8 @@ const TransModal = ({
   open,
   handleClose,
   handleEditClose,
+  setSuccessAdd,
+  setSuccessEdit
 }) => {
   const types = [
     {
@@ -65,9 +68,25 @@ const TransModal = ({
   //   });
   // }, []);
 
+  const handleAddNotification = async (trans) =>{
+    try{
+      const note = await apiCall({
+        url: "/api/notifications/add",
+        method: 'post',
+        data: {
+          message : `Added a new ${trans.type} transaction : ${trans.amount} $`,
+          transactionId: trans.id 
+        }
+      })
+    }catch(error){
+      console.log(error.message)
+    }
+  }
+
   const handleAddTrans = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true)
       const total = await apiCall({
         url: "/api/transactionss/add",
         method: "post",
@@ -78,8 +97,12 @@ const TransModal = ({
           categoryId: categoryId,
         },
       });
+      handleAddNotification(total)
       // sendMessage()
+      setSuccessAdd(true)
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       console.log("Error adding transaction:", error);
     }
 
@@ -88,6 +111,7 @@ const TransModal = ({
 
   const handleEditUser = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const total = await apiCall({
         url: `http://localhost:4000/api/transactionss/edit`,
@@ -103,7 +127,7 @@ const TransModal = ({
           "Content-Type": "multipart/form-data",
         },
       });
-
+      setSuccessEdit(true)
       setLoading(false);
       handleClose();
       console.log("Transaction edited successfully:", total.data);
@@ -320,12 +344,13 @@ const TransModal = ({
                   value={amount}
                 />
                 <div style={divStyle}>
-                  <Button
-                    type={"submit"}
-                    text={type === "add" ? "Add" : "Edit"}
-                    color={"blue"}
-                    size={"small"}
-                  />
+                  {loading === true ? (
+                        <LoadingButton loading variant="outlined" size="large">
+                          Submit
+                        </LoadingButton>
+                  ): (
+                    <Button variant="contained" color="primary" size="large" onClick={type === "add" ? handleAddTrans : handleEditUser}>Submit</Button>
+                  )}
                 </div>
               </Stack>
             </form>

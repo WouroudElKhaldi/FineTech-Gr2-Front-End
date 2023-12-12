@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Route, Routes, Navigate , useNavigate } from "react-router-dom";
 import { AuthContext } from "../Context/AuthContext";
 import Goal from "../Pages/Goal/Goal";
@@ -10,10 +10,11 @@ import Transaction from "../Pages/Transaction/Transaction";
 import Users from "../Pages/Users/Users";
 import NotFound from "../Pages/NotFound/NotFound";
 import Company from "../Pages/Company/Company";
-import { Button, Typography } from "@mui/material";
+import { Button, Typography, useScrollTrigger } from "@mui/material";
 
 const PrivateRoute = ({ element, roles }) => {
   const { user, checkUser } = useContext(AuthContext);
+  const [loading , setLoading] = useState(false)
 
   if (checkUser) {
     return <div>Loading...</div>;
@@ -27,17 +28,30 @@ const PrivateRoute = ({ element, roles }) => {
 };
 
 function AppRoutes() {
+  const {  checkUser } = useContext(AuthContext);
+  const [loading , setLoading] = useState(false)
+  useEffect(()=>{
+    if (checkUser) {
+      setLoading(true)
+    } else if (checkUser === false){
+      setLoading(false)
+    }
+
+  }, [])
+
   return (
     <>
+    { checkUser === true ? (
+        <div>Loading ....</div>
+      ): (
       <Routes>
         <Route
           path="/transaction"
           element={
-            // <PrivateRoute
-            //   element={<Transaction />}
-            //   roles={["Admin", "Manager", "Accountant"]}
-            // />
-            <Transaction />
+            <PrivateRoute
+              element={<Transaction />}
+              roles={["Admin", "Manager", "Accountant"]}
+            />
           }
         />
         <Route
@@ -84,6 +98,7 @@ function AppRoutes() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/*" element={<NotFound />} />
       </Routes>
+            )}
     </>
   );
 }

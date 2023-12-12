@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }) => {
         fetchUserData();
         }
        else{
-        console.log("loggedin")
        }
     },[user]);
 

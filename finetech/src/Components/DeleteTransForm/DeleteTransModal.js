@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import styles from "./EditTrans.module.css";
+import LoadingButton from "@mui/lab/LoadingButton";
 import useApi from "../../Hooks/UseApi";
 
 const DeleteTransModal = ({
@@ -13,6 +14,7 @@ const DeleteTransModal = ({
   handleClose,
   selectedRowData,
   setOpenDelete,
+  setSuccessDelete,
 }) => {
   const { apiCall } = useApi();
   const [loading, setLoading] = useState(false);
@@ -22,7 +24,7 @@ const DeleteTransModal = ({
     width: "fit-content",
     display: "block",
   };
-  
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -35,21 +37,23 @@ const DeleteTransModal = ({
     p: 4,
     display: "flex",
     justifyContent: "center",
+    flexDirection : 'column',
+    alignItems : 'center'
   };
-  
+
   const divStyle = {
     display: "flex",
     justifyContent: "space-between",
     width: "25rem",
     paddingBottom: "1rem",
   };
-  
+
   const span = {
-      display: "flex",
-      alignItems: "center",
-      color: "white",
-      padding: 0,
-    };
+    display: "flex",
+    alignItems: "center",
+    color: "white",
+    padding: 0,
+  };
 
   const handleDelete = async () => {
     setLoading(true);
@@ -61,16 +65,15 @@ const DeleteTransModal = ({
           id: selectedRowData.id,
         },
       });
+      setSuccessDelete(true);
       setLoading(false);
       setError(false);
-      setOpenDelete(false)
-      
+      setOpenDelete(false);
     } catch (error) {
       setLoading(false);
       setError(true);
     }
   };
-  
 
   return (
     <>
@@ -110,14 +113,26 @@ const DeleteTransModal = ({
               justifyContent: "center",
             }}
           >
-            <Button
-              variant="outlined"
-              startIcon={<DeleteIcon />}
-              size="large"
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
+            {loading ? (
+              <LoadingButton
+                loading
+                startIcon={<DeleteIcon />}
+                variant="outlined"
+                color="primary"
+                size="large"
+              >
+                Delete
+              </LoadingButton>
+            ) : (
+              <Button
+                variant="outlined"
+                startIcon={<DeleteIcon />}
+                size="large"
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            )}
           </span>
         </Box>
       </Modal>
@@ -126,4 +141,3 @@ const DeleteTransModal = ({
 };
 
 export default DeleteTransModal;
-;

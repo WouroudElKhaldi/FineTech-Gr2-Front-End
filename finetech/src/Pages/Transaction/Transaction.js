@@ -7,12 +7,14 @@ import InfoCard from "../../Components/InfoCard/InfoCard";
 import TableComponent from "../../Components/Table/Table";
 import TransModal from "../../Components/AddTransForm/AddTransModal";
 import Sidebar from "../../Layouts/Sidebar/Sidebar";
-import { Button } from "../../Components/Button/Button";
+import Button from "@mui/material/Button";
+import AddIcon from '@mui/icons-material/Add';
 import Navbar from "../../Layouts/Navbar/Navbar";
 import useApi from "../../Hooks/UseApi";
 import DeleteTransModal from "../../Components/DeleteTransForm/DeleteTransModal";
 import SaleChart from "../../Components/SaleChart/SaleChart";
 import { AuthContext } from "../../Context/AuthContext";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Transaction() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -41,6 +43,9 @@ export default function Transaction() {
     setOpenDelete(false);
   };
   const { user } = useContext(AuthContext);
+  const [successAdd , setSuccessAdd]= useState(false)
+  const [successEdit , setSuccessEdit]= useState(false)
+  const [successDelete , setSuccessDelete]= useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -131,7 +136,26 @@ export default function Transaction() {
     fetchIncome();
     fetchOutcome();
     fetchAllTrans();
-  }, []);
+  }, [successAdd , successDelete, successEdit]);
+
+  useEffect(() => {
+    if (successDelete) {
+      toast.success(
+        `Transaction id : ${
+          selectedRowData && selectedRowData.id
+        } has been deleted`
+      );
+      setSuccessDelete(false);
+    }
+    if (successAdd) {
+      toast.success("Transaction Added Successfuly");
+      setSuccessAdd(false);
+    }
+    if (successEdit) {
+      toast.success(`Transaction id: ${selectedRowData && selectedRowData.id} Updated Successfuly`);
+      setSuccessDelete(false);
+    }
+  }, [successDelete, selectedRowData, successAdd ,successEdit]);
 
   useEffect(() => {
     if (income !== null && outcome !== null) {
@@ -146,6 +170,7 @@ export default function Transaction() {
     >
       <Navbar />
       <Sidebar />
+      <Toaster/>
       <Typography
         variant="h3"
         component="h3"
@@ -215,16 +240,16 @@ export default function Transaction() {
             >
               <Grid xs={12} md={12} sx={{ padding: 0 }}>
                 {income !== null && (
-                  <InfoCard title={"Total income"} number={income} />
+                  <InfoCard title={"Total income"} number={`${income} $`} />
                 )}
               </Grid>
               <Grid xs={12} md={12} sx={{ padding: 0 }}>
                 {outcome !== null && (
-                  <InfoCard title={"Total Outcome"} number={outcome} />
+                  <InfoCard title={"Total Outcome"} number={`${outcome} $`} />
                 )}
               </Grid>
               <Grid xs={12} md={12} sx={{ padding: 0 }}>
-                <InfoCard title={"Total profit"} number={profit} />
+                <InfoCard title={"Total profit"} number={`${profit} $`} />
               </Grid>
             </Grid>
             <Grid
@@ -248,6 +273,7 @@ export default function Transaction() {
             <Grid
               container
               md={screenWidth > 1220 ? 5 : 12}
+              xs={11}
               mt={screenWidth < 1220 ? "2rem" : ""}
               mb={screenWidth < 1220 ? "1rem" : ""}
             >
@@ -267,24 +293,38 @@ export default function Transaction() {
               }}
               onClick={handleOpen}
             >
-              <Button text={"Add Transaction"} color={"blue"} size={"big"} />
+              {
+                user && (user.role === 'Admin' || user.role === 'Accountant') ? (
+                  loading === true ? (
+                    <Button variant="contained" color="primary" disabled size='large' startIcon={<AddIcon/>}>Add Transaction</Button>
+                  ): (
+                    <Button variant="contained" size='large' startIcon={<AddIcon/>}>Add Transaction</Button>
+                  )
+                ) : ""
+            }
+              
             </span>
           </span>
           <TableComponent
             data={transactions !== null && transactions}
-            isEdit={user && user.role === "Manager" ? false : true}
+            isEdit={user && user.role !== null && user.role === "Manager" ? false : true}
             ForWhat={"transaction"}
             handleEditOpen={handleEditOpen}
             setSelectedRowData={setSelectedRowData}
             handleOpenDelete={handleOpenDelete}
           />
-          <TransModal open={open} handleClose={handleClose} type="add" />
+          <TransModal 
+            open={open} 
+            handleClose={handleClose} 
+            type="add"
+            setSuccessAdd={setSuccessAdd} />
 
           <TransModal
             type="edit"
             open={openEdit}
             handleClose={handleClose}
             selectedRowData={selectedRowData && selectedRowData}
+            setSuccessEdit={setSuccessEdit}
           />
           <DeleteTransModal
             selectedRowData={selectedRowData && selectedRowData}
@@ -292,6 +332,7 @@ export default function Transaction() {
             openDelete={openDelete}
             handleClose={handleClose}
             setOpenDelete={setOpenDelete}
+            setSuccessDelete={setSuccessDelete}
           />
         </>
       )}

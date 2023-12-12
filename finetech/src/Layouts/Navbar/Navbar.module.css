@@ -13,9 +13,9 @@
   .navContent {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    margin-right: 2.5rem;
+    margin-left: 5rem;
     gap: 1rem;
   }
 

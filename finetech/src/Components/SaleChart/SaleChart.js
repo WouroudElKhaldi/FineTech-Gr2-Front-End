@@ -7,16 +7,12 @@ const SaleChart = ({ chartData }) => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    console.log("chartData in useEffect:", chartData);
 
     if (chartData && chartData.length > 0) {
       const chartLabels = chartData.map((entry) =>
         moment(entry.date).format("MMM DD, YYYY")
       );
       const incomeData = chartData.map((entry) => entry.income);
-
-      console.log("chartLabels:", chartLabels);
-      console.log("incomeData:", incomeData);
 
       setData({
         labels: chartLabels,
@@ -26,7 +22,7 @@ const SaleChart = ({ chartData }) => {
             data: incomeData,
             fill: true,
             backgroundColor: "white",
-            borderColor: "#1976d2",
+            borderColor: "#FACD4B",
           },
         ],
       });

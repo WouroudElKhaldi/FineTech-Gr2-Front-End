@@ -1,6 +1,7 @@
 import React from 'react'
 import style from './Report.module.css'
 import Navbar from '../../Layouts/Navbar/Navbar'
+import Sidebar from '../../Layouts/Sidebar/Sidebar'
 import { Button } from '../../Components/Button/Button'
 import Grid from '@mui/material/Unstable_Grid2';
 import { Box, Stack } from '@mui/material'
@@ -26,11 +27,14 @@ const Report = () => {
   }, []);
 
   return (
-    <>
+    <div>
+    <Navbar/>
+    <Sidebar/>
       <main className={style.reportContainer}>
         <h1 className={style.reportContainerTitle}>Manage Reports</h1>
         <Box
           component='form'
+          width='100%'
           sx={{
             '& .css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
               bgcolor: '#212936',
@@ -44,7 +48,7 @@ const Report = () => {
           }}
           style={{ height: '10%' }}
         >
-          <Stack flexDirection='row' columnGap='4rem'>
+          <Stack flexDirection='row' columnGap='4rem' mb='2rem'>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DemoContainer components={['DatePicker']}>
                 <DatePicker label="Start Date" />
@@ -58,7 +62,7 @@ const Report = () => {
           </Stack>
           <Button size='small' color='blue' type='submit' text='generate' />
         </Box>
-        <Box sx={{ flexGrow: 1, ml: 2 }}>
+        <Box >
           <Grid container md={12} sx={
             {
               '& .MuiGrid2-root': {
@@ -101,7 +105,7 @@ const Report = () => {
           <PieChart />
         </Box>
       </main>
-    </>
+    </div>
   )
 }
 
