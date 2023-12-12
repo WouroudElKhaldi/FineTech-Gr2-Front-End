@@ -48,7 +48,10 @@ const TableComponent = ({
           visibleFields = ["id", "type", "amount", "userName", "categoryName"];
         } else if (ForWhat === "users") {
           visibleFields = ["id", "firstName", "lastName", "role", "dob"];
-        } else {
+        }else if (ForWhat === "goal") {
+          visibleFields = ["id", "target", "startDate", "endDate", "achieved"];
+        }
+        else {
           visibleFields = Object.keys(data[0]);
         }
         if (buton === false) {
