@@ -1,3 +1,11 @@
 .chartContainer {
     width: 100%; 
 }
+
+.Exit:hover{
+    cursor: pointer;
+}
+
+.Edit:hover{
+    cursor: pointer;
+}

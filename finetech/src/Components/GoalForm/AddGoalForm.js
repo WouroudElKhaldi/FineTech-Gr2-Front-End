@@ -14,17 +14,69 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
+import axios from "axios";
 import styles from './AddGoalForm.module.css'
 
 const AddGoalForm= ({handleClose ,type}) => {
     const formRef = React.createRef(null);
    
+    const [loading, setLoading] = useState(false);
+    const [target, setTarget] = useState("");
+    const [achieved, setAchieved] = useState(false); 
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-
-    const handleAddGoal = (e) => {
-        e.preventDefault();
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === "target") {
+          setTarget(value);
+        } else if (name === "achieved") {
+          setAchieved(value);
+        } else if (name === "startDate") {
+            setStartDate(value);
+        } else if (name === "endDate") {
+            setEndDate(value);
+        }
       };
+
+
+    const handleAddGoal = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        if (!target || !achieved || !startDate || !endDate) {
+            setError(true);
+      setErrorMessage("All input fields are required");
+      return;
+        }
+      try {
+        const addGoal= await axios.post(
+          "http://localhost:4000/api/goals/add",
+          {
+            target: target,
+            achieved: achieved,
+            startDate: startDate,
+            endDate: endDate,
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(addGoal);
+        setError(false);
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        setErrorMessage("Something goes wrong");
+        setLoading(false);
+        console.log("Error in API call", errorMessage, error);
+      }
+
+      };
+
 
     const handleEditGoal = (e) => {
         e.preventDefault();
@@ -32,10 +84,10 @@ const AddGoalForm= ({handleClose ,type}) => {
     };
 
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        handleClose();
-      };
+    // const handleFormSubmit = (e) => {
+    //     e.preventDefault();
+    //     handleClose();
+    //   };
 
       const handleFromClear = () => {
         const form = formRef.current;
@@ -44,6 +96,8 @@ const AddGoalForm= ({handleClose ,type}) => {
           input.value = "";
         });
       };
+
+
 
     const divStyle ={
         display : 'flex',
@@ -60,7 +114,7 @@ const AddGoalForm= ({handleClose ,type}) => {
     return(
         <Box
             ref={formRef}
-            onSubmit = { type === 'add' ? handleAddGoal : handleEditGoal }
+            // onSubmit = { type === 'add' ? handleAddGoal : handleEditGoal }
             component="form"
             sx={{
                 '& .MuiFormControl-root': {
@@ -118,13 +172,15 @@ const AddGoalForm= ({handleClose ,type}) => {
                     <CloseIcon/>
                     </span>
                 </div>
-            
+                <form onSubmit={type === "add" ? handleAddGoal : handleEditGoal}>
                 <Stack>
                 <TextField
                     required
                     id="outlined-required"
                     label="Target"
                     placeholder='Target'
+                    name="target"
+                    onChange={handleChange}
                 />
                  <FormControl required 
                     sx={{ m: 1 , 
@@ -139,6 +195,8 @@ const AddGoalForm= ({handleClose ,type}) => {
                     labelId="demo-simple-select-required-label"
                     id="demo-simple-select-required"
                     label="Achieved "
+                    name="achieved"
+                    onChange={handleChange}
                     >
                         <MenuItem value="">
                             <em>None</em>
@@ -149,28 +207,30 @@ const AddGoalForm= ({handleClose ,type}) => {
                 </FormControl>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DatePicker']}>
-        <DatePicker label="Start date" />
+        <DatePicker label="Start date"  value={startDate}
+            onChange={setStartDate} />
       </DemoContainer>
     </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DatePicker']}>
-        <DatePicker label="End date" />
+        <DatePicker label="End date" value={endDate} onChange={setEndDate} />
       </DemoContainer>
     </LocalizationProvider>
-                <TextField
-                    required
-                    id="outlined-required"
-                    label="Description"
-                    placeholder='Descrition'
-                />
-        
                     <div style={divStyle}>
-                    <Button text={type === 'add' ? 'Add' : 'Edit'} color={'blue'} size={'small'} type={'submit'}/>
+                    <span onClick={type === "add" ? handleAddGoal: handleEditGoal}>
+              <Button
+                text={type === "add" ? "Add" : "Edit"}
+                color={"blue"}
+                size={"small"}
+                type={"submit"}
+              />
+            </span>
                         <span  onClick={handleFromClear}>
                             <Button text={'Clear'} color={'gray'} size={'small'}/>
                         </span>
                     </div>
                 </Stack>
+                </form>
         </Box>
         )
 }

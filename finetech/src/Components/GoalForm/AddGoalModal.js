@@ -1,15 +1,91 @@
-import { useState } from 'react';
-import { Button } from "../Button/Button"
-import AddGoalForm from "./AddGoalForm";
+import React, { useState } from 'react';
+import { FormControl } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import Stack from '@mui/material/Stack';
+import { Typography } from "@mui/material";
+
+import { Button } from '@mui/material';
+// import AddGoalForm from "./AddGoalForm";
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import EditIcon from '@mui/icons-material/Edit';
 import styles from './AddGoalForm.module.css'
+import CloseIcon from "@mui/icons-material/Close";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import InputAdornment from "@mui/material/InputAdornment";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import axios from "axios";
 
-const AddGalModal = ({type}) => {
+
+
+const AddGalModal = ({type , selectedRowData,handleEditClose,}) => {
+    const [loading, setLoading] = useState(false);
+    const [target, setTarget] = useState("");
+    const [achieved, setAchieved] = useState(false); 
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const formRef = React.createRef(null);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === "target") {
+          setTarget(value);
+        } else if (name === "achieved") {
+          setAchieved(value);
+        } else if (name === "startDate") {
+            setStartDate(value);
+        } else if (name === "endDate") {
+            setEndDate(value);
+        }
+      };
+
+      const handleAddGoal = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        if (!target || !achieved || !startDate || !endDate) {
+            setError(true);
+      setErrorMessage("All input fields are required");
+      return;
+        }
+      try {
+        const addGoal= await axios.post(
+          "http://localhost:4000/api/goals/add",
+          {
+            target: target,
+            achieved: achieved,
+            startDate: startDate,
+            endDate: endDate,
+          },
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(addGoal);
+        setError(false);
+        setLoading(false);
+      } catch (error) {
+        setError(true);
+        setErrorMessage("Something goes wrong");
+        setLoading(false);
+        console.log("Error in API call", errorMessage, error);
+      }
+
+      };
+
+
 
     const style = {
         position: 'absolute',
@@ -31,11 +107,54 @@ const AddGalModal = ({type}) => {
       }
 
 
+    const divStyle ={
+      display : 'flex',
+      justifyContent: 'space-between' ,
+      width : '25rem',
+      marginTop : '1.5rem'
+  }
+
+  const handleFromClear = () => {
+    const form = formRef.current;
+    const inputFields = form.querySelectorAll(".MuiTextField-root input");
+    inputFields.forEach((input) => {
+      input.value = "";
+    });
+  };
+  const handleEditGoal = async (e) => {
+    e.preventDefault();
+    try {
+      const total = await axios.patch(
+        "http://localhost:4000/api/goals/",
+        {
+          id: selectedRowData.id,
+          target: target,
+          achieved: achieved,
+          startDate: startDate,
+          endDate: endDate,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      // setSuccessEdit(true);
+      // setError(false);
+      setLoading(false);
+      handleClose();
+      console.log("goal edited successfully:", total.data);
+    } catch (error) {
+      console.log("Error editing transaction:", error);
+      handleClose();
+    }
+  };
+
     return(
         <>
         <span onClick={handleOpen} style={spanStyle}>
         {type === 'add' ? (
-            <Button text={'Add Goal'} color={'blue'} size={'big'} />
+            <Button variant='contained' text={'Add Goal'} color={'blue'} size={'large'} />
             ) : type === 'edit'? (
             <span className={styles.Exit}>
                 <EditIcon/>
@@ -44,12 +163,131 @@ const AddGalModal = ({type}) => {
         </span>
         <Modal 
             open={open}
-            onClose={handleClose}
+            onClose={handleClose? handleClose:handleEditClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <AddGoalForm handleClose={handleClose} type ={type}/>
+            <Box
+            ref={formRef}
+            // onSubmit = { type === 'add' ? handleAddGoal : handleEditGoal }
+            component="form"
+            sx={{
+                '& .MuiFormControl-root': {
+                     mt: 2 , 
+                     mb: 2, 
+                     ml:0 , 
+                     mr: 0 ,
+                     width: '25rem'
+                    },
+                '& .MuiInputBase-root':{
+                    color : 'white', 
+                },'& .MuiFormLabel-root ':{
+                    color: 'white'
+                } ,
+                '& .MuiOutlinedInput-root':{
+                    border: 'white'
+                } , '& .MuiBox-root css-3b5rqz':{
+                    margin: '2rem !important'
+                }, '& .MuiSvgIcon-root' :{
+                    color: 'white'
+                }
+            }}
+            
+            autoComplete="off"
+        >
+                <div style={divStyle}>
+                {
+                        type === 'add' ? (
+                    <Typography
+                        variant="h4"
+                        component="h4"
+                        sx={{ textAlign: "left", mt: 3, mb: 3, ml: '8px', width: 'fit-content' , fontWeight: 'bold'}}
+                    >
+                        Add Goal
+                    </Typography>
+                        ) : (
+                            <Typography
+                            variant="h4"
+                            component="h4"
+                            sx={{ textAlign: "left", mt: 3, mb: 3, ml: '8px', width: 'fit-content' , fontWeight: 'bold'}}
+                        >
+                        Edit Goal
+                        </Typography>
+                            )
+                        }
+
+
+                    <span 
+                        style={spanStyle} 
+                        className={styles.Exit}
+                     onClick={() => {
+                        handleClose();
+                        handleFromClear();
+                      }}>
+                    <CloseIcon/>
+                    </span>
+                </div>
+                <form onSubmit={type === "add" ? handleAddGoal : handleEditGoal}>
+                <Stack>
+                <TextField
+                    required
+                    id="outlined-required"
+                    label="Target"
+                    placeholder='Target'
+                    name="target"
+                    onChange={handleChange}
+                />
+                 <FormControl required 
+                    sx={{ m: 1 , 
+                    '& .MuiSvgIcon-root':{
+                        color: 'white',
+                        '& .MuiList-root':{
+                            bgcolor: 'transparent'
+                        }
+                    }}}>
+                    <InputLabel id="demo-simple-select-required-label">Achieved</InputLabel>
+                    <Select
+                    labelId="demo-simple-select-required-label"
+                    id="demo-simple-select-required"
+                    label="Achieved "
+                    name="achieved"
+                    onChange={handleChange}
+                    >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={'Yes'}>Yes</MenuItem>
+                        <MenuItem value={'No'}>No</MenuItem>
+                    </Select>
+                </FormControl>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={['DatePicker']}>
+        <DatePicker label="Start date"  value={startDate}
+            onChange={setStartDate} />
+      </DemoContainer>
+    </LocalizationProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={['DatePicker']}>
+        <DatePicker label="End date" value={endDate} onChange={setEndDate} />
+      </DemoContainer>
+    </LocalizationProvider>
+                    <div style={divStyle}>
+                    <span onClick={type === "add" ? handleAddGoal: handleEditGoal}>
+              <Button
+                text={type === "add" ? "Add" : "Edit"}
+                color={"blue"}
+                size={"small"}
+                type={"submit"}
+              />
+            </span>
+                        <span  onClick={handleFromClear}>
+                            <Button text={'Clear'} color={'gray'} size={'small'}/>
+                        </span>
+                    </div>
+                </Stack>
+                </form>
+        </Box>
             </Box>
         </Modal>
         </>
