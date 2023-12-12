@@ -1,288 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import TransactionChart from "../../Components/TransactionChart/TransactionChart";
-// import Grid from "@mui/material/Unstable_Grid2";
-// import { Box } from "@mui/material";
-// import Typography from "@mui/material/Typography";
-// import InfoCard from "../../Components/InfoCard/InfoCard";
-// import TableComponent from "../../Components/Table/Table";
-// import TransModal from "../../Components/AddTransForm/AddTransModal";
-// import Sidebar from "../../Layouts/Sidebar/Sidebar";
-// import Navbar from "../../Layouts/Navbar/Navbar";
-// import useApi from "../../Hooks/UseApi";
-// import { Button } from "../../Components/Button/Button";
-
-// export default function Transaction() {
-//   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-//   const [wid, setWid] = useState(screenWidth < 500 ? "100%" : "80%");
-//   const { apiCall } = useApi();
-//   const [loading, setLoading] = useState(true);
-//   const [income, setIncome] = useState(null);
-//   const [outcome, setOutcome] = useState(null);
-//   const [profit, setProfit] = useState(null);
-//   const [incPerc, setIncPerc] = useState(null);
-//   const [outcPerc, setOutcPerc] = useState(null);
-//   const [transactions, setTransactions] = useState([]);
-//   const [error, setError] = useState(false);
-//   const [networkError, setNetworkError] = useState(false);
-//   const [open, setOpen] = useState(false);
-//     const [openEdit, setOpenEdit] = useState(false);
-//     const [openDelete, setOpenDelete] = useState(false);
-//       const handleOpen = () => setOpen(true);
-//       const handleEditOpen = () => setOpenEdit(true);
-//       const handleOpenDelete = () => setOpenDelete(true);
-//       const handleClose = () => {
-//         setOpen(false);
-//         setOpenEdit(false);
-//         setOpenDelete(false);
-//       };
-//         const [userData, setUserData] = useState(null);
-//           const [selectedRowData, setSelectedRowData] = useState(null);
-
-
-//   useEffect(() => {
-//     const handleResize = () => {
-//       const newWid = window.innerWidth;
-//       setScreenWidth(newWid);
-//       setWid(newWid < 500 ? "100%" : "80%");
-//     };
-//     window.addEventListener("resize", handleResize);
-//     return () => {
-//       window.removeEventListener("resize", handleResize);
-//     };
-//   }, []);
-
-//   useEffect(() => {
-//     const handleOffline = () => {
-//       setNetworkError(true);
-//     };
-//     window.addEventListener("offline", handleOffline);
-//     return () => {
-//       window.removeEventListener("offline", handleOffline);
-//     };
-//   }, []);
-
-//   useEffect(() => {
-//     const fetchIncome = async () => {
-//       try {
-//         const total = await apiCall({
-//           url: "/api/calculations/sum-income",
-//           method: "get",
-//         });
-//         setIncome(total.data.totalIncome);
-//         setIncPerc(total.data.incomePercentage);
-//       } catch (error) {
-//         console.error("Error fetching income:", error);
-//         setError(true);
-//       }
-//     };
-
-//     const fetchOutcome = async () => {
-//       try {
-//         const total = await apiCall({
-//           url: "/api/calculations/sum-outcome",
-//           method: "get",
-//         });
-//         setOutcome(total.data.totalOutcome);
-//         setOutcPerc(total.data.outcomePercentage);
-//       } catch (error) {
-//         console.error("Error fetching outcome:", error);
-//         setError(true);
-//       }
-//     };
-
-//     const fetchAllTrans = async () => {
-//       try {
-//         const total = await apiCall({
-//           url: "/api/transactionss/view-trans",
-//           method: "get",
-//         });
-//         const updatedData = total.map((transaction) => ({
-//           ...transaction,
-//           userName: transaction.User.firstName + " " + transaction.User.lastName,
-//           categoryName: transaction.Category.name,
-//         }));
-//         setTransactions(updatedData);
-//       } catch (error) {
-//         console.error("Error fetching transactions:", error);
-//         setError(true);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchIncome();
-//     fetchOutcome();
-//     fetchAllTrans();
-//   }, []);
-
-//   useEffect(() => {
-//     if (income !== null && outcome !== null) {
-//       const profitt = income - outcome;
-//       setProfit(profitt);
-//     }
-//   }, [income, outcome, transactions]);
-
-//   return (
-//     <Box
-//       sx={{ flexGrow: 1, display: "flex", flexDirection: "column", ml: "5rem" }}
-
-//       // sx={{ flexGrow: 1, pl: "5rem" }}
-//     >
-//       <Navbar />
-//       <Sidebar />
-//       <Typography
-//         variant="h3"
-//         component="h3"
-//         sx={{
-//           textAlign: "left",
-//           pt: "5rem",
-//           mb: 5,
-//           fontWeight: "bold",
-//           fontFamily: "outfit",
-//         }}
-//       >
-//         Manage Transactions
-//       </Typography>
-//       {networkError ? (
-//         <div
-//           style={{
-//             display: "flex",
-//             justifyContent: "center",
-//             alignItems: "center",
-//           }}
-//         >
-//           <Typography variant="h5" color="error">
-//             Network Issue
-//           </Typography>
-//         </div>
-//       ) : loading ? (
-//         <div
-//           style={{
-//             display: "flex",
-//             justifyContent: "center",
-//             alignItems: "center",
-//           }}
-//         >
-//           <Typography variant="h5">Loading...</Typography>
-//         </div>
-//       ) : error ? (
-//         <div
-//           style={{
-//             display: "flex",
-//             justifyContent: "center",
-//             alignItems: "center",
-//           }}
-//         >
-//           <Typography variant="h5" color="error">
-//             Error loading data
-//           </Typography>
-//         </div>
-//       ) : (
-//         <>
-//           <Grid
-//             container
-//             md={12}
-//             mb={"20px"}
-//             sx={{
-//               "& .MuiGrid2-root": {
-//                 display: "flex",
-//                 alignContent: "space-between",
-//                 justifyContent: "space-between",
-//               },
-//             }}
-//           >
-//             <Grid md={screenWidth > 1200 ? 6 : 12} container spacing={1}>
-//               <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
-//                 {income !== null && (
-//                   <InfoCard title={"Total income"} number={income} />
-//                 )}
-//               </Grid>
-//               <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
-//                 {outcome !== null && (
-//                   <InfoCard title={"Total Outcome"} number={outcome} />
-//                 )}
-//               </Grid>
-//               <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
-//                 <InfoCard title={"Total profit"} number={profit} />
-//               </Grid>
-//             </Grid>
-//             <Grid
-//               container
-//               xs={12}
-//               md={screenWidth > 1220 ? 6 : 12}
-//               mt={screenWidth < 1220 ? "30px" : "0px"}
-//               sx={{ display: "flex", justifyContent: "center" }}
-//             >
-//               {income !== null && outcome !== null && (
-//                 <TransactionChart incPerc={incPerc} outcPerc={outcPerc} />
-//               )}
-//             </Grid>
-//           </Grid>
-//           {/* <span
-//             style={{
-//               display: "flex",
-//               justifyContent: "flex-end",
-//               width: "95%",
-//             }}
-//           >
-//             <TransModal open={open} handleClose={handleClose} type="add" />
-//           </span>
-//           <TableComponent
-//             data={transactions !== null && transactions}
-//             wid={wid}
-//             isEdit={true}
-//             ForWhat={"transaction"}
-//           /> */}
-//           <span
-//             style={{
-//               display: "flex",
-//               justifyContent: "end",
-//               width: "95%",
-//             }}
-//           >
-//             <span
-//               style={{
-//                 width: "fit-content",
-//               }}
-//               onClick={handleOpen}
-//             >
-//               <Button text={"Add Transaction"} color={"blue"} size={"big"} />
-//             </span>
-//           </span>
-
-//           <TableComponent
-//             data={userData !== null && userData}
-//             isEdit={true}
-//             ForWhat={"transaction"}
-//             handleEditOpen={handleEditOpen}
-//             setSelectedRowData={setSelectedRowData}
-//             handleOpenDelete={handleOpenDelete}
-//           />
-//           <TransModal open={open} handleClose={handleClose} type="add" />
-//           <TransModal
-//             type="edit"
-//             open={openEdit}
-//             handleClose={handleClose}
-//             selectedRowData={selectedRowData && selectedRowData}
-//           />
-
-//           {/* <DeleteModal
-//             selectedRowData={selectedRowData && selectedRowData}
-//             handleOpenDelete={handleOpenDelete}
-//             openDelete={openDelete}
-//             handleClose={handleClose}
-//           /> */}
-//           {/* <TableComponent
-//             data={transactions !== null && transactions}
-//             wid={wid}
-//             isEdit={true}
-//             ForWhat={"transaction"}
-//           /> */}
-//         </>
-//       )}
-//     </Box>
-//   );
-// }
 import React, { useState, useEffect } from "react";
 import TransactionChart from "../../Components/TransactionChart/TransactionChart";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -296,6 +11,7 @@ import { Button } from "../../Components/Button/Button";
 import Navbar from "../../Layouts/Navbar/Navbar";
 import useApi from "../../Hooks/UseApi";
 import DeleteTransModal from "../../Components/DeleteTransForm/DeleteTransModal";
+import SaleChart from "../../Components/SaleChart/SaleChart";
 
 export default function Transaction() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -308,6 +24,7 @@ export default function Transaction() {
   const [incPerc, setIncPerc] = useState(null);
   const [outcPerc, setOutcPerc] = useState(null);
   const [transactions, setTransactions] = useState([]);
+  const [chartData, setChartData] = useState([]);
   const [error, setError] = useState(false);
   const [networkError, setNetworkError] = useState(false);
   const [selectedRowData, setSelectedRowData] = useState(null);
@@ -395,6 +112,20 @@ export default function Transaction() {
       }
     };
 
+    const fetchChartData = async () => {
+      try {
+        const response = await apiCall({
+          url: "/api/transactionss/by-category",
+          method: "post",
+          data: { categoryId: 8 },
+        });
+        setChartData(response);
+      } catch (error) {
+        console.error("Error fetching chart data:", error);
+      }
+    };
+
+    fetchChartData();
     fetchIncome();
     fetchOutcome();
     fetchAllTrans();
@@ -464,48 +195,66 @@ export default function Transaction() {
         <>
           <Grid
             container
-            md={12}
+            md={11.8}
             mb={"20px"}
+            justifyContent="space-between"
             sx={{
+              alignContent: "space-between",
               "& .MuiGrid2-root": {
-                display: "flex",
                 alignContent: "space-between",
-                justifyContent: "space-between",
               },
             }}
           >
-            <Grid md={screenWidth > 1200 ? 6 : 12} container spacing={1}>
-              <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
+            <Grid
+              md={screenWidth > 1200 ? 2.5 : 12}
+              container
+              spacing={1}
+              rowGap="1rem"
+            >
+              <Grid xs={12} md={12} sx={{ padding: 0 }}>
                 {income !== null && (
                   <InfoCard title={"Total income"} number={income} />
                 )}
               </Grid>
-              <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
+              <Grid xs={12} md={12} sx={{ padding: 0 }}>
                 {outcome !== null && (
                   <InfoCard title={"Total Outcome"} number={outcome} />
                 )}
               </Grid>
-              <Grid xs={12} md={12} sx={{ padding: 0, marginBottom: "1.5Rem" }}>
+              <Grid xs={12} md={12} sx={{ padding: 0 }}>
                 <InfoCard title={"Total profit"} number={profit} />
               </Grid>
             </Grid>
             <Grid
               container
               xs={12}
-              md={screenWidth > 1220 ? 6 : 12}
+              md={screenWidth > 1220 ? 3 : 12}
               mt={screenWidth < 1220 ? "30px" : "0px"}
-              sx={{ display: "flex", justifyContent: "center" }}
+              sx={{
+                display: "flex",
+                justifyContent: screenWidth > 1220 ? "center" : "start",
+                marginTop: screenWidth > 1220 ? 0 : "1.5  rem",
+              }}
             >
               {income !== null && outcome !== null && (
                 <TransactionChart incPerc={incPerc} outcPerc={outcPerc} />
               )}
+            </Grid>
+            <Grid
+              container
+              md={screenWidth > 1220 ? 5 : 12}
+              sx={{
+                marginTop: screenWidth > 1220 ? 0 : "1.5rem",
+              }}
+            >
+              {chartData && <SaleChart chartData={chartData && chartData} />}
             </Grid>
           </Grid>
           <span
             style={{
               display: "flex",
               justifyContent: "end",
-              width: "95%",
+              width: "98%",
             }}
           >
             <span
@@ -514,7 +263,7 @@ export default function Transaction() {
               }}
               onClick={handleOpen}
             >
-              <Button text={"Add User"} color={"blue"} size={"big"} />
+              <Button text={"Add Transaction"} color={"blue"} size={"big"} />
             </span>
           </span>
           <TableComponent

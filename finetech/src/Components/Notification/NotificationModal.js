@@ -5,7 +5,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationCard from './NotificationCard';
 import styles from './NotificationCard.module.css'
 
-const NotificationModal = () => {
+const NotificationModal = ({notifications}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -40,7 +40,7 @@ const NotificationModal = () => {
             aria-describedby="modal-modal-description"
             >
             <Box sx={style}>
-                <NotificationCard handleClose={handleClose} size={'small'}/>
+                <NotificationCard handleClose={handleClose} size={'small'} notifications={notifications}/>
             </Box>
         </Modal>
         </>

@@ -8,6 +8,7 @@ import Report from "../Pages/Report/Report";
 import Transaction from "../Pages/Transaction/Transaction";
 import Users from "../Pages/Users/Users";
 import NotFound from "../Pages/NotFound/NotFound";
+import Company from "../Pages/Company/Company";
 // import LayoutWithSidebar from "./LayoutWithSidebar"
 
 function AppRoutes() {
@@ -18,8 +19,8 @@ function AppRoutes() {
           path="/transaction"
           element={
             // <LayoutWithSidebar>
-      
-              <Transaction />
+
+            <Transaction />
             // </LayoutWithSidebar>
           }
         ></Route>
@@ -28,7 +29,7 @@ function AppRoutes() {
           path="/goal"
           element={
             // <LayoutWithSidebar>
-              <Goal />
+            <Goal />
             // </LayoutWithSidebar>
           }
         ></Route>
@@ -36,7 +37,7 @@ function AppRoutes() {
           path="/notification"
           element={
             // <LayoutWithSidebar>
-              <Notification />
+            <Notification />
             // </LayoutWithSidebar>
           }
         ></Route>
@@ -44,7 +45,7 @@ function AppRoutes() {
           path="/profile"
           element={
             // <LayoutWithSidebar>
-              <Profile />
+            <Profile />
             // </LayoutWithSidebar>
           }
         ></Route>
@@ -52,7 +53,7 @@ function AppRoutes() {
           path="/report"
           element={
             // <LayoutWithSidebar>
-              <Report />
+            <Report />
             // </LayoutWithSidebar>
           }
         ></Route>
@@ -60,12 +61,11 @@ function AppRoutes() {
           path="/users"
           element={
             // <LayoutWithSidebar>
-              <Users />
+            <Users />
             // </LayoutWithSidebar>
           }
         ></Route>
-
-        
+        <Route path="/settings" element={<Company />}></Route>
 
         <Route exact path="/" element={<Login />}></Route>
         <Route path="/*" element={<NotFound />}></Route>

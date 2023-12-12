@@ -1,19 +1,13 @@
 import React from "react";
 
 import Sidebar from "../Layouts/Sidebar/Sidebar.js";
+import Navbar from "../Layouts/Navbar/Navbar.js";
 function LayoutWithSidebar({ children }) {
   return (
     <>
-      <div
-        style={{
-          minHeight: "8zvh",
-          margin: "0%",
-          display: "grid",
-          gridTemplateColumns: "20% 75%",
-          columnGap: "4%",
-        }}
-      >
+      <div>
         <Sidebar />
+        <Navbar/>
         {children}
       </div>
     </>
