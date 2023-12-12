@@ -100,7 +100,6 @@ const TransModal = ({
           categoryId: categoryId,
         },
         headers: {
-
           "Content-Type": "multipart/form-data",
         },
       });
@@ -113,10 +112,6 @@ const TransModal = ({
       handleClose();
     }
   };
-
-
-
-
 
   useEffect(() => {
     if (type === "edit" && selectedRowData) {
@@ -322,6 +317,7 @@ const TransModal = ({
                       .slice(0, 12);
                   }}
                   onChange={(e) => handleChange(e)}
+                  value={amount}
                 />
                 <div style={divStyle}>
                   <Button

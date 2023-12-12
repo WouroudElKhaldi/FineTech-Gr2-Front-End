@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Box } from "@mui/material";
 import InfoCard from "../../Components/InfoCard/InfoCard";
@@ -13,10 +13,11 @@ import { Button } from "../../Components/Button/Button";
 import DeleteModal from "../../Components/DeleteUserForm/DeleteModal";
 import toast, { Toaster } from "react-hot-toast";
 import { AuthContext } from "../../Context/AuthContext";
+import UserLineChart from "../../Components/UserLineChart/UserLineChart";
 
 const UserPage = () => {
   const { apiCall } = useApi();
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   const [userNumber, setUserNumber] = useState({
     Admin: null,
@@ -208,21 +209,23 @@ const UserPage = () => {
         <>
           <Grid
             container
-            md={12}
+            md={11.8}
+            justifyContent="space-between"
             sx={{
               "& .MuiGrid2-root": {
                 display: "flex",
                 alignContent: "space-between",
-                justifyContent: screenWidth > 1200 ? "" : "flex-start",
+                justifyContent:
+                  screenWidth > 1200 ? "space-between" : "flex-start",
               },
               "& .MuiGrid2-container": {
                 mb: "2rem",
-                flexWrap: "wrap",
+                alignContent: "space-between",
               },
             }}
           >
             <Grid
-              md={screenWidth > 1200 ? 6 : 12}
+              md={screenWidth > 1220 ? 2.5 : screenWidth < 600 ? 12 : 6}
               container
               spacing={screenWidth > 1200 ? 1 : 0}
               sx={{
@@ -281,7 +284,7 @@ const UserPage = () => {
             </Grid>
             <Grid
               container
-              md={screenWidth > 1200 ? 6 : 12}
+              md={screenWidth > 1220 ? 3 : screenWidth < 600 ? 12 : 6}
               xs={20}
               sx={{
                 display: "flex",
@@ -290,12 +293,23 @@ const UserPage = () => {
             >
               <UserChart userPercentage={userPercentage} />
             </Grid>
+            <Grid
+              container
+              md={screenWidth > 1220 ? 5 : 12 }
+              xs={20}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <UserLineChart userData={userData} />
+            </Grid>
           </Grid>
           <span
             style={{
               display: "flex",
               justifyContent: "end",
-              width: "95%",
+              width: "98%",
             }}
           >
             <span
@@ -309,7 +323,7 @@ const UserPage = () => {
           </span>
           <TableComponent
             data={userData !== null && userData}
-            isEdit={user && user.role === 'Manager'? false : true}
+            isEdit={user && user.role === "Manager" ? false : true}
             ForWhat={"users"}
             handleEditOpen={handleEditOpen}
             setSelectedRowData={setSelectedRowData}

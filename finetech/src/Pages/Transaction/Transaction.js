@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TransactionChart from "../../Components/TransactionChart/TransactionChart";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Box } from "@mui/material";
@@ -12,6 +12,7 @@ import Navbar from "../../Layouts/Navbar/Navbar";
 import useApi from "../../Hooks/UseApi";
 import DeleteTransModal from "../../Components/DeleteTransForm/DeleteTransModal";
 import SaleChart from "../../Components/SaleChart/SaleChart";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function Transaction() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
@@ -39,6 +40,7 @@ export default function Transaction() {
     setOpenEdit(false);
     setOpenDelete(false);
   };
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     const handleResize = () => {
@@ -206,7 +208,7 @@ export default function Transaction() {
             }}
           >
             <Grid
-              md={screenWidth > 1200 ? 2.5 : 12}
+              md={screenWidth > 1220 ? 2.5 : screenWidth < 600 ? 12 : 6}
               container
               spacing={1}
               rowGap="1rem"
@@ -228,24 +230,26 @@ export default function Transaction() {
             <Grid
               container
               xs={12}
-              md={screenWidth > 1220 ? 3 : 12}
-              mt={screenWidth < 1220 ? "30px" : "0px"}
+              md={screenWidth > 1220 ? 3 : screenWidth < 600 ? 12 : 6}
+              mt={screenWidth < 1220 ? "2rem" : "0px"}
               sx={{
                 display: "flex",
                 justifyContent: screenWidth > 1220 ? "center" : "start",
-                marginTop: screenWidth > 1220 ? 0 : "1.5  rem",
               }}
             >
               {income !== null && outcome !== null && (
-                <TransactionChart incPerc={incPerc} outcPerc={outcPerc} />
+                <TransactionChart
+                  incPerc={incPerc}
+                  outcPerc={outcPerc}
+                  screenWidth={screenWidth}
+                />
               )}
             </Grid>
             <Grid
               container
               md={screenWidth > 1220 ? 5 : 12}
-              sx={{
-                marginTop: screenWidth > 1220 ? 0 : "1.5rem",
-              }}
+              mt={screenWidth < 1220 ? "2rem" : ""}
+              mb={screenWidth < 1220 ? "1rem" : ""}
             >
               {chartData && <SaleChart chartData={chartData && chartData} />}
             </Grid>
@@ -268,7 +272,7 @@ export default function Transaction() {
           </span>
           <TableComponent
             data={transactions !== null && transactions}
-            isEdit={true}
+            isEdit={user && user.role === "Manager" ? false : true}
             ForWhat={"transaction"}
             handleEditOpen={handleEditOpen}
             setSelectedRowData={setSelectedRowData}

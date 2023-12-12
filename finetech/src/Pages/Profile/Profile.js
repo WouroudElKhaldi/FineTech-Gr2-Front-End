@@ -8,6 +8,7 @@ import ProfileDetails from "../../Components/ProfileDetails/ProfileDetails";
 import style from "./Profile.module.css";
 import { AuthContext } from "../../Context/AuthContext";
 import useApi from "../../Hooks/UseApi";
+import toast, { Toaster } from "react-hot-toast";
 
 const Profile = () => {
   const [overview, setOverview] = useState(true);
@@ -63,6 +64,12 @@ const Profile = () => {
       }
     }
   }, [successEdit]);
+  
+  useEffect(()=>{
+    if (successEdit){
+      toast.success(`User: ${user.firstName} has been edited successfuly`)
+    }
+  },[successEdit])
 
   const handleOverview = () => {
     setOverview(true);
@@ -82,7 +89,7 @@ const Profile = () => {
     >
       <Navbar />
       <Sidebar />
-
+      <Toaster/>
       <>
         <span
           style={{

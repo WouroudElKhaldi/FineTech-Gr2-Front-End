@@ -36,7 +36,7 @@ export default function NotFound() {
           }}>
             Page Not Found
           </Typography>
-      <Button size='large' variant='outlined' onClick={()=> navigate('/')}>Return To home Page</Button>
+      <Button size='large' variant='outlined' onClick={()=> navigate('/')}>Return To login Page</Button>
       </span>
     </div>
   )
