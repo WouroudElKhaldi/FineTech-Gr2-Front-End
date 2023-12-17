@@ -78,8 +78,8 @@ import Style from "./ActivityCard.module.css";
 import ActivityCard from "./ActivityCard";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import useApi from "../../Hooks/UseApi";
-import { AuthContext } from "../../Context/AuthContext";
+// import useApi from "../../Hooks/UseApi";
+// import { AuthContext } from "../../Context/AuthContext";
 const mockData = [
   { id: "1", type: "Transaction", content: "Transaction 1 Details" },
   { id: "2", type: "Transaction", content: "Transaction 2 Details" },
@@ -110,9 +110,9 @@ const itemsPerPage = 5;
 export default function MainTab({ userData}) {
   const [value, setValue] = React.useState("Transaction");
   const [page, setPage] = React.useState(1);
-    const { user } = useContext(AuthContext);
-    const { apiCall } = useApi();
-const userId = user.id;
+    // const { user } = useContext(AuthContext);
+    // const { apiCall } = useApi();
+// const userId = user.id;
   const handleChange = (event, newValue) => {
     setValue(newValue);
     setPage(1); // Reset the page when switching tabs
@@ -169,8 +169,8 @@ const userId = user.id;
             .slice((page - 1) * itemsPerPage, page * itemsPerPage)
             .map((item) => (
               <div key={item?.id}>
-                <p>Type:ssssss {item?.type}</p>
-                <p>Amount: {item?.amount}</p>
+                {/* <p> {item?.type}</p>
+                <p> {item?.amount}</p> */}
                 <ActivityCard cont={item?.content} />
               </div>
             ))}
